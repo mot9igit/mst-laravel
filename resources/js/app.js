@@ -16,7 +16,9 @@ import { createApp } from 'vue';
 const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
+import SignInPage from './pages/sign-in/index.vue';
 app.component('example-component', ExampleComponent);
+app.component('sign-in-page', SignInPage);
 
 /**
  * The following block of code may be used to automatically register your
