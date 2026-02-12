@@ -7,13 +7,13 @@
   font-family: 'Iconly';
   font-style: normal;
   font-weight: 400;
-  src: url('/assets/fonts/iconly/iconly.eot?1756200335643');
+  src: url('../assets/fonts/iconly/iconly.eot?1756200335643');
   src:
-    url('/assets/fonts/iconly/iconly.eot?#iefix') format('embedded-opentype'),
-    url('/assets/fonts/iconly/iconly.woff2?1756200335643') format('woff2'),
-    url('/assets/fonts/iconly/iconly.woff?1756200335643') format('woff'),
-    url('/assets/fonts/iconly/iconly.ttf?1756200335643') format('truetype'),
-    url('/assets/fonts/iconly/iconly.svg?1756200335643#Iconly') format('svg');
+    url('../assets/fonts/iconly/iconly.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/iconly/iconly.woff2?1756200335643') format('woff2'),
+    url('../assets/fonts/iconly/iconly.woff?1756200335643') format('woff'),
+    url('../assets/fonts/iconly/iconly.ttf?1756200335643') format('truetype'),
+    url('../assets/fonts/iconly/iconly.svg?1756200335643#Iconly') format('svg');
 }
 
 [class='d-icon'],

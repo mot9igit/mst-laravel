@@ -1,4 +1,4 @@
-import router from '@/router'
+// import router from '@/router'
 
 export default {
   install: (app, options) => {
@@ -8,7 +8,7 @@ export default {
       } catch (error) {
         if (error?.response?.status === 403) {
           localStorage.removeItem('user')
-          router.push({ name: 'main' })
+          // router.push({ name: 'main' })
         } else {
           if (errHandler) {
             errHandler(error)

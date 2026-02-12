@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
 @section('content')
-    11111111
+    <h2>Просто вход в Приложение</h2>
     <div id="app"></div>
 @endsection

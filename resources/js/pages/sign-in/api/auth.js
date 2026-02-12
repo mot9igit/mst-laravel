@@ -2,19 +2,20 @@ export default function (instance) {
   return {
     signIn(payload) {
       const data = instance
-        .post('auth/', payload)
+        .post('login/', payload)
         .then(function (res) {
-          return res
+            console.log(res)
+            return res
         })
-        .catch(function (err) {
-          // TODO: подключить компонент обработки ошибок
-          // console.log(err)
-          if (err.response) {
-            return false
-          } else {
-            return 'technical error'
-          }
-        })
+        // .catch(function (err) {
+        //   // TODO: подключить компонент обработки ошибок
+        //   console.log(err)
+        //   if (err.response) {
+        //     return false
+        //   } else {
+        //     return 'technical error'
+        //   }
+        // })
       return data
     },
     signUp(payload) {
