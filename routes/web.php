@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', App\Http\Controllers\IndexController::class)->name('index');
 
-Route::get('/login', App\Http\Controllers\auth\IndexController::class)->name('auth.login');
-Route::post('/login', App\Http\Controllers\auth\LoginController::class)->name('auth.login.submit');
-Route::get('/logout', App\Http\Controllers\auth\LogoutController::class)->name('auth.logout');
+Route::get('/login', App\Http\Controllers\Auth\IndexController::class)->name('login');
+Route::post('/login', App\Http\Controllers\Auth\LoginController::class)->name('auth.login.submit');
+Route::post('/logout', App\Http\Controllers\Auth\LogoutController::class)->name('auth.logout');
 
-Route::group(['namespace'=>'App\Http\Controllers\admin', 'prefix' => 'adm', "middleware" => "auth"], function() {
+Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "middleware" => "auth"], function() {
     Route::get('/', IndexController::class)->name('admin.index');
     Route::group(['namespace'=>'Profile', 'prefix' => 'profile'], function() {
         Route::get("/", IndexController::class)->name("admin.profile.index");
@@ -34,4 +34,4 @@ Route::group(['namespace'=>'App\Http\Controllers\admin', 'prefix' => 'adm', "mid
     });
 });
 
-Route::get('/profile', App\Http\Controllers\front\profile\IndexController::class)->name('front.profile.index');
+Route::get('/profile', App\Http\Controllers\Front\Profile\IndexController::class)->name('front.profile.index');
