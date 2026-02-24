@@ -23,7 +23,6 @@ jobs:
             cd /var/www/development.mst.tools/
             php artisan down --message="Идет обновление версии Приложения"
             git pull origin master
-            composer update
             composer install
             php artisan migrate
             php artisan cache:clear
