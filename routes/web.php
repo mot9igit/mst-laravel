@@ -1,8 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', App\Http\Controllers\IndexController::class)->name('index');
+
+Route::get('/upload', function () {
+    $file = public_path('images/banner.png');
+    $url = Storage::disk('tws3')->putFileAs("test", $file, 'banner.png');
+    dd($url);
+
+    return 'Файл загружен!';
+});
 
 Route::get('/login', App\Http\Controllers\Auth\IndexController::class)->name('login');
 Route::post('/login', App\Http\Controllers\Auth\LoginController::class)->name('auth.login.submit');
