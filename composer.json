@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "league/flysystem-aws-s3-v3": "^3.31",
+        "movemoveapp/laravel-dadata": "^1.0",
         "nesbot/carbon": "^3.11",
         "staudenmeir/laravel-adjacency-list": "^1.0"
     },
