@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout
+        uses: actions/checkout@v6
 
       - name: Install dependencies
         run: composer install
@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/fastuser/data/www/mst.tools/dev1.mst.tools
+            cd /var/www/development.mst.tools/
             php artisan down --message="Идет обновление версии Приложения"
             git pull origin main
             composer update
