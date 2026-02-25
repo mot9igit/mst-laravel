@@ -19,7 +19,7 @@ jobs:
           script: |
             cd /var/www/development.mst.tools/
             php artisan down --message="Идет обновление версии Приложения"
-            git pull
+            git pull origin master --force
             composer install
             php artisan migrate
             php artisan cache:clear
