@@ -264,7 +264,6 @@ app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
 app.component("profile-form-component", ProfileFormComponent);
 
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
