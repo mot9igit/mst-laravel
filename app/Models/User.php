@@ -37,7 +37,7 @@ class User extends Authenticatable implements HasMedia
         'phone',
         'fullname',
         'password',
-        'image',
+        'avatar',
     ];
 
     /**
@@ -70,8 +70,8 @@ class User extends Authenticatable implements HasMedia
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(150)
-            ->height(150)
+            ->width(300)
+            ->crop(150, 150)
             ->sharpen(10)
             ->performOnCollections('image');
     }

@@ -6,7 +6,7 @@
             <div class="profile_avatar">
                 <div ref="avatar-dropzone" class="avatar-dropzone">
                 </div>
-                <img :src="form.image" :alt="form.name" v-if="form.image"/>
+                <img :src="form.avatar" :alt="form.name" v-if="form.avatar"/>
                 <div v-else class="blank-image">
                     +
                 </div>
@@ -88,7 +88,6 @@ export default {
             this.loading = true
             const form = new FormData();
             const files = this.dropzone.getAcceptedFiles();
-            console.log(files)
             files.forEach(file => {
                 form.append('image', file);
                 this.dropzone.removeFile(file);
@@ -97,11 +96,10 @@ export default {
             form.append('email', this.form.email);
             form.append('fullname', this.form.fullname);
             form.append('phone', this.form.phone);
-            console.log(form)
             Axios.post("/api/profile", form)
                 .then(() => {
                     this.loading = false
-                    // window.location.reload()
+                    window.location.reload()
                 })
         }
     },
@@ -119,6 +117,7 @@ export default {
             this.form.email = this.profile.email;
             this.form.fullname = this.profile.fullname;
             this.form.image = this.profile.image;
+            this.form.avatar = this.profile.avatar;
             this.form.phone = this.profile.phone;
         })
     },
@@ -139,6 +138,9 @@ export default {
 </script>
 
 <style lang="scss">
+    .p-floatlabel > input{
+        width: 100%;
+    }
     .profile_avatar{
         display: block;
         max-width: 120px;

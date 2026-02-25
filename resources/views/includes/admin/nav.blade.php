@@ -150,21 +150,37 @@
             <!--begin::User Menu Dropdown-->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img
-                        src="{{ Auth::user()->avatar }}"
-                        class="user-image rounded-circle shadow"
-                        alt="User Image"
-                    />
+                    @if (Auth::user()->hasMedia('image'))
+                        <img
+                            src="{{ Auth::user()->getFirstMediaUrl('image','thumb') }}"
+                            class="user-image rounded-circle shadow"
+                            alt="User Image"
+                        />
+                    @else
+                        <img
+                            src="/images/no-photo.jpg"
+                            class="user-image rounded-circle shadow"
+                            alt="User Image"
+                        />
+                    @endif
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
-                        <img
-                            src="{{ Auth::user()->avatar }}"
-                            class="rounded-circle shadow"
-                            alt="User Image"
-                        />
+                        @if (Auth::user()->hasMedia('image'))
+                            <img
+                                src="{{ Auth::user()->getFirstMediaUrl('image','thumb') }}"
+                                class="rounded-circle shadow"
+                                alt="User Image"
+                            />
+                        @else
+                            <img
+                                src="/images/no-photo.jpg"
+                                class="rounded-circle shadow"
+                                alt="User Image"
+                            />
+                        @endif
                         <p>
                             {{ Auth::user()->fullname }}
                             <small>В системе с {{ Auth::user()->DateAsCarbon->format('d.m.Y') }} </small>

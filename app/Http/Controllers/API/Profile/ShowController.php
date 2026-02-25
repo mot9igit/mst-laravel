@@ -11,7 +11,8 @@ class ShowController extends BaseController
     public function __invoke(User $user)
     {
         if ($user->hasMedia('image')){
-            $user->avatar = $user->getFirstMediaUrl('image','thumb');
+            $mediaItems = $user->getMedia("*");
+            $user->avatar = $mediaItems[0]->getUrl('thumb');
         }
         return $user;
     }

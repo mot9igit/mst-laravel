@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\API\Profile;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Profile\UpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
@@ -19,6 +18,7 @@ class UpdateController extends BaseController
     {
         // dd($request);
         $data = $request->validated();
+        $user = Auth::user();
         if ($data["image"]) {
             try{
                 $user->addMediaFromRequest('image')->toMediaCollection('image');
@@ -27,6 +27,8 @@ class UpdateController extends BaseController
             }catch (FileIsTooBig $exception){
                 response()->json(["message" => "error", "data" => $exception]);
             }
+        }else{
+            dd($data);
         }
         unset($data["image"]);
         $response = $this->service->update($data);

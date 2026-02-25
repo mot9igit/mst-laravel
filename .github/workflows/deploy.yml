@@ -21,7 +21,7 @@ jobs:
             php artisan down --message="Идет обновление версии Приложения"
             git pull origin master --force
             composer install
-            php artisan migrate
+            php artisan migrate --force
             php artisan cache:clear
             php artisan config:cache
             php artisan route:cache
