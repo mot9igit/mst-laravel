@@ -6,6 +6,7 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import store from './store';
 import 'vue-final-modal/style.css';
 import 'primeicons/primeicons.css';
 
@@ -233,6 +234,7 @@ app.use(PrimeVue, {
 })
 app.use(ApiPlugin)
 app.use(LoadPlugin)
+app.use(store);
 app.use(ToastService)
 app.use(ConfirmationService)
 // app.use(
@@ -256,9 +258,11 @@ app.use(mdiVue, {
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import SignInPage from './pages/sign-in/index.vue';
+import ProfileFormComponent from './components/admin/profile/form.vue';
+
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
-
+app.component("profile-form-component", ProfileFormComponent);
 
 
 /**

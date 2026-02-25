@@ -8,3 +8,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::group(["namespace" => "App\Http\Controllers\API\Profile", "prefix" => "profile", "middleware" => "web"], function(){
+    Route::post('/', 'UpdateController' );
+    Route::get('/{user}', 'ShowController' );
+});

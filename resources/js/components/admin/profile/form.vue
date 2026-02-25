@@ -6,7 +6,7 @@
             <div class="profile_avatar">
                 <div ref="avatar-dropzone" class="avatar-dropzone">
                 </div>
-                <img :src="form.avatar" :alt="form.name" v-if="form.avatar"/>
+                <img :src="form.image" :alt="form.name" v-if="form.image"/>
                 <div v-else class="blank-image">
                     +
                 </div>
@@ -57,14 +57,14 @@ import ConfirmDialog from "primevue/confirmdialog";
 import FloatLabel from 'primevue/floatlabel';
 import InputText from "primevue/inputtext";
 import Axios from "axios";
-import Dropzone from 'dropzone'
+import Dropzone from 'dropzone';
 
 export default {
     name: "ProfileForm",
     props: {
         user_id: {
-          type: Number,
-          default: 0
+          type: String,
+          default: "0"
         }
     },
     data() {
@@ -75,6 +75,7 @@ export default {
                 name: "",
                 fullname: "",
                 email: "",
+                image: "",
                 avatar: ""
             }
         }
@@ -87,18 +88,20 @@ export default {
             this.loading = true
             const form = new FormData();
             const files = this.dropzone.getAcceptedFiles();
+            console.log(files)
             files.forEach(file => {
-                form.append('images[]', file);
+                form.append('image', file);
                 this.dropzone.removeFile(file);
             })
             form.append('name', this.form.name);
             form.append('email', this.form.email);
             form.append('fullname', this.form.fullname);
             form.append('phone', this.form.phone);
-            axios.post("/api/profile", form)
+            console.log(form)
+            Axios.post("/api/profile", form)
                 .then(() => {
                     this.loading = false
-                    window.location.reload()
+                    // window.location.reload()
                 })
         }
     },
@@ -115,7 +118,7 @@ export default {
             this.form.name = this.profile.name;
             this.form.email = this.profile.email;
             this.form.fullname = this.profile.fullname;
-            this.form.avatar = this.profile.avatar;
+            this.form.image = this.profile.image;
             this.form.phone = this.profile.phone;
         })
     },
