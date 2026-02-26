@@ -12,3 +12,10 @@ Route::group(["namespace" => "App\Http\Controllers\API\Profile", "prefix" => "pr
     Route::post('/', 'UpdateController' );
     Route::get('/{user}', 'ShowController' );
 });
+
+Route::group(["namespace" => "App\Http\Controllers\API\User", "prefix" => "users", "middleware" => "web"], function(){
+    Route::get("/", "IndexController");
+    Route::post('/', 'StoreController' );
+    Route::delete("/{user}", "DeleteController");
+    Route::patch("/{user}", "UpdateController");
+});

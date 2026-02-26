@@ -37,6 +37,8 @@ class User extends Authenticatable implements HasMedia
         'phone',
         'fullname',
         'password',
+        'active',
+        'sudo',
         'avatar',
     ];
 

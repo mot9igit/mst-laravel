@@ -29,6 +29,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
     });
     Route::group(['namespace'=>'User', 'prefix' => 'users'], function() {
         Route::get("/", IndexController::class)->name("admin.user.index");
+        Route::get("/create", CreateController::class)->name("admin.user.create");
     });
     Route::group(['namespace'=>'Products', 'prefix' => 'products'], function() {
         Route::get("/", IndexController::class)->name("admin.product.index");

@@ -21,7 +21,7 @@
                 >
                     <template v-slot:button>
                         <div>
-                            <a href="/adm/products/categories/create" class="btn btn-primary"> Создать пользователя </a>
+                            <a href="/adm/users/create" class="btn btn-primary"> Создать пользователя </a>
                         </div>
                     </template>
                 </v-table>
@@ -56,7 +56,7 @@ export default {
             userTable:{
                 page: 1,
                 pagination_offset: 0,
-                pagination_items_per_page: 25,
+                pagination_items_per_page: 24,
                 filter: {},
                 filters: {
                     name: {
@@ -132,7 +132,7 @@ export default {
                         method: 'DELETE'
                     })
                         .then((response) => {
-                            this.usersTable.page = 1
+                            this.userTable.page = 1
                             this.getUsers({
                                 page: this.userTable.page,
                                 perpage: this.pagination_items_per_page
@@ -140,6 +140,7 @@ export default {
                         })
                         .catch(error => {
                             if (error.response.status === 404) {
+                                this.userTable.page = 1
                                 this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
                                 this.getUsers({
                                     page: this.userTable.page,

@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit()" :method="this.method">
+    <form @submit.prevent="submit()" :method="this.method" autocomplete="off">
         <div class="card-header">
             <div class="card-title" v-if="this.title">{{ this.title }}</div>
             <slot name="header"></slot>
@@ -11,9 +11,33 @@
                         <div v-for="(field, key) in grid.fields" class="mb-3">
                             <div class="" v-if="field.type == 'text'">
                                 <FloatLabel variant="on">
-                                    <InputText :name="key" :id="key" v-model="form[key]" />
-                                    <label for="username">{{ field.label }}</label>
+                                    <InputText :name="key" :id="key" v-model="form[key]" autocomplete="off"/>
+                                    <label :for="key">{{ field.label }}</label>
                                 </FloatLabel>
+                                <div v-if="field.description" class="form-text">
+                                    {{ field.description }}
+                                </div>
+                                <div v-if="errors[key]">
+                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                </div>
+                            </div>
+                            <div class="" v-if="field.type == 'password'">
+                                <FloatLabel variant="on">
+                                    <Password :name="key" :id="key" v-model="form[key]" autocomplete="new-password"/>
+                                    <label :for="key">{{ field.label }}</label>
+                                </FloatLabel>
+                                <div v-if="field.description" class="form-text">
+                                    {{ field.description }}
+                                </div>
+                                <div v-if="errors[key]">
+                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                </div>
+                            </div>
+                            <div class="" v-if="field.type == 'checkbox'">
+                                <div class="flex items-center">
+                                    <Checkbox v-model="form[key]" :inputId="key" :name="key" :id="key" binary/>
+                                    <label :for="key"> {{ field.label }} </label>
+                                </div>
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
@@ -47,7 +71,11 @@
         </div>
         <!--end::Body-->
         <div class="card-footer">
-            <button type="submit" class="btn btn-success">{{ submit_text? submit_text : 'Отправить' }}</button>
+            <button class="btn btn-primary" type="button" disabled v-if="loading">
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span role="status">Загрузка...</span>
+            </button>
+            <button type="submit" class="btn btn-success" v-else>{{ submit_text? submit_text : 'Отправить' }}</button>
         </div>
     </form>
 </template>
@@ -55,14 +83,19 @@
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import Textarea from 'primevue/textarea';
+import Checkbox from "primevue/checkbox";
+import Password from 'primevue/password';
 import { VueEditor, Quill } from "vue2-editor";
+
 
 export default {
     name: "vForm",
     components: {
         FloatLabel,
         InputText,
-        VueEditor
+        VueEditor,
+        Checkbox,
+        Password
     },
     props: {
         // данные формы, включая layout по дефолтной сетке (x24grid)
@@ -95,6 +128,7 @@ export default {
     },
     data() {
         return {
+            loading: false,
             content: "",
             form: {},
             errors: {}
@@ -105,6 +139,7 @@ export default {
     },
     methods: {
         submit(){
+            this.loading = true
             axios.post(this.form_url, this.form)
                 .then(res => {
                     if(this.redirect_url){
@@ -113,6 +148,7 @@ export default {
                 })
                 .catch((error) => {
                     this.errors = error.response?.data?.errors
+                    this.loading = false
                 });
         }
     }
@@ -128,5 +164,14 @@ export default {
     }
     .ql-editor{
         background: #fff;
+    }
+    .p-checkbox + label{
+        margin-left: 10px;
+    }
+    .flex{
+        display: flex;
+    }
+    .items-center{
+        align-items: center;
     }
 </style>

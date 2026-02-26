@@ -259,10 +259,14 @@ app.use(mdiVue, {
 import ExampleComponent from './components/ExampleComponent.vue';
 import SignInPage from './pages/sign-in/index.vue';
 import ProfileFormComponent from './components/admin/profile/form.vue';
+import ShowUserComponent from './components/admin/user/ShowComponent.vue';
+import CreateUserComponent from './components/admin/user/CreateComponent.vue';
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
 app.component("profile-form-component", ProfileFormComponent);
+app.component("show-user-component", ShowUserComponent);
+app.component("create-user-component", CreateUserComponent);
 
 /**
  * The following block of code may be used to automatically register your

@@ -138,9 +138,6 @@ export default {
 </script>
 
 <style lang="scss">
-    .p-floatlabel > input{
-        width: 100%;
-    }
     .profile_avatar{
         display: block;
         max-width: 120px;
