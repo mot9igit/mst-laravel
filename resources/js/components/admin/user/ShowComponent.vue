@@ -18,6 +18,7 @@
                     @sort="filter"
                     @paginate="paginate"
                     @deleteElem="deleteElem"
+                    @editElem="editElem"
                 >
                     <template v-slot:button>
                         <div>
@@ -88,8 +89,8 @@ export default {
                         sort: false,
                         available: {
                             edit: {
-                                icon: 'bi bi-eye',
-                                label: 'Подробнее'
+                                icon: 'bi bi-pencil',
+                                label: 'Редактировать'
                             },
                             delete: {
                                 icon: 'bi bi-trash',
@@ -111,6 +112,9 @@ export default {
         paginate (data) {
             this.userTable.page = data.page
             this.getUsers(data)
+        },
+        editElem(data){
+            window.location.href = '/adm/users/' + data.id
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение

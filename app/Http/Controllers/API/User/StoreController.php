@@ -10,7 +10,8 @@ class StoreController extends BaseController
      */
     public function __invoke(StoreRequest $request)
     {
-        $response = $this->service->store($request);
+        $validated = $request->validated();
+        $response = $this->service->store($validated);
         return $response;
     }
 }

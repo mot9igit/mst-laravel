@@ -82,7 +82,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProfile'
+            'getProfile',
+            'getUser'
         ]),
         store(){
             this.loading = true
@@ -129,7 +130,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'profile'
+            'profile',
+            'userData'
         ])
     },
     watch: {

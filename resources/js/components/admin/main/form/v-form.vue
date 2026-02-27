@@ -105,6 +105,18 @@ export default {
                 return [];
             },
         },
+        // значения формы
+        form_values: {
+            type: Object,
+            default: () => {
+                return {};
+            },
+        },
+        // заголовок формы
+        mode: {
+            type: String,
+            default: "create",
+        },
         // заголовок формы
         title: {
             type: String,
@@ -136,20 +148,36 @@ export default {
     },
     mounted(){
         console.log(this.form_data)
+        this.form = this.form_values
     },
     methods: {
         submit(){
             this.loading = true
-            axios.post(this.form_url, this.form)
-                .then(res => {
-                    if(this.redirect_url){
-                        window.location.href = this.redirect_url;
-                    }
-                })
-                .catch((error) => {
-                    this.errors = error.response?.data?.errors
-                    this.loading = false
-                });
+            if(this.mode == 'create'){
+                axios.post(this.form_url, this.form)
+                    .then(res => {
+                        if(this.redirect_url){
+                            window.location.href = this.redirect_url;
+                        }
+                    })
+                    .catch((error) => {
+                        this.errors = error.response?.data?.errors
+                        this.loading = false
+                    });
+            }
+            if(this.mode == 'update'){
+                axios.patch(this.form_url, this.form)
+                    .then(res => {
+                        if(this.redirect_url){
+                            window.location.href = this.redirect_url;
+                        }
+                    })
+                    .catch((error) => {
+                        this.errors = error.response?.data?.errors
+                        this.loading = false
+                    });
+            }
+
         }
     }
 }

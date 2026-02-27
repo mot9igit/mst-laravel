@@ -3,7 +3,8 @@ import Axios from 'axios'
 export default {
     state: {
         profile: [],
-        users: []
+        users: [],
+        user: {}
     },
     actions: {
         getUsers ({ commit }, {filter, filtersdata, page, sort, perpage}) {
@@ -39,11 +40,27 @@ export default {
                         // TODO: to auth page
                     }
                 })
+        },
+        getUser ({ commit }, {userid}) {
+            return Axios(`/api/profile/${userid}`, {
+                method: 'GET'
+            })
+                .then((response) => {
+                    commit('SET_USER', response.data)
+                })
+                .catch(error => {
+                    if (error.response.status === 403) {
+                        // TODO: to auth page
+                    }
+                })
         }
     },
     mutations: {
         SET_PROFILE: (state, data) => {
             state.profile = data
+        },
+        SET_USER: (state, data) => {
+            state.user = data
         },
         SET_USERS: (state, data) => {
             state.users = data
@@ -55,6 +72,9 @@ export default {
         },
         users (state) {
             return state.users
+        },
+        userData (state) {
+            return state.user
         }
     }
 }

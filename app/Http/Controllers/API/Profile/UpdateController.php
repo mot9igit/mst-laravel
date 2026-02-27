@@ -27,8 +27,6 @@ class UpdateController extends BaseController
             }catch (FileIsTooBig $exception){
                 response()->json(["message" => "error", "data" => $exception]);
             }
-        }else{
-            dd($data);
         }
         unset($data["image"]);
         $response = $this->service->update($data);
