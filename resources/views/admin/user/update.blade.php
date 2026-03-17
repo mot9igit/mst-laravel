@@ -17,4 +17,7 @@
     <div class="card card-primary card-outline mb-4">
         <create-user-component userid="{{ $user->id }}"></create-user-component>
     </div>
+    <div class="card card-primary card-outline mb-4">
+        <update-password-user-component userid="{{ $user->id }}"></update-password-user-component>
+    </div>
 @endsection

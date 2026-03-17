@@ -3,21 +3,15 @@
 namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\User\IndexRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class IndexController extends BaseController
 {
-    public function __invoke(Request $request)
+    public function __invoke(IndexRequest $request)
     {
-        $perpage = $request->input("perpage") ? : 12;
-        $filter = $request->input("filter") ? : '';
-        if($filter){
-            $users = User::where('name', 'like', '%'.$filter.'%')->where('email', 'like', '%'.$filter.'%')->paginate($perpage);
-        }else{
-            $users = User::paginate($perpage);
-        }
-        return $users;
-
+        $validated = $request->validated();
+        return $this->service->get($validated);
     }
 }

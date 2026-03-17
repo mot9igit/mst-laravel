@@ -1,11 +1,11 @@
 <template>
     <div>
         <vForm
-            title="Редактирование пользователя"
-            submit_text="Редактирование пользователя"
+            :title="this.headerForm"
+            :submit_text="this.submitText"
             method="post"
-            mode="update"
-            :form_url="'/api/users/' + userid"
+            :mode="this.mode"
+            :form_url="this.formUrl"
             redirect_url="/adm/users/"
             :form_data="this.formData"
             :form_values="this.form"
@@ -31,66 +31,7 @@ export default {
     },
     data() {
         return {
-            form: {
-
-            },
-            // 1 уровень - строка, 2 уровень сетка, 3 уровень - поле
-            formData: [{
-                grids: [{
-                    class: "d-col-md-24",
-                    fields: {
-                        name: {
-                            type: 'text',
-                            value: '',
-                            label: "Логин"
-                        },
-                        email: {
-                            type: 'text',
-                            value: '',
-                            label: "E-mail"
-                        },
-                        password: {
-                            type: 'password',
-                            value: '',
-                            label: "Пароль"
-                        },
-                        confirm_password: {
-                            type: 'password',
-                            value: '',
-                            label: "Повторите пароль"
-                        },
-                        fullname: {
-                            type: 'text',
-                            value: '',
-                            label: "Ф. И. О."
-                        },
-                        phone: {
-                            type: 'text',
-                            value: '',
-                            label: "Телефон"
-                        },
-                        active: {
-                            type: 'checkbox',
-                            value: '',
-                            label: "Активный"
-                        },
-                        sudo: {
-                            type: 'checkbox',
-                            value: '',
-                            label: "Доступ в панель администратора"
-                        }
-                    }
-                },{
-                    class: "d-col-md-24",
-                    fields: {
-                        description: {
-                            type: 'textarea',
-                            value: '',
-                            label: "Описание"
-                        }
-                    }
-                }]
-            }]
+            form: {},
         }
     },
     mounted(){
@@ -116,7 +57,142 @@ export default {
     computed: {
         ...mapGetters([
             'userData'
-        ])
+        ]),
+        formUrl(){
+            if (Number(this.userid) > 0) {
+                return '/api/users/' + this.userid;
+            } else {
+                return '/api/users/';
+            }
+        },
+        headerForm() {
+            if (Number(this.userid) > 0) {
+                return 'Редактировать пользователя';
+            } else {
+                return 'Создать пользователя';
+            }
+        },
+        submitText(){
+            if(Number(this.userid) > 0){
+                return 'Редактировать';
+            }else{
+                return 'Создать';
+            }
+        },
+        mode(){
+            if(Number(this.userid) > 0){
+                return 'update';
+            }else{
+                return 'create';
+            }
+        },
+        formData(){
+            if(Number(this.userid) > 0){
+                return [{
+                    grids: [{
+                        class: "d-col-md-24",
+                        fields: {
+                            name: {
+                                type: 'text',
+                                value: '',
+                                label: "Логин"
+                            },
+                            email: {
+                                type: 'text',
+                                value: '',
+                                label: "E-mail"
+                            },
+                            fullname: {
+                                type: 'text',
+                                value: '',
+                                label: "Ф. И. О."
+                            },
+                            phone: {
+                                type: 'text',
+                                value: '',
+                                label: "Телефон"
+                            },
+                            active: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Активный"
+                            },
+                            sudo: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Доступ в панель администратора"
+                            }
+                        }
+                    },{
+                        class: "d-col-md-24",
+                        fields: {
+                            description: {
+                                type: 'textarea',
+                                value: '',
+                                label: "Описание"
+                            }
+                        }
+                    }]
+                }];
+            }else{
+                return [{
+                    grids: [{
+                        class: "d-col-md-24",
+                        fields: {
+                            name: {
+                                type: 'text',
+                                value: '',
+                                label: "Логин"
+                            },
+                            email: {
+                                type: 'text',
+                                value: '',
+                                label: "E-mail"
+                            },
+                            password: {
+                                type: 'password',
+                                value: '',
+                                label: "Пароль"
+                            },
+                            confirm_password: {
+                                type: 'password',
+                                value: '',
+                                label: "Повторите пароль"
+                            },
+                            fullname: {
+                                type: 'text',
+                                value: '',
+                                label: "Ф. И. О."
+                            },
+                            phone: {
+                                type: 'text',
+                                value: '',
+                                label: "Телефон"
+                            },
+                            active: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Активный"
+                            },
+                            sudo: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Доступ в панель администратора"
+                            }
+                        }
+                    },{
+                        class: "d-col-md-24",
+                        fields: {
+                            description: {
+                                type: 'textarea',
+                                value: '',
+                                label: "Описание"
+                            }
+                        }
+                    }]
+                }];
+            }
+        }
     }
 }
 </script>

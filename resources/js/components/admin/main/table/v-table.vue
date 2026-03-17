@@ -534,11 +534,11 @@ export default {
         color: #ff0000;
     }
     &::after {
-        content: "\e923";
+        content: "🠕🠗";
+        white-space: nowrap;
         display: inline-block;
-        font-family: "icomoon" !important;
         font-size: 14px;
-        color: #fff !important;
+        color: #333 !important;
         position: absolute;
         right: 0;
         top: 50%;
@@ -552,7 +552,7 @@ export default {
             content: "🠕";
             display: inline-block;
             font-family: sans-serif;
-            color: #fff !important;
+            color: #333;
         }
     }
     &_desc {
@@ -561,7 +561,7 @@ export default {
             content: "🠗";
             display: inline-block;
             font-family: sans-serif;
-            color: #282828;
+            color: #333;
         }
     }
 }

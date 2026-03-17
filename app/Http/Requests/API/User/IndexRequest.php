@@ -4,7 +4,7 @@ namespace App\Http\Requests\API\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,15 +21,10 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user');
-
         return [
-            'name' => 'required|string|max:255|unique:users,name,' . $userId,
-            'fullname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
-            'phone' => 'required|string|max:255',
-            'active' => 'nullable|boolean',
-            'sudo' => 'nullable|boolean',
+            'perpage' => 'nullable|int',
+            'sort' => 'nullable|array',
+            'filter' => 'nullable|string|max:255'
         ];
     }
 }

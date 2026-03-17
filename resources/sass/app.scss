@@ -412,7 +412,7 @@ button {
 }
 
 // styles from components
-body {
+body:not(.layout-fixed) {
     overflow: hidden;
     button {
         color: inherit;

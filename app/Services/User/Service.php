@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,8 +24,8 @@ class Service
         $this->user_id = Auth::id();
     }
 
-    public function get(){
-
+    public function get(array $data): LengthAwarePaginator{
+        return $this->userRepository->get($data);
     }
 
     /**
@@ -49,10 +50,18 @@ class Service
      * @return \Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\UserException
      */
-    public function update($id, $validated){
+    public function update(int $id, array $validated){
         $user = $this->userRepository->update($id, $validated);
         return response()->json([
             'message' => 'Пользователь успешно обновлен',
+            'user' => $user
+        ], 201);
+    }
+
+    public function updatePassword(int $id, array $validated){
+        $user = $this->userRepository->updatePassword($id, $validated);
+        return response()->json([
+            'message' => 'Пароль успешно обновлен',
             'user' => $user
         ], 201);
     }

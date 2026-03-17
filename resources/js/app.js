@@ -261,12 +261,14 @@ import SignInPage from './pages/sign-in/index.vue';
 import ProfileFormComponent from './components/admin/profile/form.vue';
 import ShowUserComponent from './components/admin/user/ShowComponent.vue';
 import CreateUserComponent from './components/admin/user/CreateComponent.vue';
+import UpdatePasswordComponent from "@/components/admin/user/UpdatePasswordComponent.vue";
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
 app.component("profile-form-component", ProfileFormComponent);
 app.component("show-user-component", ShowUserComponent);
 app.component("create-user-component", CreateUserComponent);
+app.component("update-password-user-component", UpdatePasswordComponent);
 
 /**
  * The following block of code may be used to automatically register your

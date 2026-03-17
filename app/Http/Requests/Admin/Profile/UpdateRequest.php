@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Profile;
 
+use App\DTOs\UserDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -28,6 +29,10 @@ class UpdateRequest extends FormRequest
             'email' => 'required|string',
             'phone' => 'nullable|string',
         ];
+    }
 
+    public function toDTO(): UserDTO
+    {
+        return UserDTO::fromArray($this->validated());
     }
 }

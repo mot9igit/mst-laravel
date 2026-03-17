@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             "sudo" => 1,
             "email" => "artpetropavlovskij@gmail.com",
             "phone" => "+79991158355",
-            "password" => Hash::make('05061992')
+            "password" => '05061992'
         ]);
     }
 }

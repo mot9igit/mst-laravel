@@ -78,6 +78,7 @@ export default {
                     email: {
                         label: 'E-mail',
                         type: 'text',
+                        sort: true,
                     },
                     phone: {
                         label: 'Телефон',
