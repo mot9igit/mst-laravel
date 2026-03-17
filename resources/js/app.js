@@ -261,7 +261,7 @@ import SignInPage from './pages/sign-in/index.vue';
 import ProfileFormComponent from './components/admin/profile/form.vue';
 import ShowUserComponent from './components/admin/user/ShowComponent.vue';
 import CreateUserComponent from './components/admin/user/CreateComponent.vue';
-import UpdatePasswordComponent from "@/components/admin/user/UpdatePasswordComponent.vue";
+import UpdatePasswordComponent from "./components/admin/user/UpdatePasswordComponent.vue";
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
