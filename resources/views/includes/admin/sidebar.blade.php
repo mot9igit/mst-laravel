@@ -97,7 +97,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.integration.organization.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-building"></i>
                                 <p>
                                     Организации <span class="nav-badge badge text-bg-secondary me-3">0</span>

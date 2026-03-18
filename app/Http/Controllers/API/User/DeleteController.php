@@ -2,23 +2,10 @@
 
 namespace App\Http\Controllers\API\User;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-
 class DeleteController extends BaseController
 {
-    public function __invoke(User $user)
+    public function __invoke(int $user_id)
     {
-        DB::beginTransaction();
-        try{
-            $response = $user->delete();
-            DB::commit();
-        }catch(\Exception $e){
-            DB::rollback();
-            $response = $e->getMessage();
-        }
-        return $response;
+        return $this->service->delete($user_id);
     }
-
 }

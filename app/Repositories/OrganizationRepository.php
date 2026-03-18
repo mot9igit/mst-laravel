@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Exceptions\UserException;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,10 +12,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
-class UserRepository
+class OrganizationRepository
 {
     /**
-     * Берем таблицу пользователей
+     * Берем таблицу Организаций
      *
      * @param array $data
      * @return LengthAwarePaginator
@@ -33,35 +34,34 @@ class UserRepository
             }
         }
 
-        $allowedSorts = ['id', 'name', 'email', 'created_at', 'updated_at'];
+        $allowedSorts = ['id', 'name', 'created_at', 'updated_at'];
         if (!in_array($sortBy, $allowedSorts)) {
             $sortBy = 'id';
         }
 
         if($filter != ''){
-            $users = User::where('name', 'like', '%'.$filter.'%')
-                ->orWhere('email', 'like', '%'.$filter.'%')
+            $organizations = Organization::where('name', 'like', '%'.$filter.'%')
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{
-            $users = User::orderBy($sortBy, $sortDir)
+            $organizations = Organization::orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }
 
-        return $users;
+        return $organizations;
     }
 
     /**
-     * Удаление Пользователя
+     * Удаление Организации
      *
-     * @param int $user_id
+     * @param int $organization_id
      * @return string
      */
-    public function delete(int $user_id){
-        $user = User::findOrFail($user_id);
+    public function delete(int $organization_id){
+        $organization = Organization::findOrFail($organization_id);
         DB::beginTransaction();
         try{
-            $response = $user->delete();
+            $response = $organization->delete();
             DB::commit();
         }catch(\Exception $e){
             DB::rollback();

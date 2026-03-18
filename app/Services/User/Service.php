@@ -29,6 +29,16 @@ class Service
     }
 
     /**
+     * Удаление Пользователя
+     *
+     * @param int $user_id
+     * @return int
+     */
+    public function delete(int $user_id): int{
+        return $this->userRepository->delete($user_id);
+    }
+
+    /**
      * Создание пользователя
      *
      * @param $validated

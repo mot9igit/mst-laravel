@@ -17,7 +17,11 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return response()->json(['success' => true, 'message' => 'Авторизация успешна'], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Авторизация успешна',
+                'redirect' => redirect()->intended('/profile')->getTargetUrl()
+            ], 200);
         }
 
         return response()->json(['success' => false, 'message' => 'Неверные данные'], 401);

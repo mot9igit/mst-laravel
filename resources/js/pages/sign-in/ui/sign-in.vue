@@ -253,7 +253,7 @@ export default {
                                 detail: 'Сейчас вы будете переадресованы на страницу Профиля',
                                 life: 3000,
                             })
-                            window.location.href = '/profile'
+                            window.location.href = data.data.redirect
                         }
                     }
                 },
