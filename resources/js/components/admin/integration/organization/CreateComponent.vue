@@ -38,25 +38,25 @@ export default {
         const reqData = {
             orgid: this.orgid
         }
-        this.getUser(reqData).then(() => {
-            this.form.name = this.userData.name;
-            this.form.email = this.userData.email;
-            this.form.fullname = this.userData.fullname;
-            this.form.image = this.userData.image;
-            this.form.avatar = this.userData.avatar;
-            this.form.phone = this.userData.phone;
-            this.form.active = Boolean(this.userData.active);
-            this.form.sudo = Boolean(this.userData.sudo);
-        })
+        // this.getUser(reqData).then(() => {
+        //     this.form.name = this.userData.name;
+        //     this.form.email = this.userData.email;
+        //     this.form.fullname = this.userData.fullname;
+        //     this.form.image = this.userData.image;
+        //     this.form.avatar = this.userData.avatar;
+        //     this.form.phone = this.userData.phone;
+        //     this.form.active = Boolean(this.userData.active);
+        //     this.form.sudo = Boolean(this.userData.sudo);
+        // })
     },
     methods: {
         ...mapActions([
-            'getUser'
+            // 'getUser'
         ])
     },
     computed: {
         ...mapGetters([
-            'userData'
+            // 'userData'
         ]),
         formUrl(){
             if (Number(this.userid) > 0) {
@@ -91,15 +91,59 @@ export default {
                 grids: [{
                     class: "d-col-md-24",
                     fields: {
-                        name: {
-                            type: 'text',
+                        nameHelper: {
+                            type: 'autocomplete',
                             value: '',
-                            label: "Наименование"
+                            label: "Введите ИНН",
+                            searchType: "inn",
+                            description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся"
+                        },
+                        name: {
+                            type: 'hidden',
+                            value: ''
+                        },
+                        image: {
+                            type: 'image',
+                            value: '',
+                            label: "Изображение"
                         },
                         description: {
                             type: 'textarea',
                             value: '',
                             label: "Описание"
+                        }
+                    }
+                },{
+                    class: "d-col-md-24",
+                    fields: {
+                        header: {
+                            type: 'header',
+                            label: "Реквизиты"
+                        },
+                        inn: {
+                            type: 'text',
+                            value: '',
+                            label: "ИНН"
+                        },
+                        ogrn: {
+                            type: 'text',
+                            value: '',
+                            label: "ОГРН"
+                        },
+                        kpp: {
+                            type: 'text',
+                            value: '',
+                            label: "КПП"
+                        },
+                        ur_address: {
+                            type: 'text',
+                            value: '',
+                            label: "Юридический адрес"
+                        },
+                        fact_address: {
+                            type: 'text',
+                            value: '',
+                            label: "Фактический адрес"
                         }
                     }
                 }]

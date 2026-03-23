@@ -14,6 +14,10 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{user}', 'ShowController' );
     });
 
+    Route::group(["namespace" => "App\Http\Controllers\API\Integration\Dadata", "prefix" => "suggestions", "middleware" => []], function (): void {
+        Route::get("/company", "GetCompanyByInnController");
+    });
+
     Route::group(["namespace" => "App\Http\Controllers\API\User", "prefix" => "users", "middleware" => []], function(){
         Route::get("/", "IndexController");
         Route::post('/', 'StoreController' );

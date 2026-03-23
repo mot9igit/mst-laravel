@@ -9,6 +9,24 @@
                 <div class="row" v-for="row in form_data">
                     <div v-for="grid in row.grids" :class="grid.class? grid.class : 'd-col-24'">
                         <div v-for="(field, key) in grid.fields" class="mb-3">
+                            <div class="" v-if="field.type == 'header'">
+                                <h3>{{ field.label }}</h3>
+                            </div>
+                            <div class="" v-if="field.type == 'hidden'">
+                                <input name="key" v-model="form[key]" type="hidden">
+                            </div>
+                            <div class="" v-if="field.type == 'autocomplete'">
+                                <FloatLabel variant="on">
+                                    <AutoComplete :name="key" :id="key" v-model="form[key]" optionLabel="value" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="autocompleteSelect" autocomplete="off"/>
+                                    <label :for="key">{{ field.label }}</label>
+                                </FloatLabel>
+                                <div v-if="field.description" class="form-text">
+                                    {{ field.description }}
+                                </div>
+                                <div v-if="errors[key]">
+                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                </div>
+                            </div>
                             <div class="" v-if="field.type == 'text'">
                                 <FloatLabel variant="on">
                                     <InputText :name="key" :id="key" v-model="form[key]" autocomplete="off"/>
@@ -82,6 +100,7 @@
 <script>
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
+import AutoComplete from "primevue/autocomplete";
 import Textarea from 'primevue/textarea';
 import Checkbox from "primevue/checkbox";
 import Password from 'primevue/password';
@@ -95,6 +114,7 @@ export default {
         InputText,
         VueEditor,
         Checkbox,
+        AutoComplete,
         Password
     },
     props: {
@@ -143,7 +163,8 @@ export default {
             loading: false,
             content: "",
             form: {},
-            errors: {}
+            errors: {},
+            items: {}
         }
     },
     mounted(){
@@ -151,6 +172,31 @@ export default {
         this.form = this.form_values
     },
     methods: {
+        autocompleteSelect(event){
+            this.form.inn = event?.value?.data?.inn
+            if(event?.value?.value){
+                this.form.name = event?.value?.value
+            }
+            if(event?.value?.data?.kpp){
+                this.form.kpp = event?.value?.data?.kpp
+            }
+            if(event?.value?.data?.ogrn) {
+                this.form.ogrn = event?.value?.data?.ogrn
+            }
+        },
+        search(event, value, key){
+            if(event.query){
+                if(value.searchType === 'inn'){
+                    axios.get('/api/suggestions/company', { params: { inn: event.query}})
+                        .then(res => {
+                            this.items[key] = res.data
+                        })
+                        .catch((error) => {
+                            this.errors = error.response?.data?.errors
+                        });
+                }
+            }
+        },
         submit(){
             this.loading = true
             if(this.mode == 'create'){
