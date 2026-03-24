@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Requisite extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         "name",
@@ -22,7 +23,7 @@ class Requisite extends Model
     ];
 
     public function organizations(): BelongsToMany{
-        return $this->belongsToMany(Organization::class);
+        return $this->belongsToMany(Organization::class, "organization_requisites");
     }
 
     public function bankRequisites(): hasMany {

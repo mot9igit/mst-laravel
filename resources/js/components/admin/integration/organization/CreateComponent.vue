@@ -59,28 +59,28 @@ export default {
             // 'userData'
         ]),
         formUrl(){
-            if (Number(this.userid) > 0) {
+            if (Number(this.orgid) > 0) {
                 return '/api/integration/organization/' + this.orgid;
             } else {
                 return '/api/integration/organization/';
             }
         },
         headerForm() {
-            if (Number(this.userid) > 0) {
+            if (Number(this.orgid) > 0) {
                 return 'Редактировать организацию';
             } else {
                 return 'Создать организацию';
             }
         },
         submitText(){
-            if(Number(this.userid) > 0){
+            if(Number(this.orgid) > 0){
                 return 'Редактировать';
             }else{
                 return 'Создать';
             }
         },
         mode(){
-            if(Number(this.userid) > 0){
+            if(Number(this.orgid) > 0){
                 return 'update';
             }else{
                 return 'create';
@@ -96,7 +96,7 @@ export default {
                             value: '',
                             label: "Введите ИНН",
                             searchType: "inn",
-                            description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся"
+                            description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся автоматически"
                         },
                         name: {
                             type: 'hidden',
@@ -111,6 +111,16 @@ export default {
                             type: 'textarea',
                             value: '',
                             label: "Описание"
+                        },
+                        active: {
+                            type: 'checkbox',
+                            value: '',
+                            label: "Активна"
+                        },
+                        verified: {
+                            type: 'checkbox',
+                            value: '',
+                            label: "Верифицирована"
                         }
                     }
                 },{
@@ -136,14 +146,16 @@ export default {
                             label: "КПП"
                         },
                         ur_address: {
-                            type: 'text',
+                            type: 'autocomplete',
                             value: '',
-                            label: "Юридический адрес"
+                            label: "Юридический адрес",
+                            searchType: "address",
                         },
                         fact_address: {
-                            type: 'text',
+                            type: 'autocomplete',
                             value: '',
-                            label: "Фактический адрес"
+                            label: "Фактический адрес",
+                            searchType: "address",
                         }
                     }
                 }]

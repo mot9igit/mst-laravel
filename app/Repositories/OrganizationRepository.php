@@ -71,31 +71,36 @@ class OrganizationRepository
     }
 
     /**
-     * Создание пользователя в БД
+     * Создание организации в БД
      *
      * @param array $validated
-     * @return mixed
+     * @return Organization
      * @throws UserException
      */
-    public function create(array $validated){
+    public function create(array $validated): Organization
+    {
         DB::beginTransaction();
         try {
-            $user = User::create([
+            $createdata = [
                 'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'fullname' => $validated['fullname'],
+                'description' => $validated['description'],
                 'active' => $validated['active'],
-                'sudo' => $validated['sudo'],
-                'password' => $validated['password']
-            ]);
+                'verified' => $validated['verified']
+            ];
+            if(isset($validated['image'])){
+                $createdata['image'] = $validated['image'];
+            }
+            $organization = Organization::create($createdata);
             DB::commit();
-            return $user;
+            return $organization;
         }catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Ошибка создания пользователя: ' . $e->getMessage());
-            throw new UserException("Ошибка создания пользователя: {$e->getMessage()}", 500, $e->errors);
+            Log::error('Ошибка создания организации: ' . $e->getMessage());
         }
+    }
+
+    public function createRequisite(array $validated){
+
     }
 
     public function updatePassword(int $id, array $validated){

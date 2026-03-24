@@ -4,7 +4,9 @@
 namespace App\Services\Organization;
 
 use App\Repositories\OrganizationRepository;
+use App\Repositories\RequisiteRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +17,7 @@ class Service
 {
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
+        private readonly RequisiteRepository $requisiteRepository,
     )
     {}
 
@@ -38,16 +41,18 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
      */
-//    public function store($validated)
-//    {
-//        $user = $this->userRepository->create($validated);
-//        return response()->json([
-//            'message' => 'Пользователь успешно создан',
-//            'user' => $user
-//        ], 201);
-//    }
+    public function store(array $validated): JsonResponse
+    {
+
+        $organization = $this->organizationRepository->create($validated);
+        $requisite = $this->requisiteRepository->create($validated);
+        $organization->requisites()->attach([$requisite->id]);
+        return response()->json([
+            'message' => 'Организация успешно создана',
+            'organization' => $organization
+        ], 201);
+    }
 
     /**
      * Обновление пользователя

@@ -1,5 +1,6 @@
 <template>
     <form @submit.prevent="submit()" :method="this.method" autocomplete="off">
+        <Toast />
         <div class="card-header">
             <div class="card-title" v-if="this.title">{{ this.title }}</div>
             <slot name="header"></slot>
@@ -17,13 +18,13 @@
                             </div>
                             <div class="" v-if="field.type == 'autocomplete'">
                                 <FloatLabel variant="on">
-                                    <AutoComplete :name="key" :id="key" v-model="form[key]" optionLabel="value" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="autocompleteSelect" autocomplete="off"/>
+                                    <AutoComplete :name="key" :id="key" v-model="form[key]" optionLabel="value" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" autocomplete="off"/>
                                     <label :for="key">{{ field.label }}</label>
                                 </FloatLabel>
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
-                                <div v-if="errors[key]">
+                                <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                 </div>
                             </div>
@@ -35,7 +36,7 @@
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
-                                <div v-if="errors[key]">
+                                <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                 </div>
                             </div>
@@ -47,7 +48,7 @@
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
-                                <div v-if="errors[key]">
+                                <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                 </div>
                             </div>
@@ -59,7 +60,7 @@
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
-                                <div v-if="errors[key]">
+                                <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                 </div>
                             </div>
@@ -71,17 +72,17 @@
                                 <div v-if="field.description" class="form-text">
                                     {{ field.description }}
                                 </div>
-                                <div v-if="errors[key]">
+                                <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                 </div>
                             </div>
-                            <div class="" v-if="field.type == 'richtext'">
-                                <label :for="key" class="form-label">{{ field.label }}</label>
-                                <QuillEditor theme="snow" toolbar="full"/>
-                                <div v-if="errors[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                            </div>
+<!--                            <div class="" v-if="field.type == 'richtext'">-->
+<!--                                <label :for="key" class="form-label">{{ field.label }}</label>-->
+<!--                                <QuillEditor theme="snow" toolbar="full"/>-->
+<!--                                <div v-if="errors?.[key]">-->
+<!--                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -98,13 +99,14 @@
     </form>
 </template>
 <script>
+import Toast from 'primevue/toast';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
 import AutoComplete from "primevue/autocomplete";
 import Textarea from 'primevue/textarea';
 import Checkbox from "primevue/checkbox";
 import Password from 'primevue/password';
-import { VueEditor, Quill } from "vue2-editor";
+// import { VueEditor, Quill } from "vue2-editor";
 
 
 export default {
@@ -112,10 +114,11 @@ export default {
     components: {
         FloatLabel,
         InputText,
-        VueEditor,
+        Textarea,
         Checkbox,
         AutoComplete,
-        Password
+        Password,
+        Toast
     },
     props: {
         // данные формы, включая layout по дефолтной сетке (x24grid)
@@ -131,6 +134,11 @@ export default {
             default: () => {
                 return {};
             },
+        },
+        // заголовок формы
+        method: {
+            type: String,
+            default: "POST",
         },
         // заголовок формы
         mode: {
@@ -168,26 +176,39 @@ export default {
         }
     },
     mounted(){
-        console.log(this.form_data)
         this.form = this.form_values
     },
     methods: {
-        autocompleteSelect(event){
-            this.form.inn = event?.value?.data?.inn
-            if(event?.value?.value){
-                this.form.name = event?.value?.value
+        autocompleteSelect(event, value, key){
+            if(value.searchType === 'inn') {
+                this.form.inn = event?.value?.data?.inn
+                if (event?.value?.value) {
+                    this.form.name = event?.value?.value
+                }
+                if (event?.value?.data?.kpp) {
+                    this.form.kpp = event?.value?.data?.kpp
+                }
+                if (event?.value?.data?.ogrn) {
+                    this.form.ogrn = event?.value?.data?.ogrn
+                }
             }
-            if(event?.value?.data?.kpp){
-                this.form.kpp = event?.value?.data?.kpp
-            }
-            if(event?.value?.data?.ogrn) {
-                this.form.ogrn = event?.value?.data?.ogrn
+            if(value.searchType === 'address') {
+                // console.log(event)
             }
         },
         search(event, value, key){
             if(event.query){
                 if(value.searchType === 'inn'){
                     axios.get('/api/suggestions/company', { params: { inn: event.query}})
+                        .then(res => {
+                            this.items[key] = res.data
+                        })
+                        .catch((error) => {
+                            this.errors = error.response?.data?.errors
+                        });
+                }
+                if(value.searchType === 'address'){
+                    axios.get('/api/suggestions/address', { params: { query: event.query}})
                         .then(res => {
                             this.items[key] = res.data
                         })
@@ -207,7 +228,8 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        this.errors = error.response?.data?.errors
+                        console.log(error.response)
+                        this.$toast.add({ severity: 'error', summary: "Ошибка!", detail: error.response?.data?.message, life: 5000 });
                         this.loading = false
                     });
             }
@@ -219,7 +241,8 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        this.errors = error.response?.data?.errors
+                        console.log(error)
+                        this.$toast.add({ severity: 'error', summary: "Ошибка!", detail: error.response?.data?.message, life: 5000 });
                         this.loading = false
                     });
             }

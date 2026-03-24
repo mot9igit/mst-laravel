@@ -16,6 +16,7 @@ Route::middleware(["web", "auth"])->group(function (): void {
 
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Dadata", "prefix" => "suggestions", "middleware" => []], function (): void {
         Route::get("/company", "GetCompanyByInnController");
+        Route::get("/address", "GetAddressController");
     });
 
     Route::group(["namespace" => "App\Http\Controllers\API\User", "prefix" => "users", "middleware" => []], function(){
@@ -28,7 +29,7 @@ Route::middleware(["web", "auth"])->group(function (): void {
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Organization", "prefix" => "integration/organization", "middleware" => []], function(){
         Route::get("/", "IndexController");
-        // Route::post('/', 'StoreController' );
+        Route::post('/', 'StoreController' );
         // Route::get('/{organization}', 'ShowController' );
         Route::delete("/{organization}", "DeleteController");
         // Route::patch("/{organization}", "UpdateController");
