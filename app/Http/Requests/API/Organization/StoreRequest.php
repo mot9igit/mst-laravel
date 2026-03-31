@@ -3,6 +3,8 @@
 namespace App\Http\Requests\API\Organization;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreRequest extends FormRequest
 {
@@ -23,9 +25,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'active' => 'required|boolean',
-            'verified' => 'required|boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'active' => 'sometimes|boolean',
+            'verified' => 'sometimes|boolean',
+            'files' => 'nullable|array',
             'description' => 'nullable|string',
             'inn' => 'required|string|unique:requisites,inn',
             'kpp' => 'nullable|string',
@@ -38,7 +40,21 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Заполните наименование Организации'
+            'name.required' => 'Пожалуйста, заполните ИНН и выберите Организацию из выпадающего списка',
+            'inn.required' => 'Заполните ИНН Организации',
+            'ogrn.required' => 'Заполните ОГРН Организации'
         ];
+    }
+
+    // Кастомный ответ при ошибке (для API)
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+                'message' => 'Ошибка валидации данных'
+            ], 422)
+        );
     }
 }

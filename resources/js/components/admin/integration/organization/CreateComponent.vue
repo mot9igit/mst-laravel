@@ -74,9 +74,9 @@ export default {
         },
         submitText(){
             if(Number(this.orgid) > 0){
-                return 'Редактировать';
+                return 'Редактировать организацию';
             }else{
-                return 'Создать';
+                return 'Создать организацию';
             }
         },
         mode(){
@@ -92,6 +92,7 @@ export default {
                     class: "d-col-md-24",
                     fields: {
                         nameHelper: {
+                            errorKey: 'name',
                             type: 'autocomplete',
                             value: '',
                             label: "Введите ИНН",

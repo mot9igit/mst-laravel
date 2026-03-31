@@ -5,8 +5,10 @@
                 <img v-if="cell_data.baseurl" :src="value[cell_key]" alt=""/>
                 <img v-if="!cell_data.baseurl" :src="value[cell_key]" alt=""/>
             </div>
+
             <div class="img_abs" v-else>
-                <img :src="site_url_prefix + 'assets/files/img/nopic.png'" alt=""/>
+
+                <img :src="'/images/no-photo.jpg'" alt=""/>
             </div>
         </div>
         <div class="cell_value" v-else-if="cell_data.type == 'editmode' && editMode">

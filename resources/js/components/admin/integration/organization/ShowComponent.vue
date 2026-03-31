@@ -71,6 +71,10 @@ export default {
                         label: "ID",
                         type: "text",
                     },
+                    thumb_url: {
+                        label: 'Изображение',
+                        type: 'image',
+                    },
                     name: {
                         label: 'Наименование',
                         type: 'text',
@@ -188,4 +192,9 @@ export default {
 </script>
 
 <style lang="scss">
+.img_abs img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 </style>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Files\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,6 +10,9 @@ Route::get('/user', function (Request $request) {
 
 
 Route::middleware(["web", "auth"])->group(function (): void {
+
+    Route::post('/upload', UploadController::class)->middleware([]);
+
     Route::group(["namespace" => "App\Http\Controllers\API\Profile", "prefix" => "profile", "middleware" => []], function(){
         Route::post('/', 'UpdateController' );
         Route::get('/{user}', 'ShowController' );

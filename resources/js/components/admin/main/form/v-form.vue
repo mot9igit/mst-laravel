@@ -16,6 +16,20 @@
                             <div class="" v-if="field.type == 'hidden'">
                                 <input name="key" v-model="form[key]" type="hidden">
                             </div>
+                            <div v-if="field.type == 'image'">
+                                <label class="dart-simple-label" :for="'form_image_' + key">Изображение</label>
+                                <FileUpload :id="'form_image_' + key" name="image[]" url="/api/upload" :auto="true" @before-send="beforeFileSend($event)" @upload="onAdvancedUpload($event)" :multiple="false" accept="image/*" :maxFileSize="2097152">
+                                    <template #empty>
+                                        <span>Перенесите файл в эту область для загрузки.</span>
+                                    </template>
+                                </FileUpload>
+                                <div v-if="errors?.[key]">
+                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                </div>
+                                <div v-if="errors?.[field.errorKey]">
+                                    <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
+                                </div>
+                            </div>
                             <div class="" v-if="field.type == 'autocomplete'">
                                 <FloatLabel variant="on">
                                     <AutoComplete :name="key" :id="key" v-model="form[key]" optionLabel="value" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" autocomplete="off"/>
@@ -26,6 +40,9 @@
                                 </div>
                                 <div v-if="errors?.[key]">
                                     <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                </div>
+                                <div v-if="errors?.[field.errorKey]">
+                                    <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
                                 </div>
                             </div>
                             <div class="" v-if="field.type == 'text'">
@@ -106,6 +123,7 @@ import AutoComplete from "primevue/autocomplete";
 import Textarea from 'primevue/textarea';
 import Checkbox from "primevue/checkbox";
 import Password from 'primevue/password';
+import FileUpload from 'primevue/fileupload';
 // import { VueEditor, Quill } from "vue2-editor";
 
 
@@ -118,6 +136,7 @@ export default {
         Checkbox,
         AutoComplete,
         Password,
+        FileUpload,
         Toast
     },
     props: {
@@ -164,6 +183,11 @@ export default {
         redirect_url: {
             type: String,
             default: null,
+        },
+        // Папка для загрузки файлов
+        uploadPath: {
+            type: String,
+            default: 'tmp',
         }
     },
     data() {
@@ -218,8 +242,21 @@ export default {
                 }
             }
         },
+        beforeFileSend($event){
+            // console.log($event)
+            let xsrf = this.$cookies.get('XSRF-TOKEN');
+            $event.xhr.setRequestHeader('x-xsrf-token', xsrf);
+            $event.formData.append('path', this.uploadPath)
+            return $event;
+        },
+        onAdvancedUpload($event){
+            let response = JSON.parse($event.xhr.responseText)
+            // console.log(response)
+            this.form.files = response?.files
+        },
         submit(){
             this.loading = true
+            this.errors = {}
             if(this.mode == 'create'){
                 axios.post(this.form_url, this.form)
                     .then(res => {
@@ -229,6 +266,9 @@ export default {
                     })
                     .catch((error) => {
                         console.log(error.response)
+                        if(error.response?.data?.errors){
+                            this.errors = error.response?.data?.errors
+                        }
                         this.$toast.add({ severity: 'error', summary: "Ошибка!", detail: error.response?.data?.message, life: 5000 });
                         this.loading = false
                     });
@@ -253,6 +293,16 @@ export default {
 </script>
 
 <style lang="scss">
+    .dart-simple-label{
+        font-size: 18px;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .p-fileupload-file img{
+        max-width: 200px;
+        width: 100%;
+        border-radius: 5px;
+    }
     .ql-toolbar.ql-snow{
         border-radius: 6px 6px 0 0;
     }

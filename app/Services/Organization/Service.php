@@ -5,6 +5,8 @@ namespace App\Services\Organization;
 
 use App\Repositories\OrganizationRepository;
 use App\Repositories\RequisiteRepository;
+use App\Services\Tools\FileUploaderService;
+use App\Services\Tools\ThumbService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +20,8 @@ class Service
     public function __construct(
         private readonly OrganizationRepository $organizationRepository,
         private readonly RequisiteRepository $requisiteRepository,
+        private readonly FileUploaderService $fileUploaderService,
+        private readonly ThumbService $thumbService,
     )
     {}
 
@@ -44,10 +48,27 @@ class Service
      */
     public function store(array $validated): JsonResponse
     {
-
+        $image = null;
+        if($validated['files']){
+            if(is_array($validated['files'])){
+                $image = $validated['files'][0];
+            }else {
+                $image = $validated['files'];
+            }
+        }
+        unset($validated['files']);
         $organization = $this->organizationRepository->create($validated);
         $requisite = $this->requisiteRepository->create($validated);
         $organization->requisites()->attach([$requisite->id]);
+        if($image){
+            // картинка во временном хранилище -> перемещаем
+            $org_id = $organization->id;
+            $newpath = "organizations/{$org_id}/";
+            $path = $this->fileUploaderService->moveUploadFile($image, $newpath);
+            $organization->image = $path;
+            $organization->thumbnail = $this->thumbService->createQuadThumb($path, 200);
+            $organization->save();
+        }
         return response()->json([
             'message' => 'Организация успешно создана',
             'organization' => $organization

@@ -41,6 +41,7 @@ class OrganizationRepository
 
         if($filter != ''){
             $organizations = Organization::where('name', 'like', '%'.$filter.'%')
+                ->with()
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{
@@ -63,10 +64,11 @@ class OrganizationRepository
         try{
             $response = $organization->delete();
             DB::commit();
-        }catch(\Exception $e){
             DB::rollback();
+        }catch(\Exception $e){
             $response = $e->getMessage();
         }
+        $organization->forceDelete();
         return $response;
     }
 
@@ -82,13 +84,22 @@ class OrganizationRepository
         DB::beginTransaction();
         try {
             $createdata = [
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'active' => $validated['active'],
-                'verified' => $validated['verified']
+                'name' => $validated['name']
             ];
+            if(isset($validated['verified'])){
+                $createdata['verified'] = $validated['verified'];
+            }
+            if(isset($validated['active'])){
+                $createdata['active'] = $validated['active'];
+            }
+            if(isset($validated['description'])){
+                $createdata['description'] = $validated['description'];
+            }
             if(isset($validated['image'])){
                 $createdata['image'] = $validated['image'];
+            }
+            if(isset($validated['thumbnail'])){
+                $createdata['thumbnail'] = $validated['thumbnail'];
             }
             $organization = Organization::create($createdata);
             DB::commit();

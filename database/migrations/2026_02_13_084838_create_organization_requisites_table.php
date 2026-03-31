@@ -20,8 +20,8 @@ return new class extends Migration
             $table->index('organization_id', 'organization_requisite_organization_idx');
             $table->index('requisite_id', 'organization_requisite_requisite_idx');
 
-            $table->foreign('organization_id', 'organization_requisite_organization_fk')->on('organizations')->references('id');
-            $table->foreign('requisite_id', 'organization_requisite_requisite_fk')->on('requisites')->references('id');
+            $table->foreign('organization_id', 'organization_requisite_organization_fk')->on('organizations')->references('id')->onDelete('cascade');
+            $table->foreign('requisite_id', 'organization_requisite_requisite_fk')->on('requisites')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });
