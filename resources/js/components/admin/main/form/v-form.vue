@@ -18,6 +18,10 @@
                             </div>
                             <div v-if="field.type == 'image'">
                                 <label class="dart-simple-label" :for="'form_image_' + key">Изображение</label>
+                                <div class="img_abs dart-mb-1" v-if="this.form[field.defaultValue]">
+                                    <img :src="this.form[field.defaultValue]" alt="">
+                                </div>
+
                                 <FileUpload :id="'form_image_' + key" name="image[]" url="/api/upload" :auto="true" @before-send="beforeFileSend($event)" @upload="onAdvancedUpload($event)" :multiple="false" accept="image/*" :maxFileSize="2097152">
                                     <template #empty>
                                         <span>Перенесите файл в эту область для загрузки.</span>

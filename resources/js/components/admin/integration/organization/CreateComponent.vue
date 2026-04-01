@@ -36,27 +36,24 @@ export default {
     },
     mounted(){
         const reqData = {
-            orgid: this.orgid
+            organizationId: this.orgid
         }
-        // this.getUser(reqData).then(() => {
-        //     this.form.name = this.userData.name;
-        //     this.form.email = this.userData.email;
-        //     this.form.fullname = this.userData.fullname;
-        //     this.form.image = this.userData.image;
-        //     this.form.avatar = this.userData.avatar;
-        //     this.form.phone = this.userData.phone;
-        //     this.form.active = Boolean(this.userData.active);
-        //     this.form.sudo = Boolean(this.userData.sudo);
-        // })
+        this.getOrganization(reqData).then(() => {
+            this.form.name = this.organization.name;
+            this.form.description = this.organization.description;
+            this.form.active = Boolean(this.organization.active);
+            this.form.verified = Boolean(this.organization.verified);
+            this.form.thumb_url = this.organization.thumb_url;
+        })
     },
     methods: {
         ...mapActions([
-            // 'getUser'
+            'getOrganization'
         ])
     },
     computed: {
         ...mapGetters([
-            // 'userData'
+            'organization'
         ]),
         formUrl(){
             if (Number(this.orgid) > 0) {
@@ -87,80 +84,117 @@ export default {
             }
         },
         formData(){
-            return [{
-                grids: [{
-                    class: "d-col-md-24",
-                    fields: {
-                        nameHelper: {
-                            errorKey: 'name',
-                            type: 'autocomplete',
-                            value: '',
-                            label: "Введите ИНН",
-                            searchType: "inn",
-                            description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся автоматически"
-                        },
-                        name: {
-                            type: 'hidden',
-                            value: ''
-                        },
-                        image: {
-                            type: 'image',
-                            value: '',
-                            label: "Изображение"
-                        },
-                        description: {
-                            type: 'textarea',
-                            value: '',
-                            label: "Описание"
-                        },
-                        active: {
-                            type: 'checkbox',
-                            value: '',
-                            label: "Активна"
-                        },
-                        verified: {
-                            type: 'checkbox',
-                            value: '',
-                            label: "Верифицирована"
+            if(Number(this.orgid) > 0){
+                return [{
+                    grids: [{
+                        class: "d-col-md-24",
+                        fields: {
+                            name: {
+                                type: 'text',
+                                label: "Наименование",
+                                value: ''
+                            },
+                            image: {
+                                type: 'image',
+                                value: '',
+                                defaultValue: 'thumb_url',
+                                label: "Изображение"
+                            },
+                            description: {
+                                type: 'textarea',
+                                value: '',
+                                label: "Описание"
+                            },
+                            active: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Активна"
+                            },
+                            verified: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Верифицирована"
+                            }
                         }
-                    }
-                },{
-                    class: "d-col-md-24",
-                    fields: {
-                        header: {
-                            type: 'header',
-                            label: "Реквизиты"
-                        },
-                        inn: {
-                            type: 'text',
-                            value: '',
-                            label: "ИНН"
-                        },
-                        ogrn: {
-                            type: 'text',
-                            value: '',
-                            label: "ОГРН"
-                        },
-                        kpp: {
-                            type: 'text',
-                            value: '',
-                            label: "КПП"
-                        },
-                        ur_address: {
-                            type: 'autocomplete',
-                            value: '',
-                            label: "Юридический адрес",
-                            searchType: "address",
-                        },
-                        fact_address: {
-                            type: 'autocomplete',
-                            value: '',
-                            label: "Фактический адрес",
-                            searchType: "address",
+                    }]
+                }];
+            }else{
+                return [{
+                    grids: [{
+                        class: "d-col-md-24",
+                        fields: {
+                            nameHelper: {
+                                errorKey: 'name',
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Введите ИНН",
+                                searchType: "inn",
+                                description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся автоматически"
+                            },
+                            name: {
+                                type: 'hidden',
+                                value: ''
+                            },
+                            image: {
+                                type: 'image',
+                                value: '',
+                                label: "Изображение"
+                            },
+                            description: {
+                                type: 'textarea',
+                                value: '',
+                                label: "Описание"
+                            },
+                            active: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Активна"
+                            },
+                            verified: {
+                                type: 'checkbox',
+                                value: '',
+                                label: "Верифицирована"
+                            }
                         }
-                    }
-                }]
-            }];
+                    },{
+                        class: "d-col-md-24",
+                        fields: {
+                            header: {
+                                type: 'header',
+                                label: "Реквизиты"
+                            },
+                            inn: {
+                                type: 'text',
+                                value: '',
+                                label: "ИНН"
+                            },
+                            ogrn: {
+                                type: 'text',
+                                value: '',
+                                label: "ОГРН"
+                            },
+                            kpp: {
+                                type: 'text',
+                                value: '',
+                                label: "КПП"
+                            },
+                            ur_address: {
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Юридический адрес",
+                                searchType: "address",
+                            },
+                            fact_address: {
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Фактический адрес",
+                                searchType: "address",
+                            }
+                        }
+                    }]
+                }];
+            }
+
         }
     }
 }

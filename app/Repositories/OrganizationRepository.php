@@ -5,15 +5,24 @@ namespace App\Repositories;
 use App\Exceptions\UserException;
 use App\Models\Organization;
 use App\Models\User;
+use App\Services\Tools\FileUploaderService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class OrganizationRepository
 {
+
+    public function __construct(
+        private readonly FileUploaderService $uploaderService,
+    ){
+
+    }
+
     /**
      * Берем таблицу Организаций
      *
@@ -62,13 +71,28 @@ class OrganizationRepository
         $organization = Organization::findOrFail($organization_id);
         DB::beginTransaction();
         try{
-            $response = $organization->delete();
+            $org_id = $organization->id;
+            $response_file = $this->uploaderService->delete("organizations/{$org_id}/");
+            // Log::error(print_r($response_file, 1));
+            // удаляем реквизиты
+            foreach ($organization->requisites as $requisite) {
+                if (App::environment(['local'])) {
+                    $requisite->forceDelete();
+                }else{
+                    $requisite->delete();
+                }
+            }
+            $organization->requisites()->detach();
+            if (App::environment(['local'])) {
+                $response = $organization->forceDelete();
+            }else{
+                $response = $organization->delete();
+            }
             DB::commit();
             DB::rollback();
         }catch(\Exception $e){
             $response = $e->getMessage();
         }
-        $organization->forceDelete();
         return $response;
     }
 
@@ -79,7 +103,7 @@ class OrganizationRepository
      * @return Organization
      * @throws UserException
      */
-    public function create(array $validated): Organization
+    public function create(array $validated): Organization | bool
     {
         DB::beginTransaction();
         try {
@@ -107,30 +131,7 @@ class OrganizationRepository
         }catch (\Exception $e) {
             DB::rollBack();
             Log::error('Ошибка создания организации: ' . $e->getMessage());
-        }
-    }
-
-    public function createRequisite(array $validated){
-
-    }
-
-    public function updatePassword(int $id, array $validated){
-        $user = User::findOrFail($id);
-        DB::beginTransaction();
-        try {
-            $updatedUser = $user->update([
-                'password' => $validated['new_password']
-            ]);
-            DB::commit();
-            return $updatedUser;
-        }catch (QueryException $e) {
-            DB::rollBack();
-            Log::error('Ошибка БД при обновлении пароля пользователя: ' . $e->getMessage());
-            throw new UserException("Ошибка БД при обновлении пароля пользователя: {$e->getMessage()}", 422, $e->errors);
-        }catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Общая ошибка при обновлении пользователя: ' . $e->getMessage());
-            throw new UserException("Ошибка БД при обновлении пароля пользователя: {$e->getMessage()}", 500, $e->errors);
+            return false;
         }
     }
 
@@ -140,30 +141,41 @@ class OrganizationRepository
      * @param int $id
      * @param array $validated
      * @return mixed
-     * @throws UserException
      */
-    public function update(int $id, array $validated){
-        $user = User::findOrFail($id);
+    public function update(int $id, array $validated): mixed
+    {
+        $organization = Organization::findOrFail($id);
         DB::beginTransaction();
         try {
-            $updatedUser = $user->update([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'fullname' => $validated['fullname'],
-                'active' => $validated['active'],
-                'sudo' => $validated['sudo']
-            ]);
+            $updateData = [
+                'name' => $validated['name']
+            ];
+            if(isset($validated['verified'])){
+                $updateData['verified'] = $validated['verified'];
+            }
+            if(isset($validated['active'])){
+                $updateData['active'] = $validated['active'];
+            }
+            if(isset($validated['description'])){
+                $updateData['description'] = $validated['description'];
+            }
+            if(isset($validated['image'])){
+                $updateData['image'] = $validated['image'];
+            }
+            if(isset($validated['thumbnail'])){
+                $updateData['thumbnail'] = $validated['thumbnail'];
+            }
+            $updatedOrganization = $organization->update($updateData);
             DB::commit();
-            return $updatedUser;
+            return $organization;
         }catch (QueryException $e) {
             DB::rollBack();
-            Log::error('Ошибка БД при обновлении пользователя: ' . $e->getMessage());
-            throw new UserException("Ошибка БД при обновлении пользователя: {$e->getMessage()}", 422, $e->errors);
+            Log::error('Ошибка БД при обновлении организации: ' . $e->getMessage());
+            return false;
         }catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Общая ошибка при обновлении пользователя: ' . $e->getMessage());
-            throw new UserException("Ошибка БД при обновлении пользователя: {$e->getMessage()}", 500, $e->errors);
+            Log::error('Общая ошибка при обновлении организации: ' . $e->getMessage());
+            return false;
         }
     }
 }

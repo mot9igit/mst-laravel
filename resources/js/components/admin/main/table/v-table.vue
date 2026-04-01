@@ -202,7 +202,7 @@
             </div>
         </div>
         <div class="profile-products__products" v-else>
-            <div class="dart-alert dart-alert-info">Ничего не найдено</div>
+            <div class="alert alert-info">Ничего не найдено</div>
         </div>
     </div>
 </template>

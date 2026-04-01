@@ -4,6 +4,7 @@ namespace App\Services\Tools;
 
 use App\Http\Requests\API\Files\UploadRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -60,7 +61,20 @@ class FileUploaderService
 
     }
 
-    public function delete(string $path, string $filename){
-
+    public function delete(string $path) : array
+    {
+        try {
+            if (!Storage::disk($this->disk)->exists($path)) {
+                return ['error' => "Папка на {$this->disk} не существует"];
+            }
+            Storage::disk($this->disk)->deleteDirectory($path);
+            if (Storage::disk($this->disk)->exists($path)) {
+                return ['error' => "Не удалось удалить папку на {$this->disk}"];
+            }
+            return ['message' => "Папка на {$this->disk} успешно удалена"];
+        } catch (\Exception $e) {
+            Log::error("Ошибка удаления папки на {$this->disk}: " . $e->getMessage());
+            return ['error' => "Ошибка при удалении папки на {$this->disk}"];
+        }
     }
 }

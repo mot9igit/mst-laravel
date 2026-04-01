@@ -49,14 +49,14 @@ class Service
     public function store(array $validated): JsonResponse
     {
         $image = null;
-        if($validated['files']){
+        if(isset($validated['files'])){
             if(is_array($validated['files'])){
                 $image = $validated['files'][0];
             }else {
                 $image = $validated['files'];
             }
+            unset($validated['files']);
         }
-        unset($validated['files']);
         $organization = $this->organizationRepository->create($validated);
         $requisite = $this->requisiteRepository->create($validated);
         $organization->requisites()->attach([$requisite->id]);
@@ -76,18 +76,37 @@ class Service
     }
 
     /**
-     * Обновление пользователя
+     * Обновление организации
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\UserException
      */
-//    public function update(int $id, array $validated)
-//    {
-//        $user = $this->userRepository->update($id, $validated);
-//        return response()->json([
-//            'message' => 'Пользователь успешно обновлен',
-//            'user' => $user
-//        ], 201);
-//    }
+    public function update(int $id, array $validated)
+    {
+        $image = null;
+        if(isset($validated['files'])){
+            if(is_array($validated['files'])){
+                $image = $validated['files'][0];
+            }else {
+                $image = $validated['files'];
+            }
+            unset($validated['files']);
+        }
+        $organization = $this->organizationRepository->update($id, $validated);
+        if($image){
+            // картинка во временном хранилище -> перемещаем
+            $org_id = $organization->id;
+            $response_file = $this->fileUploaderService->delete("organizations/{$org_id}/");
+            $newpath = "organizations/{$org_id}/";
+            $path = $this->fileUploaderService->moveUploadFile($image, $newpath);
+            $organization->image = $path;
+            $organization->thumbnail = $this->thumbService->createQuadThumb($path, 200);
+            $organization->save();
+        }
+        return response()->json([
+            'message' => 'Организация успешно обновлена',
+            'user' => $organization
+        ], 201);
+    }
 }

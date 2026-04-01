@@ -79,14 +79,19 @@ export default {
                         label: 'Наименование',
                         type: 'text',
                     },
-                    email: {
-                        label: 'E-mail',
-                        type: 'text',
+                    active: {
+                        label: 'Активна',
+                        type: 'boolean',
                         sort: true,
                     },
-                    phone: {
-                        label: 'Телефон',
-                        type: 'text',
+                    verified: {
+                        label: 'Верифицирована',
+                        type: 'boolean',
+                        sort: true,
+                    },
+                    description: {
+                        label: 'Описание',
+                        type: 'text'
                     },
                     actions: {
                         label: 'Действия',
@@ -119,7 +124,7 @@ export default {
             this.getOrganizations(data)
         },
         editElem(data){
-            window.location.href = '/adm/integration/organization/' + data.id
+            window.location.href = '/adm/organization/' + data.id
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение

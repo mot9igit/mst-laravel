@@ -27,7 +27,7 @@ export default {
                 })
         },
         getOrganization ({ commit }, {organizationId}) {
-            return Axios(`/api/profile/${organizationId}`, {
+            return Axios(`/api/integration/organization/${organizationId}`, {
                 method: 'GET'
             })
                 .then((response) => {
