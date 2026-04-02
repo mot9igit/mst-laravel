@@ -1,11 +1,14 @@
 <template>
     <form @submit.prevent="submit()" :method="this.method" autocomplete="off">
         <Toast />
-        <div class="card-header">
-            <div class="card-title" v-if="this.title">{{ this.title }}</div>
-            <slot name="header"></slot>
+        <div>
+            <slot name="header" :title="this.title">
+                <div class="card-header">
+                    <div class="card-title" v-if="this.title">{{ this.title }}</div>
+                </div>
+            </slot>
         </div>
-        <div class="card-body">
+        <div :class="this.body_class">
             <div class="dart_container">
                 <div class="row" v-for="row in form_data">
                     <div v-for="grid in row.grids" :class="grid.class? grid.class : 'd-col-24'">
@@ -110,12 +113,16 @@
             </div>
         </div>
         <!--end::Body-->
-        <div class="card-footer">
-            <button class="btn btn-primary" type="button" disabled v-if="loading">
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span role="status">Загрузка...</span>
-            </button>
-            <button type="submit" class="btn btn-success" v-else>{{ submit_text? submit_text : 'Отправить' }}</button>
+        <div>
+            <slot name="footer" :submit_text="submit_text" :loading="loading">
+                <div class="card-footer">
+                    <button class="btn btn-primary" type="button" disabled v-if="loading">
+                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        <span role="status">Загрузка...</span>
+                    </button>
+                    <button type="submit" class="btn btn-success" v-else>{{ submit_text? submit_text : 'Отправить' }}</button>
+                </div>
+            </slot>
         </div>
     </form>
 </template>
@@ -144,6 +151,10 @@ export default {
         Toast
     },
     props: {
+        body_class: {
+            type: String,
+            default: "card-body",
+        },
         // данные формы, включая layout по дефолтной сетке (x24grid)
         form_data: {
             type: Array,
@@ -163,7 +174,7 @@ export default {
             type: String,
             default: "POST",
         },
-        // заголовок формы
+        // режим работы формы
         mode: {
             type: String,
             default: "create",

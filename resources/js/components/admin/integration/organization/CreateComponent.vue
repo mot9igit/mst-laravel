@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vForm
+        <vForm v-if="this.orgid == 0"
             :title="this.headerForm"
             :submit_text="this.submitText"
             method="post"
@@ -10,6 +10,28 @@
             :form_data="this.formData"
             :form_values="this.form"
         />
+        <vForm v-else
+               body_class=""
+               :title="this.headerForm"
+               :submit_text="this.submitText"
+               method="post"
+               :mode="this.mode"
+               :form_url="this.formUrl"
+               redirect_url="/adm/organization/"
+               :form_data="this.formData"
+               :form_values="this.form"
+        >
+            <template #header="{ title }">
+                <div class="dart-mt-1"></div>
+            </template>
+            <template #footer="{ submit_text, loading }">
+                <button class="btn btn-primary" type="button" disabled v-if="loading">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">Загрузка...</span>
+                </button>
+                <button type="submit" class="btn btn-success" v-else>{{ submit_text? submit_text : 'Отправить' }}</button>
+            </template>
+        </vForm>
     </div>
 </template>
 
@@ -87,7 +109,7 @@ export default {
             if(Number(this.orgid) > 0){
                 return [{
                     grids: [{
-                        class: "d-col-md-24",
+                        class: "d-col-md-12",
                         fields: {
                             name: {
                                 type: 'text',

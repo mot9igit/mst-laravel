@@ -265,6 +265,7 @@ import UpdatePasswordComponent from './components/admin/user/UpdatePasswordCompo
 import ShowOrganizationComponent from './components/admin/integration/organization/ShowComponent.vue';
 import CreateOrganizationComponent from './components/admin/integration/organization/CreateComponent.vue';
 import UpdateOrganizationComponent from "./components/admin/integration/organization/UpdateComponent.vue";
+import ShowRequisiteComponent from "./components/admin/integration/requisite/ShowComponent.vue";
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
@@ -275,6 +276,7 @@ app.component("update-password-user-component", UpdatePasswordComponent);
 app.component("show-organization-component", ShowOrganizationComponent);
 app.component("create-organization-component", CreateOrganizationComponent);
 app.component("update-organization-component", UpdateOrganizationComponent);
+app.component("show-requisite-component", ShowRequisiteComponent);
 
 /**
  * The following block of code may be used to automatically register your

@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Organization;
 use App\Models\Requisite;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -14,6 +16,49 @@ class RequisiteRepository
     public function __construct()
     {
         //
+    }
+
+    /**
+     * Берем таблицу Организаций
+     *
+     * @param array $data
+     * @return LengthAwarePaginator
+     */
+    public function get(array $data): LengthAwarePaginator{
+        $org_id = $data['org_id'];
+        $perpage = $data['perpage'] ?? 12;
+        $filter = $data['filter'] ?? '';
+        $sort = $data['sort'] ?? [];
+
+        $organization = Organization::findOrFail($org_id);
+
+        $sortBy = 'id';
+        $sortDir = 'desc';
+        if(count($sort) > 0) {
+            foreach ($sort as $key => $value) {
+                $sortBy = $key;
+                $sortDir = $value['dir'];
+            }
+        }
+
+        $allowedSorts = ['id', 'name', 'created_at', 'updated_at'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+
+        if($filter != ''){
+            $requisites = $organization->requisites()
+                ->where('name', 'like', '%'.$filter.'%')
+                ->orWhere('inn', 'like', '%'.$filter.'%')
+                ->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }else{
+            $requisites = $organization->requisites()
+                ->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }
+
+        return $requisites;
     }
 
     public function create($validated){

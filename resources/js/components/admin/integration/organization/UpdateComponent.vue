@@ -29,7 +29,7 @@
                     <create-organization-component :orgid="this.orgid"></create-organization-component>
                 </TabPanel>
                 <TabPanel value="1">
-                    <p class="m-0">Реквизиты</p>
+                    <show-requisite-component :org_id="this.orgid"></show-requisite-component>
                 </TabPanel>
                 <TabPanel value="2">
                     <p class="m-0">Контактные лица</p>

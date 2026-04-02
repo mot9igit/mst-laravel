@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class Organization extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = 'organizations';
     protected $appends = ['image_url', 'thumb_url'];
 
     protected $fillable = [
