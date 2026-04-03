@@ -35,10 +35,17 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         Route::get("/{user}", UpdateController::class)->name("admin.user.update");
     });
 
-    Route::group(['namespace'=>'Integration\Organization', 'prefix' => 'organization'], function() {
-        Route::get("/", IndexController::class)->name("admin.integration.organization.index");
-        Route::get("/create", CreateController::class)->name("admin.integration.organization.create");
-        Route::get("/{organization}", UpdateController::class)->name("admin.integration.organization.update");
+    Route::group(['prefix' => 'organization'], function() {
+        Route::get("/", App\Http\Controllers\Admin\Integration\Organization\IndexController::class)->name("admin.integration.organization.index");
+        Route::get("/create", App\Http\Controllers\Admin\Integration\Organization\CreateController::class)->name("admin.integration.organization.create");
+
+        Route::prefix('/{organization}')->group(function () {
+            Route::get("/", App\Http\Controllers\Admin\Integration\Organization\UpdateController::class)->name("admin.integration.organization.update");
+            Route::group(['prefix' => '/requisite'], function () {
+                Route::get("/create", App\Http\Controllers\Admin\Integration\Requisite\CreateController::class)->name("admin.integration.organization.requisite.create");
+            });
+        });
+
     });
 
     Route::group(['namespace'=>'Products', 'prefix' => 'products'], function() {

@@ -22,7 +22,7 @@
                 >
                     <template v-slot:button>
                         <div>
-                            <a href="/adm/requisite/create" class="btn btn-primary"> Создать организацию </a>
+                            <a :href="'/adm/organization/' + this.org_id + '/requisite/create'" class="btn btn-primary"> Создать реквизиты </a>
                         </div>
                     </template>
                 </v-table>
