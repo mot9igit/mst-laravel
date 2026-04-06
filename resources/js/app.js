@@ -267,7 +267,7 @@ import CreateOrganizationComponent from './components/admin/integration/organiza
 import UpdateOrganizationComponent from "./components/admin/integration/organization/UpdateComponent.vue";
 import ShowRequisiteComponent from "./components/admin/integration/requisite/ShowComponent.vue";
 import CreateOrganizationRequisiteComponent from "./components/admin/integration/requisite/CreateComponent.vue";
-
+import UpdateOrganizationRequisiteComponent from "./components/admin/integration/requisite/UpdateComponent.vue";
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
@@ -280,6 +280,7 @@ app.component("create-organization-component", CreateOrganizationComponent);
 app.component("update-organization-component", UpdateOrganizationComponent);
 app.component("show-requisite-component", ShowRequisiteComponent);
 app.component("create-organization-requisite-component", CreateOrganizationRequisiteComponent);
+app.component("update-organization-requisite-component", UpdateOrganizationRequisiteComponent);
 
 /**
  * The following block of code may be used to automatically register your

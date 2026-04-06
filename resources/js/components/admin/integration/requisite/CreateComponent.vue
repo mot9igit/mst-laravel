@@ -21,6 +21,16 @@
                :form_data="this.formData"
                :form_values="this.form"
         >
+            <template #header="{ title }">
+                <div class="dart-mt-1"></div>
+            </template>
+            <template #footer="{ submit_text, loading }">
+                <button class="btn btn-primary" type="button" disabled v-if="loading">
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">Загрузка...</span>
+                </button>
+                <button type="submit" class="btn btn-success" v-else>{{ submit_text? submit_text : 'Отправить' }}</button>
+            </template>
         </vForm>
     </div>
 </template>
@@ -66,6 +76,7 @@ export default {
                 this.form.description = this.requisite.description;
             })
         }
+        this.form.org_id = this.org_id
     },
     methods: {
         ...mapActions([
@@ -78,9 +89,9 @@ export default {
         ]),
         formUrl(){
             if (Number(this.requisite_id) > 0) {
-                return '/api/integration/organization/' + this.org_id + '/requisite/' + this.requisite_id;
+                return '/api/integration/requisite/' + this.requisite_id;
             } else {
-                return '/api/integration/organization/' + this.org_id + '/requisite/';
+                return '/api/integration/requisite/';
             }
         },
         headerForm() {
@@ -129,6 +140,18 @@ export default {
                                 type: 'text',
                                 value: '',
                                 label: "КПП"
+                            },
+                            ur_address: {
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Юридический адрес",
+                                searchType: "address",
+                            },
+                            fact_address: {
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Фактический адрес",
+                                searchType: "address",
                             }
                         }
                     }]
@@ -138,9 +161,16 @@ export default {
                     grids: [{
                         class: "d-col-md-24",
                         fields: {
+                            nameHelper: {
+                                errorKey: 'name',
+                                type: 'autocomplete',
+                                value: '',
+                                label: "Введите ИНН",
+                                searchType: "inn",
+                                description: "Выберите организацию из выпадающего списка и все известные данные в форме заполнятся автоматически"
+                            },
                             name: {
-                                type: 'text',
-                                label: "Наименование",
+                                type: 'hidden',
                                 value: ''
                             },
                             inn: {

@@ -43,6 +43,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
             Route::get("/", App\Http\Controllers\Admin\Integration\Organization\UpdateController::class)->name("admin.integration.organization.update");
             Route::group(['prefix' => '/requisite'], function () {
                 Route::get("/create", App\Http\Controllers\Admin\Integration\Requisite\CreateController::class)->name("admin.integration.organization.requisite.create");
+                Route::get("/{requisite}", App\Http\Controllers\Admin\Integration\Requisite\UpdateController::class)->name("admin.integration.organization.requisite.update");
             });
         });
 

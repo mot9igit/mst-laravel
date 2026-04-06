@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\API\Requisite;
 
+use App\Models\Requisite;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +24,18 @@ class StoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(Requisite $requisite): array
     {
         return [
             'name' => 'required|string',
             'org_id' => 'required|integer|exists:organizations,id',
             'description' => 'nullable|string',
-            'inn' => 'required|string|unique:requisites,inn',
+            'inn' => [
+                'required',
+                'string',
+                Rule::unique('requisites', 'inn')
+                    ->ignore($this->route('requisite')->id)
+            ],
             'kpp' => 'nullable|string',
             'ogrn' => 'required|string',
             'ur_address' => 'nullable',

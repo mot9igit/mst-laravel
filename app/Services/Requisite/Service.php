@@ -25,8 +25,31 @@ class Service
     public function store($validated)
     {
         $requisite = $this->repository->create($validated);
+        if(isset($validated['org_id'])){
+            $requisite->organizations()->attach([$validated['org_id']]);
+        }
         return response()->json([
             'message' => 'Реквизиты успешно созданы',
+            'requisite' => $requisite
+        ], 201);
+    }
+
+    public function delete(int $requisite_id){
+        return $this->repository->delete($requisite_id);
+    }
+
+    /**
+     * Обновление организации
+     *
+     * @param $validated
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\UserException
+     */
+    public function update(int $id, array $validated)
+    {
+        $requisite = $this->repository->update($id, $validated);
+        return response()->json([
+            'message' => 'Рекыизиты успешно обновлены',
             'requisite' => $requisite
         ], 201);
     }

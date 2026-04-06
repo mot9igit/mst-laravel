@@ -136,7 +136,7 @@ export default {
             this.getRequisites(data)
         },
         editElem(data){
-            window.location.href = '/adm/requisite/' + data.id
+            window.location.href = '/adm/organization/' + this.org_id + '/requisite/' + data.id
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение

@@ -16,6 +16,6 @@
 @endsection
 @section('content')
     <div class="card card-primary card-outline mb-4">
-        <create-organization-requisite-component></create-organization-requisite-component>
+        <create-organization-requisite-component :org_id="{{ $organization->id }}"></create-organization-requisite-component>
     </div>
 @endsection

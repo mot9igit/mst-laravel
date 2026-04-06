@@ -106,7 +106,7 @@ class Service
         }
         return response()->json([
             'message' => 'Организация успешно обновлена',
-            'user' => $organization
+            'organization' => $organization
         ], 201);
     }
 }
