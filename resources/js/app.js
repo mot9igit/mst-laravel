@@ -268,6 +268,9 @@ import UpdateOrganizationComponent from "./components/admin/integration/organiza
 import ShowRequisiteComponent from "./components/admin/integration/requisite/ShowComponent.vue";
 import CreateOrganizationRequisiteComponent from "./components/admin/integration/requisite/CreateComponent.vue";
 import UpdateOrganizationRequisiteComponent from "./components/admin/integration/requisite/UpdateComponent.vue";
+import ShowBankRequisiteComponent from "./components/admin/integration/bank-requisite/ShowComponent.vue";
+import CreateBankRequisiteComponent from "./components/admin/integration/bank-requisite/CreateComponent.vue";
+
 
 app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
@@ -281,7 +284,8 @@ app.component("update-organization-component", UpdateOrganizationComponent);
 app.component("show-requisite-component", ShowRequisiteComponent);
 app.component("create-organization-requisite-component", CreateOrganizationRequisiteComponent);
 app.component("update-organization-requisite-component", UpdateOrganizationRequisiteComponent);
-
+app.component("show-bank-requisite-component", ShowBankRequisiteComponent);
+app.component("create-bank-requisite-component", CreateBankRequisiteComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

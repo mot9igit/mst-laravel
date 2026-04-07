@@ -44,12 +44,12 @@ export default {
     name: "CreateOrganizationRequisiteComponent",
     props: {
         org_id: {
-            type: String,
-            default: "0"
+            type: Number,
+            default: 0
         },
         requisite_id: {
-            type: String,
-            default: "0"
+            type: Number,
+            default: 0
         }
     },
     components: {

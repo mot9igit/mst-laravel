@@ -45,6 +45,13 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::delete("/{requisite}", "DeleteController");
         Route::patch("/{requisite}", "UpdateController");
     });
+    Route::group(["namespace" => "App\Http\Controllers\API\Integration\BankRequisite", "prefix" => "integration/bank-requisite", "middleware" => []], function(){
+        Route::get("/", "IndexController");
+        Route::post('/', 'StoreController' );
+        Route::get('/{bankrequisite}', 'ShowController' );
+        Route::delete("/{bankrequisite}", "DeleteController");
+        Route::patch("/{bankrequisite}", "UpdateController");
+    });
 });
 
 

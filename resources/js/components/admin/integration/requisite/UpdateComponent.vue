@@ -14,7 +14,7 @@
                     <create-organization-requisite-component :org_id="this.org_id" :requisite_id="this.requisite_id"></create-organization-requisite-component>
                 </TabPanel>
                 <TabPanel value="1">
-                    <p>Тут банковские реквизиты</p>
+                    <show-bank-requisite-component :org_id="this.org_id" :requisite_id="this.requisite_id"></show-bank-requisite-component>
                 </TabPanel>
             </TabPanels>
         </Tabs>

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string("number");
             $table->string("knumber");
             $table->string("bik");
-            $table->foreignId("requisite_id")->nullable()->constrained();
+            $table->string("description")->nullable();
+            $table->foreignIdFor(\App\Models\Requisite::class)->constrained()->onDelete('cascade');
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));
             $table->softDeletes();
             $table->timestamps();

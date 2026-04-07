@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("kpp");
             $table->string("ur_address");
             $table->string("fact_address");
+            $table->string("description")->nullable();
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));
             $table->softDeletes();
             $table->timestamps();
