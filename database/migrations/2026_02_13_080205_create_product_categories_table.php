@@ -15,17 +15,20 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('slug')->unique();
             $table->string("icon")->nullable();
             $table->string("description")->nullable();
             $table->string("image")->nullable();
             $table->text("content")->nullable();
+            $table->boolean('published')->default(true);
+            $table->boolean('show_in_menu')->default(true);
             $table->string("seo_title")->nullable();
             $table->string("seo_description")->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             // Связь с категориями
-            $table->foreign('parent_id')->references('id')->on('product_categories');
+            $table->foreign('parent_id')->references('id')->on('product_categories')->onDelete('cascade');
         });
     }
 

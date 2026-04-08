@@ -65,7 +65,7 @@
                             <a href="{{ route('admin.user.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-person"></i>
                                 <p>
-                                    Пользователи
+                                    Пользователи <span class="nav-badge badge text-bg-secondary me-3">{{ $user_count ?? 0 }}</span>
                                 </p>
                             </a>
                         </li>
@@ -100,7 +100,7 @@
                             <a href="{{ route('admin.integration.organization.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-building"></i>
                                 <p>
-                                    Организации <span class="nav-badge badge text-bg-secondary me-3">0</span>
+                                    Организации <span class="nav-badge badge text-bg-secondary me-3">{{ $organization_count ?? 0 }}</span>
                                 </p>
                             </a>
                         </li>

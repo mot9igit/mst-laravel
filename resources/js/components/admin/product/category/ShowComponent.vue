@@ -11,27 +11,7 @@
                 </Tree>
             </div>
             <div class="d-col-md-18">
-                <v-table
-                    class=""
-                    :filters="this.productCategoryTable.filters"
-                    :items_data="productCategories.data"
-                    :total="productCategories.total"
-                    :pagination_items_per_page="this.pagination_items_per_page"
-                    :pagination_offset="this.pagination_offset"
-                    :page="this.productCategoryTable.page"
-                    :table_data="this.productCategoryTable.table_data"
-                    title="Категории товаров"
-                    @filter="filter"
-                    @sort="filter"
-                    @paginate="paginate"
-                    @deleteElem="deleteElem"
-                >
-                    <template v-slot:button>
-                        <div>
-                            <a href="/adm/products/categories/create" class="btn btn-primary"> Создать категорию </a>
-                        </div>
-                    </template>
-                </v-table>
+
             </div>
         </div>
     </div>

@@ -19,6 +19,11 @@
 @endsection
 @section('content')
     <div class="card">
+        <div class="card-header">
+            <div class="float-sm-end">
+                <a href="/adm/product/category/create" class="btn btn-primary">Создать категорию</a>
+            </div>
+        </div>
         <div class="card-body">
             <show-product-category-component></show-product-category-component>
         </div>

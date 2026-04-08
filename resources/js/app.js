@@ -270,6 +270,8 @@ import CreateOrganizationRequisiteComponent from "./components/admin/integration
 import UpdateOrganizationRequisiteComponent from "./components/admin/integration/requisite/UpdateComponent.vue";
 import ShowBankRequisiteComponent from "./components/admin/integration/bank-requisite/ShowComponent.vue";
 import CreateBankRequisiteComponent from "./components/admin/integration/bank-requisite/CreateComponent.vue";
+import ShowProductCategoryComponent from "./components/admin/product/category/ShowComponent.vue";
+import CreateProductCategoryComponent from "./components/admin/product/category/CreateComponent.vue";
 
 
 app.component('example-component', ExampleComponent);
@@ -286,6 +288,8 @@ app.component("create-organization-requisite-component", CreateOrganizationRequi
 app.component("update-organization-requisite-component", UpdateOrganizationRequisiteComponent);
 app.component("show-bank-requisite-component", ShowBankRequisiteComponent);
 app.component("create-bank-requisite-component", CreateBankRequisiteComponent);
+app.component("show-product-category-component", ShowProductCategoryComponent);
+app.component("create-product-category-component", CreateProductCategoryComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

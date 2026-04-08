@@ -15,7 +15,7 @@
 import vForm from '../../main/form/v-form.vue';
 
 export default {
-    name: "CreateComponent",
+    name: "CreateProductCategoryComponent",
     components: {
         vForm
     },
