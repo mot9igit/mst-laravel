@@ -43,8 +43,8 @@ class Service
     /**
      * Создание категории
      *
-     * @param $validated
-     * @return \Illuminate\Http\JsonResponse
+     * @param array $validated
+     * @return JsonResponse
      */
     public function store(array $validated): JsonResponse
     {
@@ -70,6 +70,41 @@ class Service
         }
         return response()->json([
             'message' => 'Категория успешно создана',
+            'category' => $category
+        ], 201);
+    }
+
+    /**
+     * Обновление Категории
+     *
+     * @param int $id
+     * @param array $validated
+     * @return JsonResponse
+     */
+    public function update(int $id, array $validated)
+    {
+        $image = null;
+        if(isset($validated['files'])){
+            if(is_array($validated['files'])){
+                $image = $validated['files'][0];
+            }else {
+                $image = $validated['files'];
+            }
+            unset($validated['files']);
+        }
+        $category = $this->repository->update($id, $validated);
+        if($image){
+            // картинка во временном хранилище -> перемещаем
+            $category_id = $category->id;
+            $response_file = $this->fileUploaderService->delete("category/{$category_id}/");
+            $newpath = "category/{$category_id}/";
+            $path = $this->fileUploaderService->moveUploadFile($image, $newpath);
+            $category->image = $path;
+            $category->thumbnail = $this->thumbService->createQuadThumb($path, 200);
+            $category->save();
+        }
+        return response()->json([
+            'message' => 'Организация успешно обновлена',
             'category' => $category
         ], 201);
     }

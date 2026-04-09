@@ -59,10 +59,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         Route::group(['namespace'=>'Categories', 'prefix' => 'category'], function() {
             Route::get("/", IndexController::class)->name("admin.product.category.index");
             Route::get("/create", CreateController::class)->name("admin.product.category.create");
-            // Route::post("/", StoreController::class)->name("admin.product.category.store");
-            // Route::get("/{category}/edit", EditController::class)->name("admin.product.category.edit");
-            // Route::get("/{category}", ShowController::class)->name("admin.product.category.show");
-            // Route::patch("/{category}", UpdateController::class)->name("admin.product.category.update");
+            Route::get("/{category}", UpdateController::class)->name("admin.product.category.update");
         });
     });
 });

@@ -1,28 +1,97 @@
 <template>
     <div>
         <vForm
-            title="Создание новой категории"
-            submit_text="Создать категорию"
+            :title="this.headerForm"
+            :submit_text="this.submitText"
             method="post"
-            form_url="/api/product/category"
+            :mode="this.mode"
+            :form_url="this.formUrl"
             redirect_url="/adm/product/category/"
             :form_data="this.formData"
+            :form_values="this.form"
         />
     </div>
 </template>
 
 <script>
 import vForm from '../../main/form/v-form.vue';
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "CreateProductCategoryComponent",
+    props: {
+        category_id: {
+            type: Number,
+            default: 0
+        }
+    },
     components: {
         vForm
     },
     data() {
         return {
-            // 1 уровень - срока, 2 уровень сетка, 3 уровень - поле
-            formData: [{
+            form: {},
+        }
+    },
+    mounted(){
+        if(this.category_id > 0) {
+            const reqData = {
+                category_id: this.category_id
+            }
+            this.getProductCategory(reqData).then(() => {
+                this.form.title = this.productCategory.title;
+                this.form.longtitle = this.productCategory.longtitle;
+                this.form.thumb_url = this.productCategory.thumb_url;
+                this.form.slug = this.productCategory.slug;
+                this.form.parent_id = this.productCategory.parent_id;
+                this.form.description = this.productCategory.description;
+                this.form.published = Boolean(this.productCategory.published);
+                this.form.show_in_menu = Boolean(this.productCategory.show_in_menu);
+                this.form.seo_title = this.productCategory.seo_title;
+                this.form.seo_description = this.productCategory.seo_description;
+            })
+        }
+        this.form.category_id = this.category_id
+    },
+    methods: {
+        ...mapActions([
+            'getProductCategory'
+        ])
+    },
+    computed: {
+        ...mapGetters([
+            'productCategory'
+        ]),
+        formUrl(){
+            if (Number(this.category_id) > 0) {
+                return '/api/product/category/' + this.category_id;
+            } else {
+                return '/api/product/category';
+            }
+        },
+        headerForm() {
+            if (Number(this.category_id) > 0) {
+                return 'Редактировать категорию';
+            } else {
+                return 'Создать категорию';
+            }
+        },
+        submitText(){
+            if(Number(this.category_id) > 0){
+                return 'Редактировать категорию';
+            }else{
+                return 'Создать категорию';
+            }
+        },
+        mode(){
+            if(Number(this.category_id) > 0){
+                return 'update';
+            }else{
+                return 'create';
+            }
+        },
+        formData(){
+            return [{
                 grids: [{
                     class: "d-col-md-24",
                     fields: {
@@ -92,17 +161,6 @@ export default {
                     }
                 }]
             }]
-        }
-    },
-    methods: {
-        addCategory(){
-            axios.post('/api/product/category', this.form)
-                .then(res => {
-                    window.location.href = "/adm/products/categories/";
-                })
-                .catch((error) => {
-                    this.errors = error.response?.data?.errors
-                });
         }
     }
 }

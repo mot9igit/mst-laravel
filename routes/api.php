@@ -56,7 +56,9 @@ Route::middleware(["web", "auth"])->group(function (): void {
     Route::group(["namespace" => "App\Http\Controllers\API\ProductCategory", "prefix" => "product/category", "middleware" => []], function() {
         Route::get("/", "IndexController");
         Route::post("/", "StoreController");
+        Route::get('/{category}', 'ShowController' );
         Route::delete("/{category}", "DeleteController");
+        Route::patch("/{category}", "UpdateController");
     });
 });
 

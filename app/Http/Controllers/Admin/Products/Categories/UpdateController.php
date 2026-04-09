@@ -9,10 +9,9 @@ use Illuminate\Http\Request;
 
 class UpdateController extends Controller
 {
-    public function __invoke(UpdateRequest $request, ProductCategory $category)
+    public function __invoke(Request $request)
     {
-        $data = $request->validated();
-        $category->update($data);
-        return redirect()->route("admin.category.show", ["category" => $category]);
+        $category = ProductCategory::findOrFail($request->route('category'));
+        return view('admin.product.category.update', compact('category'));
     }
 }

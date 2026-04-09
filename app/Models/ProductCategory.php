@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class ProductCategory extends Model
@@ -13,7 +14,7 @@ class ProductCategory extends Model
     use HasRecursiveRelationships;
     protected $table = 'product_categories';
 
-    protected $appends = ['key'];
+    protected $appends = ['key', 'image_url', 'thumb_url'];
     protected $fillable = ['title', 'slug', 'content', 'image', 'icon', 'description', 'parent_id', 'published', 'show_in_menu', 'seo_title', 'seo_description'];
     protected $guarded = false;
 
@@ -55,5 +56,29 @@ class ProductCategory extends Model
     public function scopePublished($query)
     {
         return $query->where('published', true);
+    }
+
+    public function getImageUrlAttribute(): string | null
+    {
+        if($this->image) {
+            if (env('FILESYSTEM_DISK', 'public') === 'tws3') {
+                return Storage::disk('tws3')->url($this->image);
+            }
+            return asset('storage/' . $this->image);
+        }else{
+            return null;
+        }
+    }
+
+    public function getThumbUrlAttribute(): string | null
+    {
+        if($this->image) {
+            if (env('FILESYSTEM_DISK', 'public') === 'tws3') {
+                return Storage::disk('tws3')->url($this->thumbnail);
+            }
+            return asset('storage/' . $this->thumbnail);
+        }else{
+            return null;
+        }
     }
 }

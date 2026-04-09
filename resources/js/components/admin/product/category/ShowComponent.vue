@@ -15,7 +15,7 @@
             </div>
             <div class="d-col-md-18">
                 <v-table
-                    class=""
+                    class="product-category-table"
                     :filters="this.productCategoryTable.filters"
                     :items_data="productCategories.data"
                     :total="productCategories.total"
@@ -23,10 +23,11 @@
                     :pagination_offset="this.pagination_offset"
                     :page="this.productCategoryTable.page"
                     :table_data="this.productCategoryTable.table_data"
-                    title="Категории товаров"
+                    title=""
                     @filter="filter"
                     @sort="filter"
                     @paginate="paginate"
+                    @editElem="editElem"
                     @deleteElem="deleteElem"
                 >
                     <template v-slot:button>
@@ -82,9 +83,23 @@ export default {
                         label: "№",
                         type: "text",
                     },
+                    thumb_url: {
+                        label: 'Изображение',
+                        type: 'image',
+                    },
                     title: {
                         label: 'Наименование',
                         type: 'text',
+                    },
+                    published: {
+                        label: 'Активна',
+                        type: 'boolean',
+                        sort: true,
+                    },
+                    show_in_menu: {
+                        label: 'Верифицирована',
+                        type: 'boolean',
+                        sort: true,
                     },
                     actions: {
                         label: 'Действия',
@@ -92,7 +107,7 @@ export default {
                         sort: false,
                         available: {
                             edit: {
-                                icon: 'bi bi-eye',
+                                icon: 'bi bi-pencil',
                                 label: 'Подробнее'
                             },
                             delete: {
@@ -111,11 +126,15 @@ export default {
             'getProductCategoryTree'
         ]),
         filter (data) {
+            data.page = 1
             this.getProductCategories(data)
         },
         paginate (data) {
             this.productCategoryTable.page = data.page
             this.getProductCategories(data)
+        },
+        editElem(data){
+            window.location.href = '/adm/product/category/' + data.id
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение
@@ -194,5 +213,8 @@ export default {
 <style lang="scss">
 .p-tree-node-children{
     padding-left: 15px !important;
+}
+.product-category-table{
+    padding-top: 1rem;
 }
 </style>
