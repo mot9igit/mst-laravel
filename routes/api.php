@@ -53,9 +53,10 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::patch("/{bankrequisite}", "UpdateController");
     });
 
-    Route::group(["namespace" => "App\Http\Controllers\API\ProductCategory", "prefix" => "product-category", "middleware" => []], function() {
+    Route::group(["namespace" => "App\Http\Controllers\API\ProductCategory", "prefix" => "product/category", "middleware" => []], function() {
         Route::get("/", "IndexController");
-        // Route::post("/", "StoreController");
+        Route::post("/", "StoreController");
+        Route::delete("/{category}", "DeleteController");
     });
 });
 

@@ -309,3 +309,6 @@ app.component("create-product-category-component", CreateProductCategoryComponen
  */
 
 app.mount('#app');
+
+
+app.toast

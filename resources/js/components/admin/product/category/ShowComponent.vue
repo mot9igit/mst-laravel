@@ -4,13 +4,37 @@
         <ConfirmDialog></ConfirmDialog>
         <div class="dart-row">
             <div class="d-col-md-6">
-                <Tree :value="productCategoriesTree" filter filterBy="title">
+                <Tree
+                    :value="productCategoryTree"
+                    filter
+                    filterBy="title">
                     <template #default="slotProps">
-                        <b>{{ slotProps.node.title }} <small>({{ slotProps.node.id }})</small></b>
+                        <a :href="'/adm/product/category/' + slotProps.node.id"><b>{{ slotProps.node.title }} <small>({{ slotProps.node.id }})</small></b></a>
                     </template>
                 </Tree>
             </div>
             <div class="d-col-md-18">
+                <v-table
+                    class=""
+                    :filters="this.productCategoryTable.filters"
+                    :items_data="productCategories.data"
+                    :total="productCategories.total"
+                    :pagination_items_per_page="this.pagination_items_per_page"
+                    :pagination_offset="this.pagination_offset"
+                    :page="this.productCategoryTable.page"
+                    :table_data="this.productCategoryTable.table_data"
+                    title="Категории товаров"
+                    @filter="filter"
+                    @sort="filter"
+                    @paginate="paginate"
+                    @deleteElem="deleteElem"
+                >
+                    <template v-slot:button>
+                        <div>
+
+                        </div>
+                    </template>
+                </v-table>
 
             </div>
         </div>
@@ -84,7 +108,7 @@ export default {
     methods: {
         ...mapActions([
             'getProductCategories',
-            'getProductCategoriesTree'
+            'getProductCategoryTree'
         ]),
         filter (data) {
             this.getProductCategories(data)
@@ -118,6 +142,7 @@ export default {
                                 page: this.productCategoryTable.page,
                                 perpage: this.pagination_items_per_page
                             })
+                            this.getProductCategoryTree()
                         })
                         .catch(error => {
                             if (error.response.status === 404) {
@@ -126,6 +151,7 @@ export default {
                                     page: this.productCategoryTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
+                                this.getProductCategoryTree()
                             }
                             if (error.response.status === 500) {
                                 this.$toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Внутренняя ошибка сервера', life: 3000 });
@@ -142,7 +168,7 @@ export default {
         }
     },
     mounted() {
-        this.getProductCategoriesTree()
+        this.getProductCategoryTree()
         this.getProductCategories({
             page: this.productCategoryTable.page,
             perpage: this.pagination_items_per_page
@@ -157,7 +183,7 @@ export default {
     computed: {
         ...mapGetters([
             "productCategories",
-            "productCategoriesTree"
+            "productCategoryTree"
         ])
     },
     watch: {

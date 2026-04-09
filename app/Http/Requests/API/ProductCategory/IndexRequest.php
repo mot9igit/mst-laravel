@@ -25,7 +25,8 @@ class IndexRequest extends FormRequest
             'parent_id' => 'nullable|integer|exists:productcategories,id',
             'perpage' => 'nullable|int',
             'sort' => 'nullable|array',
-            'filter' => 'nullable|string|max:255'
+            'filter' => 'nullable|string|max:255',
+            'tree' => 'nullable|int',
         ];
     }
 }

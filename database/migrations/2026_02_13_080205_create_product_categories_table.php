@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->string("title");
+            $table->string("longtitle")->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('slug')->unique();
             $table->string("icon")->nullable();
             $table->string("description")->nullable();
             $table->string("image")->nullable();
+            $table->string("thumbnail")->nullable();
             $table->text("content")->nullable();
             $table->boolean('published')->default(true);
             $table->boolean('show_in_menu')->default(true);

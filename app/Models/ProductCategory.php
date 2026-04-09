@@ -12,6 +12,8 @@ class ProductCategory extends Model
     use HasFactory, SoftDeletes;
     use HasRecursiveRelationships;
     protected $table = 'product_categories';
+
+    protected $appends = ['key'];
     protected $fillable = ['title', 'slug', 'content', 'image', 'icon', 'description', 'parent_id', 'published', 'show_in_menu', 'seo_title', 'seo_description'];
     protected $guarded = false;
 
@@ -32,15 +34,21 @@ class ProductCategory extends Model
     }
 
     // Отношение «дочерние категории»
-    public function children()
+    public function child()
     {
         return $this->hasMany(ProductCategory::class, 'parent_id');
     }
 
     // Рекурсивное отношение для всех уровней вложенности
-    public function allChildren()
+    public function children()
     {
-        return $this->children()->with('allChildren');
+        return $this->child()->with('children');
+    }
+
+    // Виртуальный атрибут
+    public function getKeyAttribute()
+    {
+        return $this->id;
     }
 
     // Получение всех активных категорий
