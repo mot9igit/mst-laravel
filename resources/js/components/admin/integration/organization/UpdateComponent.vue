@@ -38,7 +38,7 @@
                     <p class="m-0">Точки продаж</p>
                 </TabPanel>
                 <TabPanel value="4">
-                    <p class="m-0">Пользователи</p>
+                    <show-organization-users-component :org_id="this.orgid"></show-organization-users-component>
                 </TabPanel>
                 <TabPanel value="5">
                     <p class="m-0">Бренды</p>
@@ -57,6 +57,7 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import ShowOrganizationUsersComponent from "../user/ShowOrganizationUsersComponent.vue";
 export default{
     name: "UpdateOrganizationComponent",
     components: {
@@ -64,7 +65,8 @@ export default{
         TabList,
         Tab,
         TabPanels,
-        TabPanel
+        TabPanel,
+        ShowOrganizationUsersComponent
     },
     props: {
         orgid: {

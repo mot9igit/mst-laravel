@@ -37,6 +37,9 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{organization}', 'ShowController' );
         Route::delete("/{organization}", "DeleteController");
         Route::patch("/{organization}", "UpdateController");
+        Route::get('/{organization}/user', 'User\IndexController' );
+        Route::post('/{organization}/user', 'User\StoreController' );
+        Route::delete('/{organization}/user/{user}', 'User\DeleteController' );
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Requisite", "prefix" => "integration/requisite", "middleware" => []], function(){
         Route::get("/", "IndexController");

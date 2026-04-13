@@ -2,8 +2,9 @@ import Axios from 'axios'
 
 export default {
     state: {
-        organizations: [],
-        organization: {}
+        organizations: {},
+        organization: {},
+        organizationUsers: {}
     },
     actions: {
         getOrganizations ({ commit }, {filter, filtersdata, page, sort, perpage}) {
@@ -38,7 +39,28 @@ export default {
                         // TODO: to auth page
                     }
                 })
-        }
+        },
+        getOrganizationUsers ({ commit }, {org_id, filter, filtersdata, page, sort, perpage}) {
+            return Axios(`/api/integration/organization/${org_id}/user`, {
+                method: 'GET',
+                params: {
+                    org_id: org_id,
+                    filter: filter,
+                    filtersdata: filtersdata,
+                    sort: sort,
+                    page: page,
+                    perpage: perpage
+                }
+            })
+                .then((response) => {
+                    commit('SET_ORGANIZATION_USERS', response.data)
+                })
+                .catch(error => {
+                    if (error.response.status === 403) {
+                        // TODO: to auth page
+                    }
+                })
+        },
     },
     mutations: {
         SET_ORGANIZATION: (state, data) => {
@@ -46,6 +68,9 @@ export default {
         },
         SET_ORGANIZATIONS: (state, data) => {
             state.organizations = data
+        },
+        SET_ORGANIZATION_USERS: (state, data) => {
+            state.organizationUsers = data
         }
     },
     getters: {
@@ -54,6 +79,9 @@ export default {
         },
         organization (state) {
             return state.organization
-        }
+        },
+        organizationUsers (state) {
+            return state.organizationUsers
+        },
     }
 }

@@ -21,6 +21,6 @@ class Store extends Model
     ];
 
     public function organizations(): BelongsToMany{
-        return $this->belongsToMany(Organization::class);
+        return $this->belongsToMany(Organization::class, 'organization_stores', 'store_id', 'organization_id');
     }
 }

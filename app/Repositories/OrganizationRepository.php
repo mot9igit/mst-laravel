@@ -9,6 +9,7 @@ use App\Services\Tools\FileUploaderService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -89,8 +90,8 @@ class OrganizationRepository
                 $response = $organization->delete();
             }
             DB::commit();
-            DB::rollback();
         }catch(\Exception $e){
+            DB::rollback();
             $response = $e->getMessage();
         }
         return $response;
@@ -176,6 +177,87 @@ class OrganizationRepository
             DB::rollBack();
             Log::error('Общая ошибка при обновлении организации: ' . $e->getMessage());
             return false;
+        }
+    }
+
+    public function getUsers($data): LengthAwarePaginator
+    {
+        $organization = Organization::findOrFail($data['org_id']);
+        $query = $organization->users();
+
+        $perpage = $data['perpage'] ?? 12;
+        $filter = $data['filter'] ?? '';
+        $sort = $data['sort'] ?? [];
+
+        $sortBy = 'id';
+        $sortDir = 'desc';
+        if(count($sort) > 0) {
+            foreach ($sort as $key => $value) {
+                $sortBy = $key;
+                $sortDir = $value['dir'];
+            }
+        }
+
+        $allowedSorts = ['id', 'name', 'created_at', 'updated_at'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+
+        if($filter != ''){
+            $users = $query->where('name', 'like', '%'.$filter.'%')
+                ->orWhere('email', 'like', '%'.$filter.'%')
+                ->orWhere('fullname', 'like', '%'.$filter.'%')
+                ->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }else{
+            $users = $query->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }
+
+        return $users;
+    }
+
+    public function storeUser($data): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $organization = Organization::findOrFail($data['org_id']);
+            $organization->users()->attach([$data['user_id']['id']]);
+            DB::commit();
+            return response()->json([
+                'message' => 'Организация успешно отредактирована',
+                'organization' => $organization
+            ], 201);
+        }catch (QueryException $e) {
+            DB::rollBack();
+            Log::error('Ошибка БД при обновлении пользователей организации: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ошибка БД при обновлении пользователей организации'
+            ], 500);
+        }catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Общая ошибка при обновлении пользователей организации: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Общая ошибка БД при обновлении пользователей организации'
+            ], 500);
+        }
+    }
+
+    public function deleteUser(int $organization_id, int $user_id)
+    {
+        $organization = Organization::findOrFail($organization_id);
+        DB::beginTransaction();
+        try{
+            $organization->users()->detach($user_id);
+            DB::commit();
+            return response()->json([
+                'message' => "Пользователь успешно отвязан"
+            ], 201);
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

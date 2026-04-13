@@ -109,4 +109,19 @@ class Service
             'organization' => $organization
         ], 201);
     }
+
+    public function getUsers($data): LengthAwarePaginator
+    {
+        return $this->organizationRepository->getUsers($data);
+    }
+
+    public function storeUser(array $validated): JsonResponse
+    {
+        return $this->organizationRepository->storeUser($validated);
+    }
+
+    public function deleteUser(int $organization_id, int $user_id): JsonResponse
+    {
+        return $this->organizationRepository->deleteUser($organization_id, $user_id);
+    }
 }
