@@ -39,6 +39,7 @@ export default {
             userid: this.userid
         }
         this.getUser(reqData).then(() => {
+            console.log(this.userData)
             this.form.name = this.userData.name;
             this.form.email = this.userData.email;
             this.form.fullname = this.userData.fullname;

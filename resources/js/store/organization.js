@@ -8,58 +8,46 @@ export default {
     },
     actions: {
         getOrganizations ({ commit }, {filter, filtersdata, page, sort, perpage}) {
-            return Axios('/api/integration/organization/', {
-                method: 'GET',
-                params: {
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage
+            this.$app.config.globalProperties.$load(
+                async () => {
+                    const payload = {
+                        filter: filter,
+                        filtersdata: filtersdata,
+                        sort: sort,
+                        page: page,
+                        perpage: perpage
+                    }
+                    const response = await this.$app.config.globalProperties.$api.organization.getOrganizations(payload).then((response) => {
+                        commit('SET_ORGANIZATIONS', response.data)
+                    })
                 }
-            })
-                .then((response) => {
-                    commit('SET_ORGANIZATIONS', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
+            )
         },
-        getOrganization ({ commit }, {organizationId}) {
-            return Axios(`/api/integration/organization/${organizationId}`, {
-                method: 'GET'
-            })
-                .then((response) => {
-                    commit('SET_ORGANIZATION', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
+        getOrganization ({ commit }, { organizationId }) {
+            this.$app.config.globalProperties.$load(
+                async () => {
+                    const response = await this.$app.config.globalProperties.$api.organization.getOrganization(organizationId).then((response) => {
+                        commit('SET_ORGANIZATION', response.data)
+                    })
+                }
+            )
         },
         getOrganizationUsers ({ commit }, {org_id, filter, filtersdata, page, sort, perpage}) {
-            return Axios(`/api/integration/organization/${org_id}/user`, {
-                method: 'GET',
-                params: {
-                    org_id: org_id,
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage
-                }
-            })
-                .then((response) => {
-                    commit('SET_ORGANIZATION_USERS', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
+            this.$app.config.globalProperties.$load(
+                async () => {
+                    const payload = {
+                        org_id: org_id,
+                        filter: filter,
+                        filtersdata: filtersdata,
+                        sort: sort,
+                        page: page,
+                        perpage: perpage
                     }
-                })
+                    const response = await this.$app.config.globalProperties.$api.organization.getOrganizationUsers(org_id, payload).then((response) => {
+                        commit('SET_ORGANIZATION_USERS', response.data)
+                    })
+                }
+            )
         },
     },
     mutations: {

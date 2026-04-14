@@ -233,9 +233,7 @@ export default {
             this.loading = true
             this.$load(
                 async () => {
-                    console.log(this.$api)
                     const data = await this.$api.auth.signIn(this.form)
-                    console.log(data)
                     if (data) {
                         if (!data.data.success) {
                             this.$toast.add({
@@ -258,13 +256,6 @@ export default {
                     }
                 },
                 (error) => {
-                    console.log(error.response)
-                    this.$toast.add({
-                        severity: 'error',
-                        summary: 'Произошла ошибка!',
-                        detail: error.response.data.message,
-                        life: 3000,
-                    })
                     this.loading = false
                 },
             )

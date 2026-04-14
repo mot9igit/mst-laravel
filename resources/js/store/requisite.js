@@ -7,38 +7,22 @@ export default {
     },
     actions: {
         getRequisites ({ commit }, {org_id, filter, filtersdata, page, sort, perpage}) {
-            return Axios('/api/integration/requisite/', {
-                method: 'GET',
-                params: {
-                    org_id: org_id,
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage
-                }
+            const payload = {
+                org_id: org_id,
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage
+            }
+            return this.$app.config.globalProperties.$api.requisite.getRequisites(payload).then((response) => {
+                commit('SET_REQUISITES', response.data)
             })
-                .then((response) => {
-                    commit('SET_REQUISITES', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
         getRequisite ({ commit }, { requisite_id }) {
-            return Axios(`/api/integration/requisite/${requisite_id}`, {
-                method: 'GET'
+            return this.$app.config.globalProperties.$api.requisite.getRequisite(requisite_id).then((response) => {
+                commit('SET_REQUISITE', response.data)
             })
-                .then((response) => {
-                    commit('SET_REQUISITE', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         }
     },
     mutations: {

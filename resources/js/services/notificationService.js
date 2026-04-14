@@ -7,19 +7,31 @@ export class NotificationService {
             duration: 5000,
         });
     }
-    success(message, title = 'Успех') {
+    success(message, data) {
+        if(data?.message){
+            message = data?.message
+        }
         this.toaster.success(message);
     }
 
-    error(message, title = 'Ошибка') {
+    error(message, data) {
+        if(data?.message){
+            message = data?.message
+        }
         this.toaster.error(message);
     }
 
-    warn(message, title = 'Предупреждение') {
+    warn(message, data) {
+        if(data?.message){
+            message = data?.message
+        }
         this.toaster.warning(message);
     }
 
-    info(message, title = 'Информация') {
+    info(message, data) {
+        if(data?.message){
+            message = data?.message
+        }
         this.toaster.info(message);
     }
 }

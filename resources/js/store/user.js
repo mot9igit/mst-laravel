@@ -1,5 +1,3 @@
-import Axios from 'axios'
-
 export default {
     state: {
         profile: [],
@@ -7,52 +5,27 @@ export default {
         user: {}
     },
     actions: {
-        getUsers ({ commit }, {filter, filtersdata, page, sort, perpage}) {
-            return Axios('/api/users/', {
-                method: 'GET',
-                params: {
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage
-                }
+        getUsers({commit}, {filter, filtersdata, page, sort, perpage}) {
+            const payload = {
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage
+            }
+            return this.$app.config.globalProperties.$api.user.getUsers(payload).then((response) => {
+                commit('SET_USERS', response.data)
             })
-                .then((response) => {
-                    commit('SET_USERS', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
-        getProfile ({ commit }, {user_id}) {
-            return Axios(`/api/profile/${user_id}`, {
-                method: 'GET'
+        getProfile({commit}, {user_id}) {
+            return this.$app.config.globalProperties.$api.user.getProfile(user_id).then((response) => {
+                commit('SET_PROFILE', response.data)
             })
-                .then((response) => {
-                    console.log(response)
-                    commit('SET_PROFILE', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
-        getUser ({ commit }, {userid}) {
-            return Axios(`/api/profile/${userid}`, {
-                method: 'GET'
+        getUser({commit}, {userid}) {
+            return this.$app.config.globalProperties.$api.user.getUser(userid).then((response) => {
+                commit('SET_USER', response.data)
             })
-                .then((response) => {
-                    commit('SET_USER', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         }
     },
     mutations: {
@@ -67,13 +40,13 @@ export default {
         }
     },
     getters: {
-        profile (state) {
+        profile(state) {
             return state.profile
         },
-        users (state) {
+        users(state) {
             return state.users
         },
-        userData (state) {
+        userData(state) {
             return state.user
         }
     }

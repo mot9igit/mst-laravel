@@ -18,11 +18,15 @@ import VueCookies from 'vue-cookies'
 // import store from './store'
 import ApiPlugin from './shared/api'
 import LoadPlugin from './shared/api/load'
+import errorHandler from "@/services/errorHandler.js";
+import { notificationService } from "@/services/notificationService.js";
 import PrimeVue from 'primevue/config'
 import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
+import ToastPlugin from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 import PrimeButton from 'primevue/button'
 import mdiVue from 'mdi-vue/v3'
 import {
@@ -43,6 +47,9 @@ import { createVfm } from 'vue-final-modal'
  */
 
 const app = createApp({});
+
+window.$notify = notificationService;
+window.errorHandler = errorHandler;
 
 const vfm = createVfm()
 
@@ -234,7 +241,6 @@ app.use(PrimeVue, {
 })
 app.use(ApiPlugin)
 app.use(LoadPlugin)
-app.use(store);
 app.use(ToastService)
 app.use(ConfirmationService)
 // app.use(
@@ -255,6 +261,9 @@ app.use(mdiVue, {
         mdiSortDescending,
     },
 })
+store.$app = app
+app.use(store)
+
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import SignInPage from './pages/sign-in/index.vue';
@@ -310,5 +319,3 @@ app.component("create-product-category-component", CreateProductCategoryComponen
 
 app.mount('#app');
 
-
-app.toast

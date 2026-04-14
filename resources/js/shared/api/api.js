@@ -1,32 +1,17 @@
 import instance from './instance'
-// import additionModule from './addition'
+
 import authModule from '@/pages/sign-in/api/auth'
-// import orgModule from '@/pages/org/api/org'
-// import basketModule from '@/pages/org/api/basket'
-// import catalogModule from '@/pages/account/api/catalog'
-// import retailModule from '@/pages/retail/api'
-// import wholesaleModule from '@/pages/wholesale/api'
-// import salesModule from '@/pages/wholesale/api/sales'
-// import actionModule from '@/shared/api/action'
-// import purchasesModule from '@/pages/purchases/api'
-// import requirementsModule from '@/pages/account/api/requirements'
-// import warehouseModule from '@/pages/warehouse/api/index'
-// import notificationsModule from '@/pages/account/api/notifications'
-// import offerModule from '@/pages/wholesale/api/offer'
+import organizationModule from "@/shared/api/organization.js";
+import userModule from "@/shared/api/user.js";
+import requisiteModule from "@/shared/api/requisite.js";
+import bankRequisiteModule from "@/shared/api/bankRequisite.js";
+import productCategoryModule from "@/shared/api/productCategory.js";
 
 export default {
-  auth: authModule(instance),
-  // addition: additionModule(instance),
-  // org: orgModule(instance),
-  // catalog: catalogModule(instance),
-  // basket: basketModule(instance),
-  // retail: retailModule(instance),
-  // wholesale: wholesaleModule(instance),
-  // sales: salesModule(instance),
-  // action: actionModule(instance),
-  // purchases: purchasesModule(instance),
-  // requirements: requirementsModule(instance),
-  // warehouse: warehouseModule(instance),
-  // notifications: notificationsModule(instance),
-  // offer: offerModule(instance),
+    auth: authModule(instance),
+    organization: organizationModule(instance),
+    user: userModule(instance),
+    requisite: requisiteModule(instance),
+    bankRequisite: bankRequisiteModule(instance),
+    productCategory: productCategoryModule(instance),
 }

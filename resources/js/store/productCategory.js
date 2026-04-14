@@ -8,54 +8,30 @@ export default {
     },
     actions: {
         getProductCategoryTree ({ commit }) {
-            return Axios('/api/product/category/', {
-                method: 'GET',
-                params: {
-                    tree: 1
-                }
+            const payload = {
+                tree: 1
+            }
+            return this.$app.config.globalProperties.$api.productCategory.getProductCategories(payload).then((response) => {
+                commit('SET_PRODUCT_CATEGORY_TREE', response.data)
             })
-                .then((response) => {
-                    commit('SET_PRODUCT_CATEGORY_TREE', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
         getProductCategories ({ commit }, {filter, filtersdata, page, sort, perpage}) {
-            return Axios('/api/product/category/', {
-                method: 'GET',
-                params: {
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage,
-                    tree: 0
-                }
+            const payload = {
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage,
+                tree: 0
+            }
+            return this.$app.config.globalProperties.$api.productCategory.getProductCategories(payload).then((response) => {
+                commit('SET_PRODUCT_CATEGORIES', response.data)
             })
-                .then((response) => {
-                    commit('SET_PRODUCT_CATEGORIES', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
         getProductCategory ({ commit }, {category_id}) {
-            return Axios(`/api/product/category/${category_id}`, {
-                method: 'GET'
+            return this.$app.config.globalProperties.$api.productCategory.getProductCategory(category_id).then((response) => {
+                commit('SET_PRODUCT_CATEGORY', response.data)
             })
-                .then((response) => {
-                    commit('SET_PRODUCT_CATEGORY', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         }
     },
     mutations: {

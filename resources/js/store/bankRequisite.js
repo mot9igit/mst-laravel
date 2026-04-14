@@ -7,39 +7,23 @@ export default {
     },
     actions: {
         getBankRequisites ({ commit }, {org_id, requisite_id, filter, filtersdata, page, sort, perpage}) {
-            return Axios('/api/integration/bank-requisite/', {
-                method: 'GET',
-                params: {
-                    org_id: org_id,
-                    requisite_id: requisite_id,
-                    filter: filter,
-                    filtersdata: filtersdata,
-                    sort: sort,
-                    page: page,
-                    perpage: perpage
-                }
+            const payload = {
+                org_id: org_id,
+                requisite_id: requisite_id,
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage
+            }
+            return this.$app.config.globalProperties.$api.bankRequisite.getBankRequisites(payload).then((response) => {
+                commit('SET_BANK_REQUISITES', response.data)
             })
-                .then((response) => {
-                    commit('SET_BANK_REQUISITES', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         },
         getBankRequisite ({ commit }, { bank_requisite_id }) {
-            return Axios(`/api/integration/bank-requisite/${bank_requisite_id}`, {
-                method: 'GET'
+            return this.$app.config.globalProperties.$api.bankRequisite.getBankRequisite(bank_requisite_id).then((response) => {
+                commit('SET_BANK_REQUISITE', response.data)
             })
-                .then((response) => {
-                    commit('SET_BANK_REQUISITE', response.data)
-                })
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        // TODO: to auth page
-                    }
-                })
         }
     },
     mutations: {
