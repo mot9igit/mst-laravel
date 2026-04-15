@@ -141,10 +141,7 @@ export default {
                     label: 'Да'
                 },
                 accept: () => {
-                    // 2. Отправляем запрос на API
-                    return Axios(`/api/integration/organization/${data.id}`, {
-                        method: 'DELETE'
-                    })
+                    return this.$api.base.delete(`/api/integration/organization/${data.id}`)
                         .then((response) => {
                             this.organizationTable.page = 1
                             this.getOrganizations({
@@ -155,17 +152,11 @@ export default {
                         .catch(error => {
                             if (error.response.status === 404) {
                                 this.organizationTable.page = 1
-                                this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
+                                // this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
                                 this.getOrganizations({
                                     page: this.organizationTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
-                            }
-                            if (error.response.status === 500) {
-                                this.$toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Внутренняя ошибка сервера', life: 3000 });
-                            }
-                            if (error.response.status === 403) {
-                                // TODO: to auth page
                             }
                         })
                 },

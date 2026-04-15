@@ -133,9 +133,7 @@ export default {
                 },
                 accept: () => {
                     // 2. Отправляем запрос на API
-                    return Axios(`/api/users/${data.id}`, {
-                        method: 'DELETE'
-                    })
+                    this.$api.base.delete(`/api/users/${data.id}`)
                         .then((response) => {
                             this.userTable.page = 1
                             this.getUsers({
@@ -146,17 +144,11 @@ export default {
                         .catch(error => {
                             if (error.response.status === 404) {
                                 this.userTable.page = 1
-                                this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
+                                // this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
                                 this.getUsers({
                                     page: this.userTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
-                            }
-                            if (error.response.status === 500) {
-                                this.$toast.add({ severity: 'error', summary: 'Ошибка', detail: 'Внутренняя ошибка сервера', life: 3000 });
-                            }
-                            if (error.response.status === 403) {
-                                // TODO: to auth page
                             }
                         })
                 },

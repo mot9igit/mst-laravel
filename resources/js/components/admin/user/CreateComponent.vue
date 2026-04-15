@@ -35,20 +35,22 @@ export default {
         }
     },
     mounted(){
-        const reqData = {
-            userid: this.userid
+        if(this.userid > 0) {
+            const reqData = {
+                userid: this.userid
+            }
+            this.getUser(reqData).then(() => {
+                console.log(this.userData)
+                this.form.name = this.userData.name;
+                this.form.email = this.userData.email;
+                this.form.fullname = this.userData.fullname;
+                this.form.image = this.userData.image;
+                this.form.avatar = this.userData.avatar;
+                this.form.phone = this.userData.phone;
+                this.form.active = Boolean(this.userData.active);
+                this.form.sudo = Boolean(this.userData.sudo);
+            })
         }
-        this.getUser(reqData).then(() => {
-            console.log(this.userData)
-            this.form.name = this.userData.name;
-            this.form.email = this.userData.email;
-            this.form.fullname = this.userData.fullname;
-            this.form.image = this.userData.image;
-            this.form.avatar = this.userData.avatar;
-            this.form.phone = this.userData.phone;
-            this.form.active = Boolean(this.userData.active);
-            this.form.sudo = Boolean(this.userData.sudo);
-        })
     },
     methods: {
         ...mapActions([

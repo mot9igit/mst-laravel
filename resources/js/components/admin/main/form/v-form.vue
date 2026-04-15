@@ -249,31 +249,23 @@ export default {
         search(event, value, key){
             if(event.query){
                 if(value.searchType === 'inn'){
-                    axios.get('/api/suggestions/company', { params: { inn: event.query}})
+                    this.$api.dadata.suggestionsCompany(event.query)
                         .then(res => {
                             this.items[key] = res.data
                         })
-                        .catch((error) => {
-                            this.errors = error.response?.data?.errors
-                        });
                 }
                 if(value.searchType === 'address'){
-                    axios.get('/api/suggestions/address', { params: { query: event.query}})
+                    this.$api.dadata.suggestionsAddress(event.query)
                         .then(res => {
                             this.items[key] = res.data
                         })
-                        .catch((error) => {
-                            this.errors = error.response?.data?.errors
-                        });
                 }
                 if(value.searchType === 'custom'){
-                    axios.get(value.searchUrl, { params: { filter: event.query}})
+                    let params = { filter: event.query}
+                    this.$api.base.get(value.searchUrl, params)
                         .then(res => {
                             this.items[key] = res.data.data
                         })
-                        .catch((error) => {
-                            this.errors = error.response?.data?.errors
-                        });
                 }
             }
         },
@@ -292,8 +284,8 @@ export default {
         submit(){
             this.loading = true
             this.errors = {}
-            if(this.mode == 'create'){
-                axios.post(this.form_url, this.form)
+            if(this.mode === 'create'){
+                this.$api.base.post(this.form_url, this.form)
                     .then(res => {
                         if(this.redirect_url){
                             window.location.href = this.redirect_url;
@@ -309,7 +301,7 @@ export default {
                     });
             }
             if(this.mode == 'update'){
-                axios.patch(this.form_url, this.form)
+                this.$api.base.patch(this.form_url, this.form)
                     .then(res => {
                         if(this.redirect_url){
                             window.location.href = this.redirect_url;

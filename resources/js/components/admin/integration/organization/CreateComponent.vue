@@ -56,17 +56,20 @@ export default {
             form: {},
         }
     },
-    mounted(){
-        const reqData = {
-            organizationId: this.orgid
+    mounted() {
+        if (this.orgid > 0){
+            const reqData = {
+                organizationId: this.orgid
+            }
+
+            this.getOrganization(reqData).then(() => {
+                this.form.name = this.organization.name;
+                this.form.description = this.organization.description;
+                this.form.active = Boolean(this.organization.active);
+                this.form.verified = Boolean(this.organization.verified);
+                this.form.thumb_url = this.organization.thumb_url;
+            })
         }
-        this.getOrganization(reqData).then(() => {
-            this.form.name = this.organization.name;
-            this.form.description = this.organization.description;
-            this.form.active = Boolean(this.organization.active);
-            this.form.verified = Boolean(this.organization.verified);
-            this.form.thumb_url = this.organization.thumb_url;
-        })
     },
     methods: {
         ...mapActions([
