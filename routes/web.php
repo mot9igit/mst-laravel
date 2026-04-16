@@ -54,6 +54,11 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         });
     });
 
+    Route::group(['prefix' => 'store'], function() {
+        Route::get("/", App\Http\Controllers\Admin\Integration\Store\IndexController::class)->name("admin.integration.store.index");
+
+    });
+
     Route::group(['namespace'=>'Products', 'prefix' => 'product'], function() {
         Route::get("/", IndexController::class)->name("admin.product.index");
         Route::group(['namespace'=>'Categories', 'prefix' => 'category'], function() {

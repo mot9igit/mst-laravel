@@ -20,13 +20,12 @@ return new class extends Migration
             $table->string("fias_id")->nullable();
             $table->string("postal_code")->nullable();
             $table->unsignedBigInteger("population")->nullable();
-            $table->foreignId("region_id")->nullable()->constrained();
+            $table->foreignIdFor(\App\Models\Region::class)->constrained()->onDelete('cascade');
             $table->unsignedSmallInteger("active")->default(0);
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index('region_id', 'city_region_idx');
             $table->index('active', 'city_active_idx');
             $table->index('fias_id', 'city_fias_id_idx');
             $table->index('postal_code', 'city_postal_code_idx');

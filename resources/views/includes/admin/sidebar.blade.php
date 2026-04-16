@@ -105,10 +105,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.integration.store.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-box"></i>
                                 <p>
-                                    Склады <span class="nav-badge badge text-bg-secondary me-3">0</span>
+                                    Точки продаж <span class="nav-badge badge text-bg-secondary me-3">{{ $store_count ?? 0 }}</span>
                                 </p>
                             </a>
                         </li>

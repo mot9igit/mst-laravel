@@ -264,26 +264,24 @@ app.use(mdiVue, {
 store.$app = app
 app.use(store)
 
+import SignInPage from '@/pages/sign-in/index.vue';
+import ProfileFormComponent from '@/components/admin/profile/form.vue';
+import ShowUserComponent from '@/components/admin/user/ShowComponent.vue';
+import CreateUserComponent from '@/components/admin/user/CreateComponent.vue';
+import UpdatePasswordComponent from '@/components/admin/user/UpdatePasswordComponent.vue';
+import ShowOrganizationComponent from '@/components/admin/integration/organization/ShowComponent.vue';
+import CreateOrganizationComponent from '@/components/admin/integration/organization/CreateComponent.vue';
+import UpdateOrganizationComponent from "@/components/admin/integration/organization/UpdateComponent.vue";
+import ShowRequisiteComponent from "@/components/admin/integration/requisite/ShowComponent.vue";
+import CreateOrganizationRequisiteComponent from "@/components/admin/integration/requisite/CreateComponent.vue";
+import UpdateOrganizationRequisiteComponent from "@/components/admin/integration/requisite/UpdateComponent.vue";
+import ShowBankRequisiteComponent from "@/components/admin/integration/bank-requisite/ShowComponent.vue";
+import CreateBankRequisiteComponent from "@/components/admin/integration/bank-requisite/CreateComponent.vue";
+import ShowProductCategoryComponent from "@/components/admin/product/category/ShowComponent.vue";
+import CreateProductCategoryComponent from "@/components/admin/product/category/CreateComponent.vue";
+import ShowStoreComponent from '@/components/admin/integration/store/ShowComponent.vue';
+import ShowGeoComponent from '@/components/admin/system/geo/ShowComponent.vue';
 
-import ExampleComponent from './components/ExampleComponent.vue';
-import SignInPage from './pages/sign-in/index.vue';
-import ProfileFormComponent from './components/admin/profile/form.vue';
-import ShowUserComponent from './components/admin/user/ShowComponent.vue';
-import CreateUserComponent from './components/admin/user/CreateComponent.vue';
-import UpdatePasswordComponent from './components/admin/user/UpdatePasswordComponent.vue';
-import ShowOrganizationComponent from './components/admin/integration/organization/ShowComponent.vue';
-import CreateOrganizationComponent from './components/admin/integration/organization/CreateComponent.vue';
-import UpdateOrganizationComponent from "./components/admin/integration/organization/UpdateComponent.vue";
-import ShowRequisiteComponent from "./components/admin/integration/requisite/ShowComponent.vue";
-import CreateOrganizationRequisiteComponent from "./components/admin/integration/requisite/CreateComponent.vue";
-import UpdateOrganizationRequisiteComponent from "./components/admin/integration/requisite/UpdateComponent.vue";
-import ShowBankRequisiteComponent from "./components/admin/integration/bank-requisite/ShowComponent.vue";
-import CreateBankRequisiteComponent from "./components/admin/integration/bank-requisite/CreateComponent.vue";
-import ShowProductCategoryComponent from "./components/admin/product/category/ShowComponent.vue";
-import CreateProductCategoryComponent from "./components/admin/product/category/CreateComponent.vue";
-
-
-app.component('example-component', ExampleComponent);
 app.component('sign-in-page', SignInPage);
 app.component("profile-form-component", ProfileFormComponent);
 app.component("show-user-component", ShowUserComponent);
@@ -299,6 +297,8 @@ app.component("show-bank-requisite-component", ShowBankRequisiteComponent);
 app.component("create-bank-requisite-component", CreateBankRequisiteComponent);
 app.component("show-product-category-component", ShowProductCategoryComponent);
 app.component("create-product-category-component", CreateProductCategoryComponent);
+app.component("show-store-component", ShowStoreComponent);
+app.component("show-geo-component", ShowGeoComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

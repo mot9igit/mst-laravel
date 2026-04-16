@@ -292,7 +292,6 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        console.log(error.response)
                         if(error.response?.data?.errors){
                             this.errors = error.response?.data?.errors
                         }
@@ -300,7 +299,7 @@ export default {
                         this.loading = false
                     });
             }
-            if(this.mode == 'update'){
+            if(this.mode === 'update'){
                 this.$api.base.patch(this.form_url, this.form)
                     .then(res => {
                         if(this.redirect_url){
@@ -308,7 +307,6 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        console.log(error)
                         if(error.response?.data?.errors){
                             this.errors = error.response?.data?.errors
                         }

@@ -137,7 +137,7 @@ class OrganizationRepository
     }
 
     /**
-     * Обновление пользователя в БД
+     * Обновление Организации в БД
      *
      * @param int $id
      * @param array $validated

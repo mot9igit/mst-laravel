@@ -18,6 +18,30 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{user}', 'ShowController' );
     });
 
+    Route::group(["namespace" => "App\Http\Controllers\API\System\Geo\Country", "prefix" => "system/geo/country", "middleware" => []], function(){
+        Route::get("/", "IndexController");
+        Route::post('/', 'StoreController' );
+        Route::get('/{country}', 'ShowController' );
+        Route::delete("/{country}", "DeleteController");
+        Route::patch("/{country}", "UpdateController");
+    });
+
+    Route::group(["namespace" => "App\Http\Controllers\API\System\Geo\City", "prefix" => "system/geo/city", "middleware" => []], function(){
+        Route::get("/", "IndexController");
+        Route::post('/', 'StoreController' );
+        Route::get('/{city}', 'ShowController' );
+        Route::delete("/{city}", "DeleteController");
+        Route::patch("/{city}", "UpdateController");
+    });
+
+    Route::group(["namespace" => "App\Http\Controllers\API\System\Geo\Region", "prefix" => "system/geo/region", "middleware" => []], function(){
+        Route::get("/", "IndexController");
+        Route::post('/', 'StoreController' );
+        Route::get('/{city}', 'ShowController' );
+        Route::delete("/{city}", "DeleteController");
+        Route::patch("/{city}", "UpdateController");
+    });
+
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Dadata", "prefix" => "suggestions", "middleware" => []], function (): void {
         Route::get("/company", "GetCompanyByInnController");
         Route::get("/address", "GetAddressController");
@@ -40,6 +64,13 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{organization}/user', 'User\IndexController' );
         Route::post('/{organization}/user', 'User\StoreController' );
         Route::delete('/{organization}/user/{user}', 'User\DeleteController' );
+    });
+    Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
+        Route::get("/", "IndexController");
+        // Route::post('/', 'StoreController' );
+        // Route::get('/{store}', 'ShowController' );
+        // Route::delete("/{store}", "DeleteController");
+        // Route::patch("/{store}", "UpdateController");
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Requisite", "prefix" => "integration/requisite", "middleware" => []], function(){
         Route::get("/", "IndexController");

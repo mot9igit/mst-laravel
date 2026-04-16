@@ -41,7 +41,7 @@ class Service
     }
 
     /**
-     * Создание пользователя
+     * Создание Организации
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse

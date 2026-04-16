@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("code");
             $table->string("fias_id")->nullable();
             $table->string("postal_code")->nullable();
-            $table->foreignId("country_id")->nullable()->constrained();
+            $table->foreignIdFor(\App\Models\Country::class)->constrained()->onDelete('cascade');
             $table->unsignedBigInteger("population")->nullable();
             $table->unsignedSmallInteger("active")->default(0);
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));

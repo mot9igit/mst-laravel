@@ -17,5 +17,5 @@
     <!--end::Container-->
 @endsection
 @section('content')
-    <show-system-geo-component></show-system-geo-component>
+    <show-geo-component></show-geo-component>
 @endsection

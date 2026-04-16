@@ -21,8 +21,5 @@
         <div class="card-body">
             <show-organization-component></show-organization-component>
         </div>
-        <div class="card-footer">
-
-        </div>
     </div>
 @endsection

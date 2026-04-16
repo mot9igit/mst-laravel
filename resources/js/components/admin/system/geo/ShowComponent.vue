@@ -1,5 +1,5 @@
 <template>
-    <div class="dart-container">
+    <div class="card card-primary card-outline mb-4">
         <Toast />
         <ConfirmDialog></ConfirmDialog>
         <Tabs value="0">
@@ -10,73 +10,13 @@
             </TabList>
             <TabPanels>
                 <TabPanel value="0">
-                    <v-table
-                        class=""
-                        :filters="this.cityTable.filters"
-                        :items_data="this.cities.data"
-                        :total="this.cities.total"
-                        :pagination_items_per_page="this.pagination_items_per_page"
-                        :pagination_offset="this.pagination_offset"
-                        :page="this.cityTable.page"
-                        :table_data="this.cityTable.table_data"
-                        title="Города"
-                        @filter="filterCity"
-                        @sort="filterCity"
-                        @paginate="paginateCity"
-                        @deleteElem="deleteCity"
-                    >
-                        <template v-slot:button>
-                            <div>
-                                <a href="/adm/system/geo/city/create" class="btn btn-primary"> Создать город </a>
-                            </div>
-                        </template>
-                    </v-table>
+                    <show-city-component/>
                 </TabPanel>
                 <TabPanel value="1">
-                    <v-table
-                        class=""
-                        :filters="this.regionsTable.filters"
-                        :items_data="this.regions.data"
-                        :total="this.regions.total"
-                        :pagination_items_per_page="this.pagination_items_per_page"
-                        :pagination_offset="this.pagination_offset"
-                        :page="this.regionsTable.page"
-                        :table_data="this.regionsTable.table_data"
-                        title="Города"
-                        @filter="filterRegion"
-                        @sort="filterRegion"
-                        @paginate="paginateRegion"
-                        @deleteElem="deleteRegion"
-                    >
-                        <template v-slot:button>
-                            <div>
-                                <a href="/adm/system/geo/region/create" class="btn btn-primary"> Создать регион </a>
-                            </div>
-                        </template>
-                    </v-table>
+                    <show-region-component/>
                 </TabPanel>
                 <TabPanel value="2">
-                    <v-table
-                        class=""
-                        :filters="this.countryTable.filters"
-                        :items_data="this.countries.data"
-                        :total="this.countries.total"
-                        :pagination_items_per_page="this.pagination_items_per_page"
-                        :pagination_offset="this.pagination_offset"
-                        :page="this.countryTable.page"
-                        :table_data="this.countryTable.table_data"
-                        title="Города"
-                        @filter="filterCountry"
-                        @sort="filterCountry"
-                        @paginate="paginateCountry"
-                        @deleteElem="deleteCountry"
-                    >
-                        <template v-slot:button>
-                            <div>
-                                <a href="/adm/system/geo/country/create" class="btn btn-primary"> Создать страну </a>
-                            </div>
-                        </template>
-                    </v-table>
+                    <show-country-component/>
                 </TabPanel>
             </TabPanels>
         </Tabs>
@@ -92,8 +32,11 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import vTable from "../../../admin/main/table/v-table.vue";
+import vTable from "@/components/admin/main/table/v-table.vue";
 import Axios from "axios";
+import ShowCountryComponent from '@/components/admin/system/geo/country/ShowComponent.vue';
+import ShowRegionComponent from '@/components/admin/system/geo/region/ShowComponent.vue';
+import ShowCityComponent from '@/components/admin/system/geo/city/ShowComponent.vue';
 
 export default {
     name: "SystemGeo",
@@ -412,6 +355,9 @@ export default {
     },
     components: {
         vTable,
+        ShowCountryComponent,
+        ShowRegionComponent,
+        ShowCityComponent,
         Toast,
         ConfirmDialog,
         Tabs,
