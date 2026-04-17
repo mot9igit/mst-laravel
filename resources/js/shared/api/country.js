@@ -1,8 +1,8 @@
 export default function (instance) {
     return {
-        getCountries() {
+        getCountries(payload) {
             const data = instance
-                .get('/api/system/geo/country/')
+                .get('/api/system/geo/country/', {params: payload})
             return data
         },
         getCountry(countryId) {

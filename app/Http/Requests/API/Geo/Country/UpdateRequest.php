@@ -25,7 +25,10 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => "required|string",
+            'key' => "nullable|string",
+            'population' => "nullable|integer",
             'description' => 'nullable|string',
+            'active' => 'nullable|boolean',
         ];
     }
 

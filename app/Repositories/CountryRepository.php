@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CountryRepository
 {
@@ -48,7 +49,7 @@ class CountryRepository
     }
 
     /**
-     * Удаление Организации
+     * Удаление Страны
      *
      * @param int $country_id
      * @return string
@@ -81,8 +82,22 @@ class CountryRepository
         DB::beginTransaction();
         try {
             $createdata = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'active' => 1
             ];
+            if(isset($validated['key'])){
+                $createdata['key'] = Str::slug($validated['key']);
+            }else{
+                $createdata['key'] = Str::slug($validated['name']);
+            }
+            if(isset($validated['population'])){
+                $createdata['population'] = $validated['population'];
+            }
+            if(isset($validated['active'])){
+                $createdata['active'] = $validated['active'];
+            }else{
+                $createdata['active'] = 0;
+            }
             if(isset($validated['description'])){
                 $createdata['description'] = $validated['description'];
             }
@@ -109,10 +124,24 @@ class CountryRepository
         DB::beginTransaction();
         try {
             $updateData = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'active' => 1
             ];
+            if(isset($validated['key'])){
+                $updateData['key'] = Str::slug($validated['key']);
+            }else{
+                $updateData['key'] = Str::slug($validated['name']);
+            }
             if(isset($validated['description'])){
                 $updateData['description'] = $validated['description'];
+            }
+            if(isset($validated['active'])){
+                $updateData['active'] = $validated['active'];
+            }else{
+                $updateData['active'] = 0;
+            }
+            if(isset($validated['population'])){
+                $updateData['population'] = $validated['population'];
             }
             $updatedCountry = $country->update($updateData);
             DB::commit();

@@ -9,22 +9,32 @@
             :pagination_offset="this.pagination_offset"
             :page="this.regionTable.page"
             :table_data="this.regionTable.table_data"
-            title="Страна"
+            title="Регион"
             @filter="filterRegion"
             @sort="filterRegion"
-            @paginate="filterRegion"
-            @deleteElem="filterRegion"
+            @paginate="paginateRegion"
+            @editElem="editRegion"
+            @deleteElem="deleteRegion"
         >
             <template v-slot:button>
                 <div>
-                    <a href="/adm/system/geo/country/create" class="btn btn-primary"> Создать регион </a>
+                    <button class="btn btn-primary" @click.prevent="() => { this.region_id = 0; this.createRegionWindow = true, this.createWindow.title = this.createTitle}"> Создать регион </button>
                 </div>
             </template>
         </v-table>
+        <customModal
+            v-model="createRegionWindow"
+            @cancel="cancel"
+        >
+            <template v-slot:title>{{ this.createWindow.title }}</template>
+            <create-region-component :region_id="this.region_id"></create-region-component>
+        </customModal>
     </div>
 </template>
 <script>
 import vTable from "@/components/admin/main/table/v-table.vue"
+import customModal from "@/shared/ui/Modal.vue";
+import CreateRegionComponent from '@/components/admin/system/geo/region/CreateComponent.vue';
 import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
 import {mapActions, mapGetters} from "vuex";
@@ -43,11 +53,20 @@ export default{
     },
     components: {
         vTable,
+        customModal,
+        CreateRegionComponent,
         Toast,
         ConfirmDialog,
     },
     data() {
         return {
+            region_id: 0,
+            createRegionWindow: false,
+            createWindow: {
+                title: "",
+            },
+            createTitle: "Создать регион",
+            updateTitle: "Редактировать регион",
             confirm: null,
             toast: null,
             regionTable:{
@@ -70,6 +89,23 @@ export default{
                     name: {
                         label: 'Наименование',
                         type: 'text',
+                    },
+                    name_r: {
+                        label: 'Наименование, скл',
+                        type: 'text',
+                    },
+                    code: {
+                        label: 'Код',
+                        type: 'text',
+                    },
+                    postal_code: {
+                        label: 'Индекс',
+                        type: 'text',
+                    },
+                    country: {
+                        label: 'Страна',
+                        type: 'text',
+                        inner: 'name'
                     },
                     actions: {
                         label: 'Действия',
@@ -100,6 +136,11 @@ export default{
         paginateRegion(data) {
             this.regionTable.page = data.page
             this.getRegions(data)
+        },
+        editRegion(data){
+            this.region_id = data.id
+            this.createWindow.title = this.updateTitle
+            this.createRegionWindow = true
         },
         deleteRegion(data) {
             // 1. Запрашиваем подтверждение

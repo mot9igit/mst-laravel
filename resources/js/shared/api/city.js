@@ -1,8 +1,8 @@
 export default function (instance) {
     return {
-        getCities() {
+        getCities(payload) {
             const data = instance
-                .get('/api/system/geo/city/')
+                .get('/api/system/geo/city/', {params: payload})
             return data
         },
         getCity(cityId) {

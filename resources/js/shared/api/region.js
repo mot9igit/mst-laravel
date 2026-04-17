@@ -1,8 +1,8 @@
 export default function (instance) {
     return {
-        getRegions() {
+        getRegions(payload) {
             const data = instance
-                .get('/api/system/geo/region/')
+                .get('/api/system/geo/region/', {params: payload})
             return data
         },
         getRegion(regionId) {

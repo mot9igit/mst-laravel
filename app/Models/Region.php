@@ -13,6 +13,8 @@ class Region extends Model
     protected $fillable = [
         "key",
         "name",
+        "name_r",
+        "code",
         "fias_id",
         "postal_code",
         "population",
@@ -23,5 +25,10 @@ class Region extends Model
 
     public function cities(): hasMany {
         return $this->hasMany(City::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 }

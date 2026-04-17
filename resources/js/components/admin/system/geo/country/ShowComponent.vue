@@ -13,14 +13,22 @@
             @filter="filterCountry"
             @sort="filterCountry"
             @paginate="paginateCountry"
+            @editElem="editCountry"
             @deleteElem="deleteCountry"
         >
             <template v-slot:button>
                 <div>
-                    <a href="/adm/system/geo/country/create" class="btn btn-primary"> Создать страну </a>
+                    <button class="btn btn-primary" @click.prevent="() => { this.country_id = 0; this.createCountryWindow = true, this.createWindow.title = this.createTitle}"> Создать страну </button>
                 </div>
             </template>
         </v-table>
+        <customModal
+            v-model="createCountryWindow"
+            @cancel="cancel"
+        >
+            <template v-slot:title>{{ this.createWindow.title }}</template>
+            <create-country-component :country_id="this.country_id"></create-country-component>
+        </customModal>
     </div>
 </template>
 <script>
@@ -28,6 +36,8 @@ import vTable from "@/components/admin/main/table/v-table.vue";
 import {mapActions, mapGetters} from "vuex";
 import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
+import customModal from "@/shared/ui/Modal.vue";
+import CreateCountryComponent from '@/components/admin/system/geo/country/CreateComponent.vue';
 
 export default{
     name: "Country",
@@ -42,12 +52,21 @@ export default{
         }
     },
     components: {
+        customModal,
+        CreateCountryComponent,
         vTable,
         Toast,
         ConfirmDialog,
     },
     data() {
         return {
+            country_id: 0,
+            createCountryWindow: false,
+            createWindow: {
+                title: "",
+            },
+            createTitle: "Создать страну",
+            updateTitle: "Редактировать страну",
             confirm: null,
             toast: null,
             countryTable:{
@@ -70,6 +89,19 @@ export default{
                     name: {
                         label: 'Наименование',
                         type: 'text',
+                    },
+                    key: {
+                        label: 'Ключ',
+                        type: 'text',
+                    },
+                    population: {
+                        label: 'Население',
+                        type: 'text',
+                    },
+                    active: {
+                        label: 'Активна',
+                        type: 'boolean',
+                        calc: 'positive'
                     },
                     actions: {
                         label: 'Действия',
@@ -100,6 +132,11 @@ export default{
         paginateCountry(data) {
             this.countryTable.page = data.page
             this.getCountries(data)
+        },
+        editCountry(data){
+            this.country_id = data.id
+            this.createWindow.title = this.updateTitle
+            this.createCountryWindow = true
         },
         deleteCountry(data) {
             // 1. Запрашиваем подтверждение

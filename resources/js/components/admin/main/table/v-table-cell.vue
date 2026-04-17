@@ -15,7 +15,7 @@
             <Checkbox v-model="check" :binary="true" @input="checkRow"/>
         </div>
         <div class="cell_value" v-else-if="cell_data.type == 'text'">
-            {{ value[cell_key] }}
+            {{ cell_data.inner ? value[cell_key][cell_data.inner] : value[cell_key] }}
             <div v-if="cell_data.description" class="cell_description">
         <span v-if="cell_data.description.type == 'field'">
           {{ value[cell_data.description.key] }}

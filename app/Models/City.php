@@ -22,7 +22,7 @@ class City extends Model
         "properties"
     ];
 
-    public function country(): belongsTo {
+    public function region(): belongsTo {
         return $this->belongsTo(Region::class);
     }
 }

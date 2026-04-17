@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RegionRepository
 {
@@ -37,10 +38,11 @@ class RegionRepository
 
         if($filter != ''){
             $regions = Region::where('name', 'like', '%'.$filter.'%')
+                ->with('country')
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{
-            $regions = Region::orderBy($sortBy, $sortDir)
+            $regions = Region::with('country')->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }
 
@@ -81,8 +83,32 @@ class RegionRepository
         DB::beginTransaction();
         try {
             $createdata = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'name_r' => $validated['name_r'],
+                'code' => $validated['code']
             ];
+            if(isset($validated['country_id'])){
+                $createdata['country_id'] = $validated['country_id']['id'];
+            }
+            if(isset($validated['key'])){
+                $createdata['key'] = Str::slug($validated['key']);
+            }else{
+                $createdata['key'] = Str::slug($validated['name']);
+            }
+            if(isset($validated['population'])){
+                $createdata['population'] = $validated['population'];
+            }
+            if(isset($validated['fias_id'])){
+                $createdata['fias_id'] = $validated['fias_id'];
+            }
+            if(isset($validated['postal_code'])){
+                $createdata['postal_code'] = $validated['postal_code'];
+            }
+            if(isset($validated['active'])){
+                $createdata['active'] = $validated['active'];
+            }else{
+                $createdata['active'] = 0;
+            }
             if(isset($validated['description'])){
                 $createdata['description'] = $validated['description'];
             }
@@ -109,8 +135,32 @@ class RegionRepository
         DB::beginTransaction();
         try {
             $updateData = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'name_r' => $validated['name_r'],
+                'code' => $validated['code']
             ];
+            if(isset($validated['country_id'])){
+                $updateData['country_id'] = $validated['country_id']['id'];
+            }
+            if(isset($validated['key'])){
+                $updateData['key'] = Str::slug($validated['key']);
+            }else{
+                $updateData['key'] = Str::slug($validated['name']);
+            }
+            if(isset($validated['population'])){
+                $updateData['population'] = $validated['population'];
+            }
+            if(isset($validated['active'])){
+                $updateData['active'] = $validated['active'];
+            }else{
+                $updateData['active'] = 0;
+            }
+            if(isset($validated['fias_id'])){
+                $updateData['fias_id'] = $validated['fias_id'];
+            }
+            if(isset($validated['postal_code'])){
+                $updateData['postal_code'] = $validated['postal_code'];
+            }
             if(isset($validated['description'])){
                 $updateData['description'] = $validated['description'];
             }
