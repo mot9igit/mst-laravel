@@ -24,7 +24,6 @@
         </v-table>
         <customModal
             v-model="createCityWindow"
-            @cancel="cancel"
         >
             <template v-slot:title>{{ this.createWindow.title }}</template>
             <create-city-component :city_id="this.city_id"></create-city-component>
