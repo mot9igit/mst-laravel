@@ -22,7 +22,7 @@
                 >
                     <template v-slot:button>
                         <div>
-                            <a href="/adm/organization/create" class="btn btn-primary"> Создать точку продаж </a>
+                            <a href="/adm/store/create" class="btn btn-primary"> Создать точку продаж </a>
                         </div>
                     </template>
                 </v-table>

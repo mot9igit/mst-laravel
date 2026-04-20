@@ -27,7 +27,8 @@ export default defineConfig({
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
-            '~font': path.resolve(__dirname, 'resources/assets/fonts')
+            '~font': path.resolve(__dirname, 'resources/assets/fonts'),
+            '@': path.join(__dirname, 'resources/js'),
         },
     },
 });

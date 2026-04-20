@@ -48,11 +48,11 @@ class Service
     /**
      * Обновление Города
      *
-     * @param $validated
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @param int $id
+     * @param array $validated
+     * @return JsonResponse
      */
-    public function update(int $id, array $validated)
+    public function update(int $id, array $validated): JsonResponse
     {
         $city = $this->repository->update($id, $validated);
         return response()->json([

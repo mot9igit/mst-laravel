@@ -7,6 +7,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Throwable;
 
 class CityRepository
 {
@@ -37,10 +39,11 @@ class CityRepository
 
         if($filter != ''){
             $cities = City::where('name', 'like', '%'.$filter.'%')
+                ->with('region')
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{
-            $cities = City::orderBy($sortBy, $sortDir)
+            $cities = City::with('region')->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }
 
@@ -81,8 +84,34 @@ class CityRepository
         DB::beginTransaction();
         try {
             $createdata = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'name_r' => $validated['name_r']
             ];
+            if(isset($validated['region_id'])){
+                $createdata['region_id'] = $validated['region_id']['id'];
+            }
+            if(isset($validated['key'])){
+                $createdata['key'] = Str::slug($validated['key']);
+            }else{
+                $createdata['key'] = Str::slug($validated['name']);
+            }
+            if(isset($validated['population'])){
+                $createdata['population'] = $validated['population'];
+            }
+            if(isset($validated['fias_id'])){
+                $createdata['fias_id'] = $validated['fias_id'];
+            }
+            if(isset($validated['postal_code'])){
+                $createdata['postal_code'] = $validated['postal_code'];
+            }
+            if(isset($validated['active'])){
+                $createdata['active'] = $validated['active'];
+            }else{
+                $createdata['active'] = 0;
+            }
+            if(isset($validated['description'])){
+                $createdata['description'] = $validated['description'];
+            }
             if(isset($validated['description'])){
                 $createdata['description'] = $validated['description'];
             }
@@ -102,6 +131,7 @@ class CityRepository
      * @param int $id
      * @param array $validated
      * @return mixed
+     * @throws Throwable
      */
     public function update(int $id, array $validated): mixed
     {
@@ -109,8 +139,31 @@ class CityRepository
         DB::beginTransaction();
         try {
             $updateData = [
-                'name' => $validated['name']
+                'name' => $validated['name'],
+                'name_r' => $validated['name_r']
             ];
+            if(isset($validated['region_id'])){
+                $updateData['region_id'] = $validated['region_id']['id'];
+            }
+            if(isset($validated['key'])){
+                $updateData['key'] = Str::slug($validated['key']);
+            }else{
+                $updateData['key'] = Str::slug($validated['name']);
+            }
+            if(isset($validated['population'])){
+                $updateData['population'] = $validated['population'];
+            }
+            if(isset($validated['active'])){
+                $updateData['active'] = $validated['active'];
+            }else{
+                $updateData['active'] = 0;
+            }
+            if(isset($validated['fias_id'])){
+                $updateData['fias_id'] = $validated['fias_id'];
+            }
+            if(isset($validated['postal_code'])){
+                $updateData['postal_code'] = $validated['postal_code'];
+            }
             if(isset($validated['description'])){
                 $updateData['description'] = $validated['description'];
             }

@@ -44,7 +44,7 @@ export default {
 .modal-content {
   position: relative;
   display: flex;
-  overflow: hidden;
+  overflow-x: hidden;
   flex-direction: column;
   width: 100%;
   max-width: 700px;
@@ -81,8 +81,6 @@ export default {
 .modal__title {
   display: block;
   margin: 24px 2rem 0 0;
-  font-size: 1.5rem;
-  font-weight: 700;
   font-style: normal;
   font-weight: 600;
   font-size: 20px;

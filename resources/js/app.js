@@ -280,7 +280,9 @@ import CreateBankRequisiteComponent from "@/components/admin/integration/bank-re
 import ShowProductCategoryComponent from "@/components/admin/product/category/ShowComponent.vue";
 import CreateProductCategoryComponent from "@/components/admin/product/category/CreateComponent.vue";
 import ShowStoreComponent from '@/components/admin/integration/store/ShowComponent.vue';
+import CreateStoreComponent from '@/components/admin/integration/store/CreateComponent.vue';
 import ShowGeoComponent from '@/components/admin/system/geo/ShowComponent.vue';
+
 
 app.component('sign-in-page', SignInPage);
 app.component("profile-form-component", ProfileFormComponent);
@@ -298,6 +300,7 @@ app.component("create-bank-requisite-component", CreateBankRequisiteComponent);
 app.component("show-product-category-component", ShowProductCategoryComponent);
 app.component("create-product-category-component", CreateProductCategoryComponent);
 app.component("show-store-component", ShowStoreComponent);
+app.component("create-store-component", CreateStoreComponent);
 app.component("show-geo-component", ShowGeoComponent);
 /**
  * The following block of code may be used to automatically register your

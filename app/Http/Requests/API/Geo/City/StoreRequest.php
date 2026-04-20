@@ -25,8 +25,13 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => "required|string",
-            'region_id' => "required|integer|exists:regions,id",
-            'description' => 'nullable|string',
+            'name_r' => "required|string",
+            'fias_id' => "nullable|string",
+            'population' => "nullable|integer",
+            'postal_code' => "nullable|string",
+            'active' => "nullable|boolean",
+            'region_id.id' => "required|integer|exists:regions,id",
+            'description' => 'nullable|string'
         ];
     }
 
@@ -39,9 +44,10 @@ class StoreRequest extends FormRequest
     {
         return [
             'name.required' => 'Поле обязательно для заполнения',
+            'name_r.required' => 'Поле обязательно для заполнения',
             'name.string' => 'Наименование должно быть строкой',
-            'region_id.required' => 'Укажите регион',
-            'region_id.exists' => 'Указанного региона не существует',
+            'region_id.id.required' => 'Укажите регион',
+            'region_id.id.exists' => 'Указанного региона не существует',
         ];
     }
 

@@ -6,8 +6,8 @@ use App\Models\City;
 
 class ShowController extends BaseController
 {
-    public function __invoke(City $city)
+    public function __invoke(int $cityId)
     {
-        return $city;
+        return City::findOrFail($cityId)->with('region')->firstOrFail();
     }
 }

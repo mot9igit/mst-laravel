@@ -33,11 +33,11 @@
 </template>
 <script>
 import vTable from "@/components/admin/main/table/v-table.vue"
-import customModal from "@/shared/ui/Modal.vue";
-import CreateRegionComponent from '@/components/admin/system/geo/region/CreateComponent.vue';
-import Toast from "primevue/toast";
-import ConfirmDialog from "primevue/confirmdialog";
-import {mapActions, mapGetters} from "vuex";
+import customModal from "@/shared/ui/Modal.vue"
+import CreateRegionComponent from '@/components/admin/system/geo/region/CreateComponent.vue'
+import Toast from "primevue/toast"
+import ConfirmDialog from "primevue/confirmdialog"
+import {mapActions, mapGetters} from "vuex"
 
 export default{
     name: "Region",
@@ -98,6 +98,10 @@ export default{
                         label: 'Код',
                         type: 'text',
                     },
+                    population: {
+                        label: 'Население',
+                        type: 'text',
+                    },
                     postal_code: {
                         label: 'Индекс',
                         type: 'text',
@@ -128,7 +132,8 @@ export default{
     },
     methods: {
         ...mapActions([
-            'getRegions'
+            'getRegions',
+            'getCities'
         ]),
         filterRegion(data) {
             this.getRegions(data)

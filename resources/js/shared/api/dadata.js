@@ -7,7 +7,7 @@ export default function (instance) {
         },
         suggestionsAddress(query) {
             const data = instance
-                .get('/api/suggestions/address', { params: { filter: query}})
+                .get('/api/suggestions/address', { params: { query: query}})
             return data
         },
     }

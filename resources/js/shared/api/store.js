@@ -1,8 +1,8 @@
 export default function (instance) {
     return {
-        getStores() {
+        getStores(payload) {
             const data = instance
-                .get('/api/integration/store/')
+                .get('/api/integration/store/', {params: payload})
             return data
         },
         getStore(storeId) {

@@ -157,7 +157,7 @@ export default{
                     return Axios(`/api/integration/organization/${this.org_id}/user/${data.id}`, {
                         method: 'DELETE'
                     })
-                        .then((response) => {
+                        .then(() => {
                             this.organizationUsersTable.page = 1
                             this.getOrganizationUsers({
                                 org_id: this.org_id,
@@ -206,6 +206,6 @@ export default{
 
 <style lang="scss">
 .modal__content{
-    overflow: hidden;
+    overflow-x: hidden;
 }
 </style>
