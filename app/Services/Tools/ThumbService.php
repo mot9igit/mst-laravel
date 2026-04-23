@@ -3,7 +3,7 @@
 namespace App\Services\Tools;
 
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\GD\Driver;
+use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 
