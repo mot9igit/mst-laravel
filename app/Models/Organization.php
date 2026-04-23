@@ -65,7 +65,8 @@ class Organization extends Model
     public function getThumbUrlAttribute(): string | null
     {
         if($this->image) {
-            if (env('FILESYSTEM_DISK', 'public') === 'tws3') {
+            dd(env('FILESYSTEM_DISK'));
+            if (env('FILESYSTEM_DISK') === 'tws3') {
                 return Storage::disk('tws3')->url($this->thumbnail);
             }
             return asset('storage/' . $this->thumbnail);
