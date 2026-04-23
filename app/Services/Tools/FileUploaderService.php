@@ -47,9 +47,9 @@ class FileUploaderService
     }
 
     public function moveUploadFile(string $filename, string $path){
-        if (Storage::exists($filename)) {
+        if (Storage::disk($this->disk)->exists($filename)) {
             $newpath = $path.basename($filename);
-            Storage::move($filename, $newpath);
+            Storage::disk($this->disk)->move($filename, $newpath);
             return $newpath;
         }else{
             Log::error('Файл не найден: '.$filename);
