@@ -2,6 +2,7 @@
 
 namespace App\Services\Tools;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Image;
@@ -14,10 +15,10 @@ class ThumbService
      */
     public function __construct()
     {
-        $this->disk = env('FILESYSTEM_DISK', 'public');
+        $this->disk = Config::get('filesystems.default');
     }
 
-    public function createQuadThumb(string $image, int $width)
+    public function createQuadThumb(string $image, int $width): string
     {
         $thumbnailPath = str_replace(basename($image), '', $image).'thumbnails/'.basename($image);
         $manager = new ImageManager(new Driver());

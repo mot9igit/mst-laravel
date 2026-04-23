@@ -4,6 +4,7 @@ namespace App\Services\Tools;
 
 use App\Http\Requests\API\Files\UploadRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class FileUploaderService
      */
     public function __construct()
     {
-        $this->disk = env('FILESYSTEM_DISK', 'public');
+        $this->disk = Config::get('filesystems.default');
     }
 
     public function handle(array $data, UploadRequest $request): JsonResponse
