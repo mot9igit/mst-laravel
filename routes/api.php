@@ -67,10 +67,10 @@ Route::middleware(["web", "auth"])->group(function (): void {
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
         Route::get("/", "IndexController");
-        // Route::post('/', 'StoreController' );
-        // Route::get('/{store}', 'ShowController' );
-        // Route::delete("/{store}", "DeleteController");
-        // Route::patch("/{store}", "UpdateController");
+        Route::post('/', 'StoreController' );
+        Route::get('/{store}', 'ShowController' );
+        Route::delete("/{store}", "DeleteController");
+        Route::patch("/{store}", "UpdateController");
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Requisite", "prefix" => "integration/requisite", "middleware" => []], function(){
         Route::get("/", "IndexController");

@@ -71,11 +71,11 @@ class Service
     /**
      * Обновление Точки Продаж
      *
-     * @param $validated
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @param int $id
+     * @param array $validated
+     * @return JsonResponse
      */
-    public function update(int $id, array $validated)
+    public function update(int $id, array $validated): JsonResponse
     {
         $image = null;
         if(isset($validated['files'])){
@@ -90,8 +90,8 @@ class Service
         if($image){
             // картинка во временном хранилище -> перемещаем
             $store_id = $store->id;
-            $response_file = $this->fileUploaderService->delete("organizations/{$store_id}/");
-            $newpath = "organizations/{$store_id}/";
+            $response_file = $this->fileUploaderService->delete("stores/{$store_id}/");
+            $newpath = "stores/{$store_id}/";
             $path = $this->fileUploaderService->moveUploadFile($image, $newpath);
             $store->image = $path;
             $store->thumbnail = $this->thumbService->createQuadThumb($path, 200);

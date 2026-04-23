@@ -51,7 +51,6 @@ class OrganizationRepository
 
         if($filter != ''){
             $organizations = Organization::where('name', 'like', '%'.$filter.'%')
-                ->with()
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{

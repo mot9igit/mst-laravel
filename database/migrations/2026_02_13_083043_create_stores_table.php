@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("thumbnail")->nullable();
             $table->string("address")->nullable();
             $table->string("description")->nullable();
-            $table->string("coordinats")->nullable();
+            $table->string("coordinates")->nullable();
             $table->foreignId("city_id")->nullable()->constrained();
             $table->unsignedSmallInteger("active")->default(0);
             $table->unsignedSmallInteger("integration_type")->default(0);

@@ -12,101 +12,128 @@
             <div class="dart_container">
                 <div class="row" v-for="row in form_data">
                     <div v-for="grid in row.grids" :class="grid.class? grid.class : 'd-col-24'">
-                        <div v-for="(field, key) in grid.fields" class="mb-3">
-                            <div class="" v-if="field.type == 'header'">
-                                <h3>{{ field.label }}</h3>
-                            </div>
-                            <div class="" v-if="field.type == 'hidden'">
-                                <input name="key" v-model="form[key]" type="hidden">
-                            </div>
-                            <div v-if="field.type == 'image'">
-                                <label class="dart-simple-label" :for="'form_image_' + key">Изображение</label>
-                                <div class="img_abs dart-mb-1" v-if="this.form[field.defaultValue]">
-                                    <img :src="this.form[field.defaultValue]" alt="">
+                        <div :class="grid.wrapClass? grid.wrapClass : ''">
+                            <div v-for="(field, key) in grid.fields" class="mb-3">
+                                <div class="" v-if="field.type == 'header'">
+                                    <h3>{{ field.label }}</h3>
+                                    <div v-id="field.description" class="alert alert-info">{{ field.description }}</div>
                                 </div>
+                                <div class="" v-if="field.type == 'hidden'">
+                                    <input name="key" v-model="form[key]" type="hidden">
+                                </div>
+                                <div v-if="field.type == 'image'">
+                                    <label class="dart-simple-label" :for="'form_image_' + key">Изображение</label>
+                                    <div class="img_abs dart-mb-1" v-if="this.form[field.defaultValue]">
+                                        <img :src="this.form[field.defaultValue]" alt="">
+                                    </div>
 
-                                <FileUpload :id="'form_image_' + key" name="image[]" url="/api/upload" :auto="true" @before-send="beforeFileSend($event)" @upload="onAdvancedUpload($event)" :multiple="false" accept="image/*" :maxFileSize="2097152">
-                                    <template #empty>
-                                        <span>Перенесите файл в эту область для загрузки.</span>
-                                    </template>
-                                </FileUpload>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    <FileUpload :id="'form_image_' + key" name="image[]" url="/api/upload" :auto="true" @before-send="beforeFileSend($event)" @upload="onAdvancedUpload($event)" :multiple="false" accept="image/*" :maxFileSize="2097152">
+                                        <template #empty>
+                                            <span>Перенесите файл в эту область для загрузки.</span>
+                                        </template>
+                                    </FileUpload>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                    <div v-if="errors?.[field.errorKey]">
+                                        <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
+                                    </div>
                                 </div>
-                                <div v-if="errors?.[field.errorKey]">
-                                    <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
+                                <div class="" v-if="field.type == 'autocomplete'">
+                                    <FloatLabel variant="on">
+                                        <AutoComplete :name="key" :id="key" v-model="form[key]" :dropdown="field.dropdown || false" :optionLabel="field.optionLabel || 'value'" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" @dropdown-click="($event) => dropdownClick($event, field, key)" autocomplete="off"/>
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                    <div v-if="errors?.[field.errorKey]">
+                                        <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
+                                    </div>
                                 </div>
+                                <div class="" v-if="field.type == 'text'">
+                                    <FloatLabel variant="on">
+                                        <InputText :name="key" :id="key" :disabled="field.static" v-model="form[key]" autocomplete="off"/>
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+                                <div class="" v-if="field.type == 'password'">
+                                    <FloatLabel variant="on">
+                                        <Password :name="key" :id="key" v-model="form[key]" autocomplete="new-password"/>
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+                                <div class="" v-if="field.type == 'checkbox'">
+                                    <div class="flex items-center">
+                                        <Checkbox v-model="form[key]" :inputId="key" :name="key" :id="key" binary/>
+                                        <label :for="key"> {{ field.label }} </label>
+                                    </div>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+                                <div class="" v-if="field.type == 'datetime'">
+                                    <FloatLabel variant="on">
+                                        <DatePicker :name="key" :id="key" v-model="form[key]" :showTime="field.static" hourFormat="24" :disabled="field.static"/>
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+                                <div class="" v-if="field.type == 'select'">
+                                    <FloatLabel variant="on">
+                                        <Select :name="key" :id="key" v-model="form[key]" :options="field.options" optionLabel="name" class="w-full" />
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+                                <div class="" v-if="field.type == 'textarea'">
+                                    <FloatLabel variant="on">
+                                        <Textarea class="p-inputtext p-component" :name="key" :id="key" v-model="form[key]" style="width: 100%;resize: none" />
+                                        <label for="on_label">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
+    <!--                            <div class="" v-if="field.type == 'richtext'">-->
+    <!--                                <label :for="key" class="form-label">{{ field.label }}</label>-->
+    <!--                                <QuillEditor theme="snow" toolbar="full"/>-->
+    <!--                                <div v-if="errors?.[key]">-->
+    <!--                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
                             </div>
-                            <div class="" v-if="field.type == 'autocomplete'">
-                                <FloatLabel variant="on">
-                                    <AutoComplete :name="key" :id="key" v-model="form[key]" :dropdown="field.dropdown || false" :optionLabel="field.optionLabel || 'value'" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" @dropdown-click="($event) => dropdownClick($event, field, key)" autocomplete="off"/>
-                                    <label :for="key">{{ field.label }}</label>
-                                </FloatLabel>
-                                <div v-if="field.description" class="form-text">
-                                    {{ field.description }}
-                                </div>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                                <div v-if="errors?.[field.errorKey]">
-                                    <div class="text-danger" v-for="obj in errors[field.errorKey]">{{ obj }}</div>
-                                </div>
-                            </div>
-                            <div class="" v-if="field.type == 'text'">
-                                <FloatLabel variant="on">
-                                    <InputText :name="key" :id="key" v-model="form[key]" autocomplete="off"/>
-                                    <label :for="key">{{ field.label }}</label>
-                                </FloatLabel>
-                                <div v-if="field.description" class="form-text">
-                                    {{ field.description }}
-                                </div>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                            </div>
-                            <div class="" v-if="field.type == 'password'">
-                                <FloatLabel variant="on">
-                                    <Password :name="key" :id="key" v-model="form[key]" autocomplete="new-password"/>
-                                    <label :for="key">{{ field.label }}</label>
-                                </FloatLabel>
-                                <div v-if="field.description" class="form-text">
-                                    {{ field.description }}
-                                </div>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                            </div>
-                            <div class="" v-if="field.type == 'checkbox'">
-                                <div class="flex items-center">
-                                    <Checkbox v-model="form[key]" :inputId="key" :name="key" :id="key" binary/>
-                                    <label :for="key"> {{ field.label }} </label>
-                                </div>
-                                <div v-if="field.description" class="form-text">
-                                    {{ field.description }}
-                                </div>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                            </div>
-                            <div class="" v-if="field.type == 'textarea'">
-                                <FloatLabel variant="on">
-                                    <Textarea class="p-inputtext p-component" :name="key" :id="key" v-model="form[key]" style="width: 100%;resize: none" />
-                                    <label for="on_label">{{ field.label }}</label>
-                                </FloatLabel>
-                                <div v-if="field.description" class="form-text">
-                                    {{ field.description }}
-                                </div>
-                                <div v-if="errors?.[key]">
-                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
-                                </div>
-                            </div>
-<!--                            <div class="" v-if="field.type == 'richtext'">-->
-<!--                                <label :for="key" class="form-label">{{ field.label }}</label>-->
-<!--                                <QuillEditor theme="snow" toolbar="full"/>-->
-<!--                                <div v-if="errors?.[key]">-->
-<!--                                    <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -135,6 +162,8 @@ import Textarea from 'primevue/textarea';
 import Checkbox from "primevue/checkbox";
 import Password from 'primevue/password';
 import FileUpload from 'primevue/fileupload';
+import DatePicker from 'primevue/datepicker';
+import Select from 'primevue/select';
 // import { VueEditor, Quill } from "vue2-editor";
 
 
@@ -148,6 +177,8 @@ export default {
         AutoComplete,
         Password,
         FileUpload,
+        DatePicker,
+        Select,
         Toast
     },
     props: {
@@ -216,6 +247,21 @@ export default {
     },
     mounted(){
         this.form = this.form_values
+        // Fix for select options field {code: key, name: label}
+        this.form_data.forEach((item) => {
+            item.grids.forEach((grid) => {
+                for (const [key, field] of Object.entries(grid.fields)) {
+                    if(field.type === 'select'){
+                        let val = this.form[key]
+                        field.options.forEach((elem) => {
+                            if(elem.code == val){
+                                this.form[key] = elem
+                            }
+                        })
+                    }
+                }
+            })
+        })
     },
     methods: {
         autocompleteSelect(event, value, key){
@@ -348,5 +394,16 @@ export default {
     }
     .items-center{
         align-items: center;
+    }
+    .fieldset{
+        padding: 15px 15px;
+        border: 1px solid #cccccc;
+        margin-top: 15px;
+        margin-bottom: 16px;
+        border-radius: 6px;
+        h3{
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
     }
 </style>

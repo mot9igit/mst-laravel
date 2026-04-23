@@ -281,6 +281,7 @@ import ShowProductCategoryComponent from "@/components/admin/product/category/Sh
 import CreateProductCategoryComponent from "@/components/admin/product/category/CreateComponent.vue";
 import ShowStoreComponent from '@/components/admin/integration/store/ShowComponent.vue';
 import CreateStoreComponent from '@/components/admin/integration/store/CreateComponent.vue';
+import UpdateStoreComponent from '@/components/admin/integration/store/UpdateComponent.vue';
 import ShowGeoComponent from '@/components/admin/system/geo/ShowComponent.vue';
 
 
@@ -301,6 +302,7 @@ app.component("show-product-category-component", ShowProductCategoryComponent);
 app.component("create-product-category-component", CreateProductCategoryComponent);
 app.component("show-store-component", ShowStoreComponent);
 app.component("create-store-component", CreateStoreComponent);
+app.component("update-store-component", UpdateStoreComponent);
 app.component("show-geo-component", ShowGeoComponent);
 /**
  * The following block of code may be used to automatically register your

@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class StoreRepository
 {
@@ -63,13 +64,15 @@ class StoreRepository
      *
      * @param int $store_id
      * @return string
+     * @throws Throwable
      */
-    public function delete(int $store_id){
+    public function delete(int $store_id): string
+    {
         $store = Store::findOrFail($store_id);
         DB::beginTransaction();
         try{
             $store_id = $store->id;
-            $response_file = $this->uploaderService->delete("organizations/{$store_id}/");
+            $response_file = $this->uploaderService->delete("stores/{$store_id}/");
             // Log::error(print_r($response_file, 1));
             if (App::environment(['local'])) {
                 $response = $store->forceDelete();
@@ -89,6 +92,7 @@ class StoreRepository
      *
      * @param array $validated
      * @return Store|bool
+     * @throws Throwable
      */
     public function create(array $validated): Store | bool
     {
@@ -97,8 +101,44 @@ class StoreRepository
             $createdata = [
                 'name' => $validated['name']
             ];
+            if(isset($validated['name_short'])){
+                $createdata['name_short'] = $validated['name_short'];
+            }
+            if(isset($validated['address'])){
+                if (is_array($validated['address'])) {
+                    $createdata['address'] = $validated['address']['value'];
+                } else {
+                    $createdata['address'] = $validated['address'];
+                }
+            }else{
+                $createdata['address'] = "";
+            }
             if(isset($validated['active'])){
                 $createdata['active'] = $validated['active'];
+            }
+            if(isset($validated['marketplace'])){
+                $createdata['marketplace'] = $validated['marketplace'];
+            }
+            if(isset($validated['opt_marketplace'])){
+                $createdata['opt_marketplace'] = $validated['opt_marketplace'];
+            }
+            if(isset($validated['check_remains'])){
+                $createdata['check_remains'] = $validated['check_remains'];
+            }
+            if(isset($validated['check_docs'])){
+                $createdata['check_docs'] = $validated['check_docs'];
+            }
+            if(isset($validated['coordinates'])){
+                $createdata['coordinates'] = $validated['coordinates'];
+            }
+            if(isset($validated['integration_type'])){
+                $createdata['integration_type'] = $validated['integration_type']['code'];
+            }
+            if(isset($validated['yml_file'])){
+                $createdata['yml_file'] = $validated['yml_file'];
+            }
+            if(isset($validated['city_id'])){
+                $createdata['city_id'] = $validated['city_id']['id'];
             }
             if(isset($validated['description'])){
                 $createdata['description'] = $validated['description'];
@@ -134,8 +174,44 @@ class StoreRepository
             $updateData = [
                 'name' => $validated['name']
             ];
+            if(isset($validated['name_short'])){
+                $updateData['name_short'] = $validated['name_short'];
+            }
+            if(isset($validated['address'])){
+                if (is_array($validated['address'])) {
+                    $updateData['address'] = $validated['address']['value'];
+                } else {
+                    $updateData['address'] = $validated['address'];
+                }
+            }else{
+                $updateData['address'] = "";
+            }
             if(isset($validated['active'])){
                 $updateData['active'] = $validated['active'];
+            }
+            if(isset($validated['marketplace'])){
+                $updateData['marketplace'] = $validated['marketplace'];
+            }
+            if(isset($validated['opt_marketplace'])){
+                $updateData['opt_marketplace'] = $validated['opt_marketplace'];
+            }
+            if(isset($validated['check_remains'])){
+                $updateData['check_remains'] = $validated['check_remains'];
+            }
+            if(isset($validated['check_docs'])){
+                $updateData['check_docs'] = $validated['check_docs'];
+            }
+            if(isset($validated['coordinates'])){
+                $updateData['coordinates'] = $validated['coordinates'];
+            }
+            if(isset($validated['integration_type'])){
+                $updateData['integration_type'] = $validated['integration_type']['code'];
+            }
+            if(isset($validated['yml_file'])){
+                $updateData['yml_file'] = $validated['yml_file'];
+            }
+            if(isset($validated['city_id'])){
+                $updateData['city_id'] = $validated['city_id']['id'];
             }
             if(isset($validated['description'])){
                 $updateData['description'] = $validated['description'];
