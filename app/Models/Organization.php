@@ -43,7 +43,8 @@ class Organization extends Model
 
     public function stores(): belongsToMany
     {
-        return $this->belongsToMany(Store::class, "organization_stores", "organization_id", "store_id");
+        return $this->belongsToMany(Store::class, "organization_stores", "organization_id", "store_id")
+            ->withPivot(['dropshipping', 'description']);
     }
 
     public function users(): BelongsToMany

@@ -50,7 +50,7 @@ class Store extends Model
     public function getImageUrlAttribute(): string | null
     {
         if($this->image) {
-            if (env('FILESYSTEM_DISK', 'public') === 'tws3') {
+            if (Config::get('filesystems.default') === 'tws3') {
                 return Storage::disk('tws3')->url($this->image);
             }
             return asset('storage/' . $this->image);

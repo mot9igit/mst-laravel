@@ -16,7 +16,7 @@
                             <div v-for="(field, key) in grid.fields" class="mb-3">
                                 <div class="" v-if="field.type == 'header'">
                                     <h3>{{ field.label }}</h3>
-                                    <div v-id="field.description" class="alert alert-info">{{ field.description }}</div>
+                                    <div v-if="field.description" class="alert alert-info">{{ field.description }}</div>
                                 </div>
                                 <div class="" v-if="field.type == 'hidden'">
                                     <input name="key" v-model="form[key]" type="hidden">

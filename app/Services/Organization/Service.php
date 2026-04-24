@@ -124,4 +124,19 @@ class Service
     {
         return $this->organizationRepository->deleteUser($organization_id, $user_id);
     }
+
+    public function getStores($data): LengthAwarePaginator
+    {
+        return $this->organizationRepository->getStores($data);
+    }
+
+    public function storeStore(array $validated): JsonResponse
+    {
+        return $this->organizationRepository->storeStore($validated);
+    }
+
+    public function deleteStore(int $organization_id, int $store_id): JsonResponse
+    {
+        return $this->organizationRepository->deleteStore($organization_id, $store_id);
+    }
 }

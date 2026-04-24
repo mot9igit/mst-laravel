@@ -259,4 +259,95 @@ class OrganizationRepository
             ], 500);
         }
     }
+
+    public function getStores($data): LengthAwarePaginator
+    {
+        $organization = Organization::findOrFail($data['org_id']);
+        $query = $organization->stores();
+
+        $perpage = $data['perpage'] ?? 12;
+        $filter = $data['filter'] ?? '';
+        $sort = $data['sort'] ?? [];
+
+        $sortBy = 'id';
+        $sortDir = 'desc';
+        if(count($sort) > 0) {
+            foreach ($sort as $key => $value) {
+                $sortBy = $key;
+                $sortDir = $value['dir'];
+            }
+        }
+
+        $allowedSorts = ['id', 'name', 'created_at', 'updated_at'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+
+        if($filter != ''){
+            $stores = $query->where('name', 'like', '%'.$filter.'%')
+                ->orWhere('address', 'like', '%'.$filter.'%')
+                ->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }else{
+            $stores = $query->orderBy($sortBy, $sortDir)
+                ->paginate($perpage);
+        }
+
+        return $stores;
+    }
+
+    public function storeStore($data): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $organization = Organization::findOrFail($data['org_id']);
+            $attr = [];
+            if(isset($data['dropshipping'])){
+                $attr['dropshipping'] = $data['dropshipping'];
+            }else{
+                $attr['dropshipping'] = 0;
+            }
+            if(isset($data['description'])){
+                $attr['description'] = $data['description'];
+            }else{
+                $attr['description'] = '';
+            }
+            $organization->stores()->attach($data['store_id']['id'], $attr);
+            DB::commit();
+            return response()->json([
+                'message' => 'Организация успешно отредактирована',
+                'organization' => $organization
+            ], 201);
+        }catch (QueryException $e) {
+            DB::rollBack();
+            Log::error('Ошибка БД при обновлении точек продаж организации: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ошибка БД при обновлении точек продаж организации'
+            ], 500);
+        }catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Общая ошибка при обновлении точек продаж организации: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Общая ошибка БД при обновлении точек продаж организации'
+            ], 500);
+        }
+    }
+
+    public function deleteStore(int $organization_id, int $store_id)
+    {
+        $organization = Organization::findOrFail($organization_id);
+        DB::beginTransaction();
+        try{
+            $organization->stores()->detach($store_id);
+            DB::commit();
+            return response()->json([
+                'message' => "Точка продаж успешно отвязана"
+            ], 201);
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

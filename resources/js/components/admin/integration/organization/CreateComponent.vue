@@ -183,6 +183,7 @@ export default {
                         }
                     },{
                         class: "d-col-md-24",
+                        wrapClass: 'fieldset',
                         fields: {
                             header: {
                                 type: 'header',

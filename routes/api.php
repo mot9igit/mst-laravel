@@ -64,6 +64,9 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{organization}/user', 'User\IndexController' );
         Route::post('/{organization}/user', 'User\StoreController' );
         Route::delete('/{organization}/user/{user}', 'User\DeleteController' );
+        Route::get('/{organization}/store', 'Store\IndexController' );
+        Route::post('/{organization}/store', 'Store\StoreController' );
+        Route::delete('/{organization}/store/{store}', 'Store\DeleteController' );
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
         Route::get("/", "IndexController");
