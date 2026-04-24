@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 class Store extends Model
@@ -61,7 +62,7 @@ class Store extends Model
     public function getThumbUrlAttribute(): string | null
     {
         if($this->image) {
-            if (env('FILESYSTEM_DISK', 'public') === 'tws3') {
+            if (Config::get('filesystems.default') === 'tws3') {
                 return Storage::disk('tws3')->url($this->thumbnail);
             }
             return asset('storage/' . $this->thumbnail);
