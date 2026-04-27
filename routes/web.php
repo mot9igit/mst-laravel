@@ -67,6 +67,11 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
             Route::get("/create", CreateController::class)->name("admin.product.category.create");
             Route::get("/{category}", UpdateController::class)->name("admin.product.category.update");
         });
+        Route::group(['namespace'=>'Vendors', 'prefix' => 'vendor'], function() {
+            Route::get("/", IndexController::class)->name("admin.product.vendor.index");
+            // Route::get("/create", CreateController::class)->name("admin.product.vendor.create");
+            // Route::get("/{vendor}", UpdateController::class)->name("admin.product.vendor.update");
+        });
     });
 });
 

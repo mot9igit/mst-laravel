@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('organization_id')->unsigned();
             $table->bigInteger('store_id')->unsigned();
+            $table->string('description')->nullable();
+            $table->unsignedSmallInteger("dropshipping")->default(0);
 
             $table->index('organization_id', 'organization_store_organization_idx');
             $table->index('store_id', 'organization_store_store_idx');

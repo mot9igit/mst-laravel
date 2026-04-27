@@ -12,6 +12,7 @@ import userModule from "@/shared/api/user.js";
 import requisiteModule from "@/shared/api/requisite.js";
 import bankRequisiteModule from "@/shared/api/bankRequisite.js";
 import productCategoryModule from "@/shared/api/productCategory.js";
+import vendorModule from "@/shared/api/vendor.js";
 
 export default {
     base: baseModule(instance),
@@ -26,4 +27,5 @@ export default {
     requisite: requisiteModule(instance),
     bankRequisite: bankRequisiteModule(instance),
     productCategory: productCategoryModule(instance),
+    vendor: vendorModule(instance),
 }

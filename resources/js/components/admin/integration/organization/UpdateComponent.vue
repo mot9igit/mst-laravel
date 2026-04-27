@@ -41,7 +41,7 @@
                     <show-organization-users-component :org_id="this.orgid"></show-organization-users-component>
                 </TabPanel>
                 <TabPanel value="5">
-                    <p class="m-0">Бренды</p>
+                    <show-organization-vendors-component :org_id="this.orgid"></show-organization-vendors-component>
                 </TabPanel>
                 <TabPanel value="6">
                     <p class="m-0">Ключи API</p>
@@ -59,6 +59,7 @@ import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import ShowOrganizationUsersComponent from "../user/ShowOrganizationUsersComponent.vue";
 import ShowOrganizationStoresComponent from "../store/ShowOrganizationStoresComponent.vue";
+import ShowOrganizationVendorsComponent from "../vendor/ShowOrganizationVendorsComponent.vue";
 export default{
     name: "UpdateOrganizationComponent",
     components: {
@@ -68,7 +69,8 @@ export default{
         TabPanels,
         TabPanel,
         ShowOrganizationUsersComponent,
-        ShowOrganizationStoresComponent
+        ShowOrganizationStoresComponent,
+        ShowOrganizationVendorsComponent
     },
     props: {
         orgid: {

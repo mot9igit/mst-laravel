@@ -139,4 +139,19 @@ class Service
     {
         return $this->organizationRepository->deleteStore($organization_id, $store_id);
     }
+
+    public function getVendors($data): LengthAwarePaginator
+    {
+        return $this->organizationRepository->getVendors($data);
+    }
+
+    public function storeVendor(array $validated): JsonResponse
+    {
+        return $this->organizationRepository->storeVendor($validated);
+    }
+
+    public function deleteVendor(int $organization_id, int $vendor_id): JsonResponse
+    {
+        return $this->organizationRepository->deleteVendor($organization_id, $vendor_id);
+    }
 }

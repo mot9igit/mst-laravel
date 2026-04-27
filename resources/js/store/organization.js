@@ -5,7 +5,8 @@ export default {
         organizations: {},
         organization: {},
         organizationUsers: {},
-        organizationStores: {}
+        organizationStores: {},
+        organizationVendors: {}
     },
     actions: {
         getOrganizations ({ commit }, {filter, filtersdata, page, sort, perpage}) {
@@ -50,6 +51,19 @@ export default {
             return this.$app.config.globalProperties.$api.organization.getOrganizationStores(org_id, payload).then((response) => {
                 commit('SET_ORGANIZATION_STORES', response.data)
             })
+        },
+        getOrganizationVendors ({ commit }, {org_id, filter, filtersdata, page, sort, perpage}) {
+            const payload = {
+                org_id: org_id,
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage
+            }
+            return this.$app.config.globalProperties.$api.organization.getOrganizationVendors(org_id, payload).then((response) => {
+                commit('SET_ORGANIZATION_VENDORS', response.data)
+            })
         }
     },
     mutations: {
@@ -64,6 +78,9 @@ export default {
         },
         SET_ORGANIZATION_STORES: (state, data) => {
             state.organizationStores = data
+        },
+        SET_ORGANIZATION_VENDORS: (state, data) => {
+            state.organizationVendors = data
         }
     },
     getters: {
@@ -78,6 +95,9 @@ export default {
         },
         organizationStores (state) {
             return state.organizationStores
+        },
+        organizationVendors (state) {
+            return state.organizationVendors
         }
     }
 }

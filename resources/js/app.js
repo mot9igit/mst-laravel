@@ -283,6 +283,7 @@ import ShowStoreComponent from '@/components/admin/integration/store/ShowCompone
 import CreateStoreComponent from '@/components/admin/integration/store/CreateComponent.vue';
 import UpdateStoreComponent from '@/components/admin/integration/store/UpdateComponent.vue';
 import ShowGeoComponent from '@/components/admin/system/geo/ShowComponent.vue';
+import ShowProductVendorComponent from '@/components/admin/product/vendor/ShowComponent.vue';
 
 
 app.component('sign-in-page', SignInPage);
@@ -304,6 +305,7 @@ app.component("show-store-component", ShowStoreComponent);
 app.component("create-store-component", CreateStoreComponent);
 app.component("update-store-component", UpdateStoreComponent);
 app.component("show-geo-component", ShowGeoComponent);
+app.component("show-product-vendor-component", ShowProductVendorComponent);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

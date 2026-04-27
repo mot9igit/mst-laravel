@@ -52,6 +52,12 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_users', 'organization_id', 'user_id');
     }
 
+    public function vendors(): BelongsToMany
+    {
+        return $this->belongsToMany(Vendor::class, 'organization_vendors', 'organization_id', 'vendor_id')
+            ->withPivot(['description']);
+    }
+
     public function getImageUrlAttribute(): string | null
     {
         if($this->image) {

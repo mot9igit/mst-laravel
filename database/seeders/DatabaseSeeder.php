@@ -18,14 +18,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            "name" => "admin",
-            "fullname" => "Петропавловский Артем",
-            "active" => 1,
-            "sudo" => 1,
-            "email" => "artpetropavlovskij@gmail.com",
-            "phone" => "+79991158355",
-            "password" => '05061992'
+        $this->call([
+            UserSeeder::class,
+            CountrySeeder::class,
+            OrganizationSeeder::class,
+            StoreSeeder::class
         ]);
+
     }
 }

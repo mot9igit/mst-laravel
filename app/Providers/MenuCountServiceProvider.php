@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Organization;
 use App\Models\Store;
 use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 
@@ -27,7 +28,8 @@ class MenuCountServiceProvider extends ServiceProvider
             $view->with([
                 'user_count' => User::count(),
                 'organization_count' => Organization::count(),
-                'store_count' => Store::count()
+                'store_count' => Store::count(),
+                'vendor_count' => Vendor::count()
             ]);
         });
     }

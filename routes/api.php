@@ -67,6 +67,9 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{organization}/store', 'Store\IndexController' );
         Route::post('/{organization}/store', 'Store\StoreController' );
         Route::delete('/{organization}/store/{store}', 'Store\DeleteController' );
+        Route::get('/{organization}/vendor', 'Vendor\IndexController' );
+        Route::post('/{organization}/vendor', 'Vendor\StoreController' );
+        Route::delete('/{organization}/vendor/{vendor}', 'Vendor\DeleteController' );
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
         Route::get("/", "IndexController");
@@ -96,6 +99,14 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{category}', 'ShowController' );
         Route::delete("/{category}", "DeleteController");
         Route::patch("/{category}", "UpdateController");
+    });
+
+    Route::group(["namespace" => "App\Http\Controllers\API\Vendor", "prefix" => "product/vendor", "middleware" => []], function() {
+        Route::get("/", "IndexController");
+        Route::post("/", "StoreController");
+        Route::get('/{vendor}', 'ShowController' );
+        Route::delete("/{vendor}", "DeleteController");
+        Route::patch("/{vendor}", "UpdateController");
     });
 });
 

@@ -163,7 +163,14 @@
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="{{ route('admin.product.vendor.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-badge-tm"></i>
+                                <p>
+                                    Бренды <span class="nav-badge badge text-bg-secondary me-3">{{ $vendor_count ?? 0 }}</span>
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
