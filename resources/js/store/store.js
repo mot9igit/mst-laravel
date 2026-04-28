@@ -18,7 +18,7 @@ export default {
         },
         getStore ({ commit }, { storeId }) {
             return this.$app.config.globalProperties.$api.store.getStore(storeId).then((response) => {
-                commit('SET_STORE', response.data)
+                commit('SET_STORE', response.data.data)
             })
         }
     },

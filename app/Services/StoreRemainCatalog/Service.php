@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Services\StoreRemain;
+namespace App\Services\StoreRemainCatalog;
 
-use App\Repositories\StoreRemainRepository;
+
+use App\Repositories\StoreRemainCatalogRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 
 class Service
 {
     public function __construct(
-        private readonly StoreRemainRepository $repository
+        private readonly StoreRemainCatalogRepository $repository
     )
     {}
 
@@ -19,32 +20,32 @@ class Service
     }
 
     /**
-     * Удаление Номенклатуры
+     * Удаление Каталога
      *
-     * @param int $remain_id
+     * @param int $catalog_id
      * @return string
      */
-    public function delete(int $remain_id){
-        return $this->repository->delete($remain_id);
+    public function delete(int $catalog_id){
+        return $this->repository->delete($catalog_id);
     }
 
     /**
-     * Создание Номенклатуры
+     * Создание Каталога
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(array $validated): JsonResponse
     {
-        $remain = $this->repository->create($validated);
+        $catalog = $this->repository->create($validated);
         return response()->json([
-            'message' => 'Номенклатура успешно создана',
-            'remain' => $remain
+            'message' => 'Каталог успешно создан',
+            'catalog' => $catalog
         ], 201);
     }
 
     /**
-     * Обновление Номенклатуры
+     * Обновление Каталога
      *
      * @param int $id
      * @param array $validated
@@ -52,10 +53,10 @@ class Service
      */
     public function update(int $id, array $validated): JsonResponse
     {
-        $remain = $this->repository->update($id, $validated);
+        $catalog = $this->repository->update($id, $validated);
         return response()->json([
-            'message' => 'Номенклатура успешно обновлена',
-            'remain' => $remain
+            'message' => 'Каталог успешно обновлен',
+            'catalog' => $catalog
         ], 201);
     }
 }

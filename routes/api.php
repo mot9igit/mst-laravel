@@ -8,6 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/enums/{enum}', 'App\Http\Controllers\Enum\IndexController');
 
 Route::middleware(["web", "auth"])->group(function (): void {
 

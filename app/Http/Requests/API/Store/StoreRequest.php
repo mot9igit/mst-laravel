@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\API\Store;
 
+use App\Enums\StoreIntegrationType;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreRequest extends FormRequest
 {
@@ -36,7 +38,10 @@ class StoreRequest extends FormRequest
             'city_id.id' => "required|integer|exists:cities,id",
             'files' => 'nullable|array',
             'description' => 'nullable|string',
-            'integration_type.code' => "nullable|int",
+            'integration_type.code' => [
+                "required",
+                new Enum(StoreIntegrationType::class)
+            ],
             'yml_file' => 'nullable|string',
         ];
     }

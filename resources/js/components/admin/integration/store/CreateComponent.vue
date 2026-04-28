@@ -71,9 +71,15 @@ export default {
                 this.form.city_id = this.store.city;
                 this.form.integration_type = this.store.integration_type;
                 this.form.version = this.store.version;
-                this.form.date_api_ping = new Date(this.store.date_api_ping);
-                this.form.date_remains_update = new Date(this.store.date_remains_update);
-                this.form.date_docs_update = new Date(this.store.date_docs_update);
+                if(this.store.date_api_ping) {
+                    this.form.date_api_ping = new Date(this.store.date_api_ping);
+                }
+                if(this.store.date_remains_update) {
+                    this.form.date_remains_update = new Date(this.store.date_remains_update);
+                }
+                if(this.store.date_docs_update) {
+                    this.form.date_docs_update = new Date(this.store.date_docs_update);
+                }
                 this.form.active = Boolean(this.store.active);
                 this.form.marketplace = Boolean(this.store.marketplace);
                 this.form.opt_marketplace = Boolean(this.store.opt_marketplace);
@@ -193,21 +199,13 @@ export default {
                                 description: 'На основании этих параметров осуществляется контроль обмена информации и отключение Точки продаж при потери связи.',
                             },
                             integration_type: {
-                                type: 'select',
+                                type: 'autocomplete',
                                 value: '',
+                                dropdown: true,
+                                optionLabel: 'name',
                                 label: "Тип интеграции",
-                                options: [{
-                                    name: "Модуль 1С",
-                                    code: 1,
-                                },
-                                    {
-                                        name: "YML файл",
-                                        code: 2,
-                                    },
-                                    {
-                                        name: "Excel файл",
-                                        code: 3,
-                                    }]
+                                searchType: 'custom',
+                                searchUrl: `/api/enums/StoreIntegrationType/`
                             },
                             yml_file: {
                                 type: 'text',

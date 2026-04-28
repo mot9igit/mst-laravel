@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="" v-if="field.type == 'select'">
                                     <FloatLabel variant="on">
-                                        <Select :name="key" :id="key" v-model="form[key]" :options="field.options" optionLabel="name" class="w-full" />
+                                        <Select :name="key" :id="key" v-model="form[key]" :options="field.options" optionLabel="name" class="w-full" @dropdown-click="($event) => dropdownClick($event, field, key)"/>
                                         <label :for="key">{{ field.label }}</label>
                                     </FloatLabel>
                                     <div v-if="field.description" class="form-text">

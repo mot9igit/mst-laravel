@@ -6,9 +6,12 @@
                     Точка продаж
                 </Tab>
                 <Tab value="1">
-                    Остатки
+                    Каталоги
                 </Tab>
                 <Tab value="2">
+                    Остатки
+                </Tab>
+                <Tab value="3">
                     Документы
                 </Tab>
             </TabList>
@@ -17,9 +20,12 @@
                     <create-store-component :store_id="this.store_id"></create-store-component>
                 </TabPanel>
                 <TabPanel value="1">
-                    <p>Остатки</p>
+                    <p>Каталоги</p>
                 </TabPanel>
                 <TabPanel value="2">
+                    <p>Остатки</p>
+                </TabPanel>
+                <TabPanel value="3">
                     <p>Документы</p>
                 </TabPanel>
             </TabPanels>

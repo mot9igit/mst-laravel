@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StoreIntegrationType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,11 @@ class Store extends Model
     use HasFactory, SoftDeletes;
 
     protected $appends = ['image_url', 'thumb_url'];
+
+    // Автоматическое приведение типа
+    protected $casts = [
+        'integration_type' => StoreIntegrationType::class,
+    ];
 
     protected $fillable = [
         "name",
