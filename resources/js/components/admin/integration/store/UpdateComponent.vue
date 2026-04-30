@@ -20,7 +20,7 @@
                     <create-store-component :store_id="this.store_id"></create-store-component>
                 </TabPanel>
                 <TabPanel value="1">
-                    <p>Каталоги</p>
+                    <show-catalog :store_id="this.store_id"></show-catalog>
                 </TabPanel>
                 <TabPanel value="2">
                     <p>Остатки</p>
@@ -39,6 +39,7 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
+import ShowCatalog from '@/components/admin/integration/store/remain-catalog/ShowComponent.vue'
 
 export default{
     name: "UpdateStoreComponent",
@@ -47,7 +48,8 @@ export default{
         TabList,
         Tab,
         TabPanels,
-        TabPanel
+        TabPanel,
+        ShowCatalog
     },
     props: {
         store_id: {

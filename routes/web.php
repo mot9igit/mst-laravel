@@ -58,6 +58,9 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         Route::get("/", App\Http\Controllers\Admin\Integration\Store\IndexController::class)->name("admin.integration.store.index");
         Route::get("/create", App\Http\Controllers\Admin\Integration\Store\CreateController::class)->name("admin.integration.store.create");
         Route::get("/{store}", App\Http\Controllers\Admin\Integration\Store\UpdateController::class)->name("admin.integration.store.update");
+        Route::get("/{store}/remain", App\Http\Controllers\Admin\Integration\Store\Remain\IndexController::class)->name("admin.integration.store.remain.index");
+        Route::get("/{store}/remain/create", App\Http\Controllers\Admin\Integration\Store\Remain\CreateController::class)->name("admin.integration.store.remain.create");
+        Route::get("/{store}/remain/{remain}", App\Http\Controllers\Admin\Integration\Store\Remain\UpdateController::class)->name("admin.integration.store.remain.update");
     });
 
     Route::group(['namespace'=>'Products', 'prefix' => 'product'], function() {
@@ -69,8 +72,8 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         });
         Route::group(['namespace'=>'Vendors', 'prefix' => 'vendor'], function() {
             Route::get("/", IndexController::class)->name("admin.product.vendor.index");
-            // Route::get("/create", CreateController::class)->name("admin.product.vendor.create");
-            // Route::get("/{vendor}", UpdateController::class)->name("admin.product.vendor.update");
+//            Route::get("/create", CreateController::class)->name("admin.product.vendor.create");
+//            Route::get("/{vendor}", UpdateController::class)->name("admin.product.vendor.update");
         });
     });
 });

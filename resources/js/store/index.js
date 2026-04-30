@@ -10,6 +10,7 @@ import requisite from './requisite'
 import bankRequisite from './bankRequisite'
 import productCategory from './productCategory'
 import vendor from './vendor'
+import remainCatalog from "./remainCatalog";
 
 export default new Vuex.Store({
     modules: {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         requisite,
         bankRequisite,
         productCategory,
-        vendor
+        vendor,
+        remainCatalog
     }
 })

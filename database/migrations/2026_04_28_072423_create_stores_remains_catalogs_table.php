@@ -16,12 +16,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('guid');
-            $table->string('parent_guid');
+            $table->string('parent_guid')->nullable();
+            $table->string('base_guid')->nullable();
             $table->string('name_alt')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->bigInteger('store_id')->unsigned();
             $table->string('description')->nullable();
             $table->unsignedSmallInteger("active")->default(1);
+            $table->unsignedSmallInteger("published")->default(1);
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));
             $table->softDeletes();
             $table->timestamps();

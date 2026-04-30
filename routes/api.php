@@ -78,6 +78,16 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{store}', 'ShowController' );
         Route::delete("/{store}", "DeleteController");
         Route::patch("/{store}", "UpdateController");
+        Route::get('/{store}/remain', 'Remain\IndexController' );
+        Route::post('/{store}/remain', 'Remain\StoreController' );
+        Route::get('/{store}/remain/{remain}', 'Remain\ShowController' );
+        Route::patch("/{store}/remain/{remain}", "Remain\UpdateController");
+        Route::delete('/{store}/remain/{remain}', 'Remain\DeleteController' );
+        Route::get('/{store}/catalog', 'RemainCatalog\IndexController' );
+        Route::post('/{store}/catalog', 'RemainCatalog\StoreController' );
+        Route::get('/{store}/catalog/{catalog}', 'RemainCatalog\ShowController' );
+        Route::patch("/{store}/catalog/{catalog}", "RemainCatalog\UpdateController");
+        Route::delete('/{store}/catalog/{catalog}', 'RemainCatalog\DeleteController' );
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Requisite", "prefix" => "integration/requisite", "middleware" => []], function(){
         Route::get("/", "IndexController");

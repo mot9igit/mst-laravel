@@ -13,6 +13,7 @@ import requisiteModule from "@/shared/api/requisite.js";
 import bankRequisiteModule from "@/shared/api/bankRequisite.js";
 import productCategoryModule from "@/shared/api/productCategory.js";
 import vendorModule from "@/shared/api/vendor.js";
+import remainCatalogModule from "@/shared/api/remainCatalogs.js";
 
 export default {
     base: baseModule(instance),
@@ -28,4 +29,5 @@ export default {
     bankRequisite: bankRequisiteModule(instance),
     productCategory: productCategoryModule(instance),
     vendor: vendorModule(instance),
+    remainCatalog: remainCatalogModule(instance)
 }

@@ -25,7 +25,7 @@ class Service
      * @param int $catalog_id
      * @return string
      */
-    public function delete(int $catalog_id){
+    public function delete(int $store_id, int $catalog_id){
         return $this->repository->delete($catalog_id);
     }
 
@@ -47,13 +47,14 @@ class Service
     /**
      * Обновление Каталога
      *
-     * @param int $id
+     * @param int $store_id
+     * @param int $catalog_id
      * @param array $validated
      * @return JsonResponse
      */
-    public function update(int $id, array $validated): JsonResponse
+    public function update(int $store_id, int $catalog_id, array $validated): JsonResponse
     {
-        $catalog = $this->repository->update($id, $validated);
+        $catalog = $this->repository->update($catalog_id, $validated);
         return response()->json([
             'message' => 'Каталог успешно обновлен',
             'catalog' => $catalog
