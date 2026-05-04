@@ -75,4 +75,9 @@ class Service
             'user' => $user
         ], 201);
     }
+
+    public function getByEmail(string $email): User | null
+    {
+        return $this->userRepository->getByEmail($email);
+    }
 }

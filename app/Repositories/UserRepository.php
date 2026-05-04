@@ -51,6 +51,11 @@ class UserRepository
         return $users;
     }
 
+    public function getByEmail(string $email): User | null
+    {
+        return User::where('email', $email)->first();
+    }
+
     /**
      * Удаление Пользователя
      *

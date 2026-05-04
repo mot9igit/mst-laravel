@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Files\UploadController;
+use App\Http\Controllers\API\Auth\ApiLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,9 +11,14 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/enums/{enum}', 'App\Http\Controllers\Enum\IndexController');
 
-Route::middleware(["web", "auth"])->group(function (): void {
+Route::prefix('auth')->group(function () {
+    Route::post('/login', ApiLoginController::class);
+});
+
+Route::middleware(["web", "auth:sanctum"])->group(function (): void {
 
     Route::post('/upload', UploadController::class)->middleware([]);
+
 
     Route::group(["namespace" => "App\Http\Controllers\API\Profile", "prefix" => "profile", "middleware" => []], function(){
         Route::post('/', 'UpdateController' );
@@ -118,6 +124,12 @@ Route::middleware(["web", "auth"])->group(function (): void {
         Route::get('/{vendor}', 'ShowController' );
         Route::delete("/{vendor}", "DeleteController");
         Route::patch("/{vendor}", "UpdateController");
+    });
+
+    Route::group(["namespace" => "App\Http\Controllers\API\ContactPerson", "prefix" => "contact-persons", "middleware" => []], function() {
+        Route::get("/", "IndexController");
+        Route::post("/", "StoreController");
+        Route::patch("/{contact-person}", "UpdateController");
     });
 });
 

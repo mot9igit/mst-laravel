@@ -1,9 +1,9 @@
 <?php
 
+use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Mail\TestMail;
 
 Route::get('/', App\Http\Controllers\IndexController::class)->name('index');
 
@@ -15,9 +15,9 @@ Route::get('/upload', function () {
     return 'Файл загружен!';
 });
 
-Route::get('/login', App\Http\Controllers\Auth\IndexController::class)->name('login');
-Route::post('/login', App\Http\Controllers\Auth\LoginController::class)->name('auth.login.submit');
-Route::post('/logout', App\Http\Controllers\Auth\LogoutController::class)->name('auth.logout');
+Route::get('/login', \App\Http\Controllers\Auth\IndexController::class)->name('login');
+Route::post('/login', \App\Http\Controllers\Auth\LoginController::class)->name('auth.login.submit');
+Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('auth.logout');
 
 Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "middleware" => "auth"], function() {
     Route::get('/', IndexController::class)->name('admin.index');
@@ -72,7 +72,7 @@ Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "mid
         });
         Route::group(['namespace'=>'Vendors', 'prefix' => 'vendor'], function() {
             Route::get("/", IndexController::class)->name("admin.product.vendor.index");
-//            Route::get("/create", CreateController::class)->name("admin.product.vendor.create");
+//            Route::get("/create", StoreController::class)->name("admin.product.vendor.create");
 //            Route::get("/{vendor}", UpdateController::class)->name("admin.product.vendor.update");
         });
     });
