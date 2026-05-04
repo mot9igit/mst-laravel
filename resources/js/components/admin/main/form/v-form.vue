@@ -66,6 +66,18 @@
                                         <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
                                     </div>
                                 </div>
+                                <div class="" v-if="field.type == 'number'">
+                                    <FloatLabel variant="on">
+                                        <InputNumber :name="key" :id="key" :disabled="field.static" v-model="form[key]" locale="ru-RU" :minFractionDigits="field.fractionDigits || 0" :prefix="field.prefix || ''" :suffix="field.suffix || ''" autocomplete="off"/>
+                                        <label :for="key">{{ field.label }}</label>
+                                    </FloatLabel>
+                                    <div v-if="field.description" class="form-text">
+                                        {{ field.description }}
+                                    </div>
+                                    <div v-if="errors?.[key]">
+                                        <div class="text-danger" v-for="obj in errors[key]">{{ obj }}</div>
+                                    </div>
+                                </div>
                                 <div class="" v-if="field.type == 'password'">
                                     <FloatLabel variant="on">
                                         <Password :name="key" :id="key" v-model="form[key]" autocomplete="new-password"/>
@@ -164,6 +176,7 @@ import Password from 'primevue/password';
 import FileUpload from 'primevue/fileupload';
 import DatePicker from 'primevue/datepicker';
 import Select from 'primevue/select';
+import InputNumber from 'primevue/inputnumber'
 // import { VueEditor, Quill } from "vue2-editor";
 
 
@@ -179,6 +192,7 @@ export default {
         FileUpload,
         DatePicker,
         Select,
+        InputNumber,
         Toast
     },
     props: {

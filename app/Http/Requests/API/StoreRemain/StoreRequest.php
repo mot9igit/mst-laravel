@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\StoreRemain;
 
 use App\Enums\StoreIntegrationType;
+use App\Enums\StoreRemainStatus;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -29,22 +30,30 @@ class StoreRequest extends FormRequest
             'store_id' => "required|integer|exists:stores,id",
             'name' => 'required|string',
             "guid" => "required|string",
-            'article' => 'required|boolean',
+            'article' => 'required|string',
             'product_id.id' => 'sometimes|integer|exists:products,id',
+            'parent_id.id' => 'sometimes|integer|exists:product_categories,id',
             'catalog_id.id' => 'sometimes|integer|exists:stores_remains_catalogs,id',
             'vendor_id.id' => 'sometimes|integer|exists:vendors,id',
-            // TODO: status to php Enum
-            'status' => 'sometimes|int',
+            'status.code' => [
+                "nullable",
+                new Enum(StoreRemainStatus::class)
+            ],
             'address' => 'nullable',
             'coordinates' => 'nullable',
-            'catalog_guid' => 'nullable|sting',
+            'catalog_guid' => 'nullable|string',
+            'parent_guid' => 'nullable|string',
+            'base_guid' => 'nullable|string',
             'barcode' => 'nullable|string',
             'remains' => 'nullable|integer',
             'reserved' => 'nullable|integer',
             'available' => 'nullable|integer',
-            'price' => 'nullable|float',
+            'price' => 'nullable|numeric',
             'description' => 'nullable|string',
             'tags' => 'nullable|string',
+            'published' => 'nullable|boolean',
+            'brand_manual' => 'nullable|boolean',
+            'article_manual' => 'nullable|boolean',
         ];
     }
 

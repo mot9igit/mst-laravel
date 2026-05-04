@@ -11,6 +11,7 @@ class IndexController extends BaseController
     public function __invoke(IndexRequest $request)
     {
         $validated = $request->validated();
+        $validated['store_id'] = $request->store;
         return $this->service->get($validated);
     }
 }
