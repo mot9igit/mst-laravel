@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->bigInteger('catalog_id')->unsigned()->nullable();
+            $table->bigInteger('parent_id')->unsigned()->nullable();
             $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->integer('status')->unsigned();
             $table->string('catalog_guid')->nullable();
@@ -29,9 +30,13 @@ return new class extends Migration
             $table->float('price')->default(0);
             $table->string('description')->nullable();
             $table->string('tags')->nullable();
+            $table->unsignedSmallInteger("published")->default(0);
+            $table->unsignedSmallInteger("brand_manual")->default(0);
+            $table->unsignedSmallInteger("article_manual")->default(0);
             $table->timestamps();
 
             $table->index('product_id', 'stores_remains_product_idx');
+            $table->index('parent_id', 'product_categories_idx');
             $table->index('store_id', 'stores_remains_store_idx');
             $table->index('catalog_id', 'stores_remains_catalog_idx');
             $table->index('vendor_id', 'stores_remains_vendor_idx');
@@ -39,6 +44,7 @@ return new class extends Migration
             // Связь с категориями
             $table->foreign('product_id')->references('id')->on('products')->nullOnDelete();
             $table->foreign('catalog_id')->references('id')->on('stores_remains_catalogs')->nullOnDelete();
+            $table->foreign('parent_id')->references('id')->on('product_categories')->nullOnDelete();
             $table->foreign('vendor_id')->references('id')->on('vendors')->nullOnDelete();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
         });

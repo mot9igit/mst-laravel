@@ -31,6 +31,7 @@ class StoreRequest extends FormRequest
             "guid" => "required|string",
             'article' => 'required|boolean',
             'product_id.id' => 'sometimes|integer|exists:products,id',
+            'parent_id.id' => 'sometimes|integer|exists:product_categories,id',
             'catalog_id.id' => 'sometimes|integer|exists:stores_remains_catalogs,id',
             'vendor_id.id' => 'sometimes|integer|exists:vendors,id',
             // TODO: status to php Enum
@@ -45,6 +46,9 @@ class StoreRequest extends FormRequest
             'price' => 'nullable|float',
             'description' => 'nullable|string',
             'tags' => 'nullable|string',
+            'published' => 'nullable|boolean',
+            'brand_manual' => 'nullable|boolean',
+            'article_manual' => 'nullable|boolean',
         ];
     }
 

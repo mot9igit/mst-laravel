@@ -43,6 +43,9 @@ class UpdateRequest extends FormRequest
             'price' => 'nullable|float',
             'description' => 'nullable|string',
             'tags' => 'nullable|string',
+            'published' => 'nullable|boolean',
+            'brand_manual' => 'nullable|boolean',
+            'article_manual' => 'nullable|boolean',
         ];
     }
 

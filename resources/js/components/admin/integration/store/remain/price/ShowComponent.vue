@@ -1,19 +1,17 @@
 <template>
     <div class="dart-container">
-        <Toast />
-        <ConfirmDialog></ConfirmDialog>
         <div class="dart-row">
             <div class="d-col-md-24">
                 <v-table
                     class=""
-                    :filters="this.catalogTable.filters"
-                    :items_data="catalogs.data"
-                    :total="catalogs.total"
+                    :filters="this.remainPriceTable.filters"
+                    :items_data="remainPrices.data"
+                    :total="remainPrices.total"
                     :pagination_items_per_page="this.pagination_items_per_page"
                     :pagination_offset="this.pagination_offset"
-                    :page="this.catalogTable.page"
-                    :table_data="this.catalogTable.table_data"
-                    title="Каталоги"
+                    :page="this.remainPriceTable.page"
+                    :table_data="this.remainPriceTable.table_data"
+                    title="Цены"
                     @filter="filter"
                     @sort="filter"
                     @paginate="paginate"
@@ -22,18 +20,18 @@
                 >
                     <template v-slot:button>
                         <div>
-                            <button class="btn btn-primary" @click.prevent="() => { this.catalog_id = 0; this.createCatalogWindow = true, this.createWindow.title = this.createTitle}"> Создать каталог </button>
+                            <button class="btn btn-primary" @click.prevent="() => { this.price_id = 0; this.createRemainPriceWindow = true, this.createWindow.title = this.createTitle}"> Создать цену </button>
                         </div>
                     </template>
                 </v-table>
             </div>
         </div>
         <customModal
-            v-model="createCatalogWindow"
+            v-model="createRemainPriceWindow"
             @cancel="cancel"
         >
             <template v-slot:title>{{ this.createWindow.title }}</template>
-            <create-catalog-component :store_id="this.store_id" :catalog_id="this.catalog_id"></create-catalog-component>
+            <create-remain-price-component :store_id="this.store_id" :price_id="this.price_id"></create-remain-price-component>
         </customModal>
     </div>
 </template>
@@ -43,14 +41,17 @@ import { mapActions, mapGetters } from "vuex";
 import Toast from 'primevue/toast';
 import ConfirmDialog from "primevue/confirmdialog";
 import vTable from "@/components/admin/main/table/v-table.vue";
-import Axios from "axios";
 import customModal from "@/shared/ui/Modal.vue";
-import CreateCatalogComponent from "@/components/admin/integration/store/remain-catalog/CreateComponent.vue";
+import CreateRemainPriceComponent from "@/components/admin/integration/store/remain/price/CreateComponent.vue";
 
 export default {
-    name: "Catalogs",
+    name: "ShowRemainPriceComponent",
     props: {
         store_id: {
+            type: Number,
+            default: 0,
+        },
+        remain_id: {
             type: Number,
             default: 0,
         },
@@ -65,16 +66,16 @@ export default {
     },
     data() {
         return {
-            catalog_id: 0,
-            createCatalogWindow: false,
+            price_id: 0,
+            createRemainPriceWindow: false,
             createWindow: {
                 title: "",
             },
-            createTitle: "Создать каталог",
-            updateTitle: "Редактировать каталог",
+            createTitle: "Создать цену",
+            updateTitle: "Редактировать цену",
             confirm: null,
             toast: null,
-            catalogTable:{
+            remainPriceTable:{
                 page: 1,
                 pagination_offset: 0,
                 pagination_items_per_page: 24,
@@ -99,19 +100,9 @@ export default {
                         label: 'GUID',
                         type: 'text',
                     },
-                    parent_guid: {
+                    price: {
                         label: 'GUID родителя',
                         type: 'text',
-                    },
-                    active: {
-                        label: 'Активен',
-                        type: 'boolean',
-                        sort: true,
-                    },
-                    published: {
-                        label: 'Опубликован',
-                        type: 'boolean',
-                        sort: true,
                     },
                     description: {
                         label: 'Описание',
@@ -138,26 +129,29 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getCatalogs'
+            'getRemainPrices'
         ]),
         filter (data) {
+            this.remainPriceTable.page = 1
             data.storeId = this.store_id
-            this.getCatalogs(data)
+            data.remainId = this.remain_id
+            this.getRemainPrices(data)
         },
         paginate (data) {
-            this.catalogTable.page = data.page
+            this.remainPriceTable.page = data.page
             data.storeId = this.store_id
-            this.getCatalogs(data)
+            data.remainId = this.remain_id
+            this.getRemainPrices(data)
         },
         editElem(data){
-            this.catalog_id = data.id
+            this.price_id = data.id
             this.createWindow.title = this.updateTitle
-            this.createCatalogWindow = true
+            this.createRemainPriceWindow = true
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение
             this.$confirm.require({
-                message: `Вы уверены, что хотите удалить точку продаж - ${data.name}?`,
+                message: `Вы уверены, что хотите удалить цену - ${data.name}?`,
                 header: 'Подтверждение',
                 icon: 'bi bi-exclamation-triangle',
                 rejectProps: {
@@ -169,22 +163,25 @@ export default {
                     label: 'Да'
                 },
                 accept: () => {
-                    return this.$api.base.delete(`/api/integration/store/${this.store_id}/catalog/${data.id}`)
+                    return this.$api.base.delete(`/api/integration/store/${this.store_id}/remain/${this.remain_id}/price/${data.id}`)
                         .then((response) => {
-                            this.catalogTable.page = 1
-                            this.getCatalogs({
+                            this.remainPriceTable.page = 1
+                            this.getRemains({
                                 storeId: this.store_id,
-                                page: this.catalogTable.page,
+                                remainId: this.remain_id,
+                                page: this.remainPriceTable.page,
                                 perpage: this.pagination_items_per_page
                             })
                         })
                         .catch(error => {
+                            // console.log(error)
                             if (error.response.status === 404) {
-                                this.catalogTable.page = 1
+                                this.remainPriceTable.page = 1
                                 // this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
-                                this.getCatalogs({
+                                this.getRemains({
                                     storeId: this.store_id,
-                                    page: this.catalogTable.page,
+                                    remainId: this.remain_id,
+                                    page: this.remainPriceTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
                             }
@@ -197,21 +194,23 @@ export default {
         }
     },
     mounted() {
-        this.getCatalogs({
+        this.getRemainPrices({
             storeId: this.store_id,
-            page: this.catalogTable.page,
+            remainId: this.remain_id,
+            page: this.remainPriceTable.page,
             perpage: this.pagination_items_per_page
         })
     },
     components: {
-        customModal, CreateCatalogComponent,
+        customModal,
+        CreateRemainPriceComponent,
         vTable,
         Toast,
         ConfirmDialog
     },
     computed: {
         ...mapGetters([
-            "catalogs"
+            "remainPrices"
         ])
     },
     watch: {

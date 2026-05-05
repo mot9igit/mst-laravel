@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\StoreRemain;
-use App\Models\StoreRemainCatalog;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\App;
@@ -42,15 +41,16 @@ class StoreRemainRepository
         if (!in_array($sortBy, $allowedSorts)) {
             $sortBy = 'id';
         }
-
         if($filter != ''){
             $remains = StoreRemain::where('name', 'like', '%'.$filter.'%')
                 ->orWhere('article', 'like', '%'.$filter.'%')
                 ->orWhere('description', 'like', '%'.$filter.'%')
+                ->where('store_id', $data['store_id'])
                 ->orderBy($sortBy, $sortDir)
                 ->paginate($perpage);
         }else{
             $remains = StoreRemain::orderBy($sortBy, $sortDir)
+                ->where('store_id', $data['store_id'])
                 ->paginate($perpage);
         }
 
@@ -106,7 +106,7 @@ class StoreRemainRepository
                 $createdata['vendor_id'] = $validated['vendor_id']['id'];
             }
             if(isset($validated['status'])){
-                $createdata['status'] = $validated['status'];
+                $createdata['status'] = $validated['status']['code'];
             }
             if(isset($validated['catalog_guid'])){
                 $createdata['catalog_guid'] = $validated['catalog_guid'];
@@ -128,6 +128,24 @@ class StoreRemainRepository
                 $createdata['available'] = $validated['available'];
             }else{
                 $createdata['available'] = 0;
+            }
+            if(isset($validated['published'])){
+                $createdata['published'] = $validated['published'];
+            }else{
+                $createdata['published'] = 0;
+            }
+            if(isset($validated['article_manual'])){
+                $createdata['article_manual'] = $validated['article_manual'];
+            }else{
+                $createdata['article_manual'] = 0;
+            }
+            if(isset($validated['brand_manual'])){
+                $createdata['brand_manual'] = $validated['brand_manual'];
+            }else{
+                $createdata['brand_manual'] = 0;
+            }
+            if(isset($validated['parent_id'])){
+                $createdata['parent_id'] = $validated['parent_id']['id'];
             }
             if(isset($validated['price'])){
                 $createdata['price'] = $validated['price'];
@@ -178,7 +196,7 @@ class StoreRemainRepository
                 $updateData['vendor_id'] = $validated['vendor_id']['id'];
             }
             if(isset($validated['status'])){
-                $updateData['status'] = $validated['status'];
+                $updateData['status'] = $validated['status']['code'];
             }
             if(isset($validated['catalog_guid'])){
                 $updateData['catalog_guid'] = $validated['catalog_guid'];
@@ -200,6 +218,24 @@ class StoreRemainRepository
                 $updateData['available'] = $validated['available'];
             }else{
                 $updateData['available'] = 0;
+            }
+            if(isset($validated['published'])){
+                $updateData['published'] = $validated['published'];
+            }else{
+                $updateData['published'] = 0;
+            }
+            if(isset($validated['article_manual'])){
+                $updateData['article_manual'] = $validated['article_manual'];
+            }else{
+                $updateData['article_manual'] = 0;
+            }
+            if(isset($validated['brand_manual'])){
+                $updateData['brand_manual'] = $validated['brand_manual'];
+            }else{
+                $updateData['brand_manual'] = 0;
+            }
+            if(isset($validated['parent_id'])){
+                $updateData['parent_id'] = $validated['parent_id']['id'];
             }
             if(isset($validated['price'])){
                 $updateData['price'] = $validated['price'];
