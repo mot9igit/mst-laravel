@@ -28,12 +28,12 @@ import vForm from "@/components/admin/main/form/v-form.vue";
 import {mapActions, mapGetters} from "vuex";
 
 export default{
-    name: "CreateRemainPriceComponent",
+    name: "CreateRemainHistoryComponent",
     emits: [
         'close'
     ],
     props: {
-        price_id: {
+        history_id: {
             type: Number,
             default: 0
         },
@@ -55,26 +55,28 @@ export default{
         vForm
     },
     mounted(){
-        if(this.price_id > 0) {
+        if(this.history_id > 0) {
             const reqData = {
-                priceId: this.price_id,
+                historyId: this.history_id,
                 remainId: this.remain_id,
                 storeId: this.store_id
             }
-            this.getRemainPrice(reqData).then(() => {
-                this.form.name = this.remainPrice.name;
-                this.form.description = this.remainPrice.description;
-                this.form.guid = this.remainPrice.guid;
-                this.form.price = this.remainPrice.price;
+            this.getRemainHistory(reqData).then(() => {
+                this.form.date = new Date(this.remainHistory.date);
+                this.form.remains = this.remainHistory.remains;
+                this.form.available = this.remainHistory.available;
+                this.form.reserved = this.remainHistory.reserved;
+                this.form.price = this.remainHistory.price;
+                this.form.description = this.remainHistory.description;
             })
         }
-        this.form.price_id = this.price_id
+        this.form.history_id = this.history_id
         this.form.remain_id = this.remain_id
         this.form.store_id = this.store_id
     },
     methods: {
         ...mapActions([
-            'getRemainPrice'
+            'getRemainHistory'
         ]),
         close(){
             this.$emit('close')
@@ -82,31 +84,31 @@ export default{
     },
     computed: {
         ...mapGetters([
-            'remainPrice'
+            'remainHistory'
         ]),
         formUrl() {
-            if (Number(this.price_id) > 0) {
-                return `/api/integration/store/${this.store_id}/remain/${this.remain_id}/price/${this.price_id}`;
+            if (Number(this.history_id) > 0) {
+                return `/api/integration/store/${this.store_id}/remain/${this.remain_id}/history/${this.history_id}`;
             } else {
-                return `/api/integration/store/${this.store_id}/remain/${this.remain_id}/price/`;
+                return `/api/integration/store/${this.store_id}/remain/${this.remain_id}/history/`;
             }
         },
         headerForm() {
-            if (Number(this.price_id) > 0) {
-                return 'Редактировать цену';
+            if (Number(this.history_id) > 0) {
+                return 'Редактировать историю';
             } else {
-                return 'Создать цену';
+                return 'Создать историю';
             }
         },
         submitText() {
-            if(Number(this.price_id) > 0){
-                return 'Редактировать цену';
+            if(Number(this.history_id) > 0){
+                return 'Редактировать историю';
             }else{
-                return 'Создать цену';
+                return 'Создать историю';
             }
         },
         mode() {
-            if(Number(this.price_id) > 0){
+            if(Number(this.history_id) > 0){
                 return 'update';
             }else{
                 return 'create';
@@ -117,14 +119,30 @@ export default{
                 grids: [{
                     class: "d-col-md-24",
                     fields: {
-                        name: {
-                            type: 'text',
-                            label: "Наименование",
+                        date: {
+                            type: 'datetime',
+                            label: "Дата",
+                            value: new Date()
+                        },
+                        remains: {
+                            type: 'number',
+                            fractionDigits: 0,
+                            suffix: ' шт',
+                            label: "Остаток",
                             value: ''
                         },
-                        guid: {
-                            type: 'text',
-                            label: "GUID",
+                        available: {
+                            type: 'number',
+                            fractionDigits: 0,
+                            suffix: ' шт',
+                            label: "Доступно для продажи",
+                            value: ''
+                        },
+                        reserved: {
+                            type: 'number',
+                            fractionDigits: 0,
+                            suffix: ' шт',
+                            label: "Резерв",
                             value: ''
                         },
                         price: {

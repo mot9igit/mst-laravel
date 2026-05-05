@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="" v-if="field.type == 'datetime'">
                                     <FloatLabel variant="on">
-                                        <DatePicker :name="key" :id="key" v-model="form[key]" :showTime="field.static" hourFormat="24" :disabled="field.static"/>
+                                        <DatePicker :name="key" :id="key" v-model="form[key]" :showTime="field.time || 0" hourFormat="24" :dateFormat="field.dateFormat || 'dd.mm.yy'" :disabled="field.static"/>
                                         <label :for="key">{{ field.label }}</label>
                                     </FloatLabel>
                                     <div v-if="field.description" class="form-text">
@@ -182,6 +182,9 @@ import InputNumber from 'primevue/inputnumber'
 
 export default {
     name: "vForm",
+    emits: [
+        'close'
+    ],
     components: {
         FloatLabel,
         InputText,
@@ -349,6 +352,8 @@ export default {
                     .then(res => {
                         if(this.redirect_url){
                             window.location.href = this.redirect_url;
+                        }else{
+                            this.$emit("close")
                         }
                     })
                     .catch((error) => {
@@ -364,6 +369,8 @@ export default {
                     .then(res => {
                         if(this.redirect_url){
                             window.location.href = this.redirect_url;
+                        }else{
+                            this.$emit("close")
                         }
                     })
                     .catch((error) => {
@@ -381,6 +388,9 @@ export default {
 </script>
 
 <style lang="scss">
+    .p-datepicker-panel{
+        z-index: 1005 !important;
+    }
     .dart-simple-label{
         font-size: 18px;
         display: block;
