@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API\Integration\Store\Remain;
+namespace App\Http\Controllers\API\ContactPerson;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\StoreRemain\IndexRequest;
-use Illuminate\Http\Request;
+
+use App\Http\Requests\API\ContactPerson\IndexRequest;
 
 class IndexController extends BaseController
 {

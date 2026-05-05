@@ -23,7 +23,7 @@ class StoreRemainHistory extends Model
         'price',
     ];
 
-    public function remain(): belongsTo {
+    public function storeRemain(): belongsTo {
         return $this->belongsTo(StoreRemain::class);
     }
 }

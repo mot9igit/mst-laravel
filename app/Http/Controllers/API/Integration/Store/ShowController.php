@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class ShowController extends BaseController
 {
-    public function __invoke(int $storeId)
+    public function __invoke(int $cityId)
     {
-        $store = Store::findOrFail($storeId)->with('city')->firstOrFail();
+        $store = Store::findOrFail($cityId)->with('city')->firstOrFail();
         return StoreResource::make($store);
     }
 }

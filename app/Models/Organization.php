@@ -52,6 +52,11 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_users', 'organization_id', 'user_id');
     }
 
+    public function contactPersons(): BelongsToMany
+    {
+        return $this->belongsToMany(ContactPerson::class, 'contact_persons', 'organization_id', 'contact_person_id');
+    }
+
     public function vendors(): BelongsToMany
     {
         return $this->belongsToMany(Vendor::class, 'organization_vendors', 'organization_id', 'vendor_id')

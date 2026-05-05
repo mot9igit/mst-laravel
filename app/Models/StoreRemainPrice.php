@@ -21,7 +21,7 @@ class StoreRemainPrice extends Model
         'description',
     ];
 
-    public function remain(): belongsTo {
+    public function storeRemain(): belongsTo {
         return $this->belongsTo(StoreRemain::class);
     }
 }

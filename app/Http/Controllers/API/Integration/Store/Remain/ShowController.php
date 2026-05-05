@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 
 class ShowController extends BaseController
 {
-    public function __invoke(string $storeId, int $remainId)
+    public function __invoke(int $remainId)
     {
-        $remain = StoreRemain::findOrFail($remainId)->with(['store', 'parent', 'category', 'vendor'])->firstOrFail();
-        return $remain;
+        $remain = Store::findOrFail($remainId)->firstOrFail();
+        return StoreResource::make($remain);
     }
 }
