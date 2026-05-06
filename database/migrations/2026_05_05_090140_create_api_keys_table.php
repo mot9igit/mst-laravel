@@ -12,14 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contact_persons', function (Blueprint $table) {
+        Schema::create('api_keys', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email')->unique();
+            $table->string('key');
+            $table->boolean('active')->default(false);
             $table->string('description');
             $table->unsignedBigInteger('org_id');
             $table->foreign('org_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->json("properties")->default(new Expression('(JSON_ARRAY())'));
             $table->timestamps();
             $table->softDeletes();
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contact_persons');
+        Schema::dropIfExists('api_keys');
     }
 };

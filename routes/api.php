@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\Files\UploadController;
+use App\Http\Controllers\API\RequestApi\User\MeController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\API\Auth\ApiLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,8 +13,22 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/enums/{enum}', 'App\Http\Controllers\Enum\IndexController');
 
+Route::post('/login', LoginController::class);
+
 Route::prefix('auth')->group(function () {
     Route::post('/login', ApiLoginController::class);
+});
+
+
+
+//TODO: Группа внешниз запросов
+Route::middleware(["auth:sanctum", "logApi"])->group(function ():void {
+    Route::get('/user/me', MeController::class);
+});
+
+//TODO: В какую группу положить получение логов
+Route::group(["namespace" => "App\Http\Controllers\API\RequestLog", "prefix" => "request-log", "middleware" => []], function () {
+    Route::get("/", "IndexController");
 });
 
 Route::middleware(["web", "auth:sanctum"])->group(function (): void {
@@ -126,10 +142,19 @@ Route::middleware(["web", "auth:sanctum"])->group(function (): void {
         Route::patch("/{vendor}", "UpdateController");
     });
 
-    Route::group(["namespace" => "App\Http\Controllers\API\ContactPerson", "prefix" => "contact-persons", "middleware" => []], function() {
+    Route::group(["namespace" => "App\Http\Controllers\API\Integration\ContactPerson", "prefix" => "integration/contact-person", "middleware" => []], function() {
         Route::get("/", "IndexController");
         Route::post("/", "StoreController");
-        Route::patch("/{contact-person}", "UpdateController");
+        Route::patch("/{contact}", "UpdateController");
+        Route::delete("/{contact}", "DeleteController");
+    });
+
+    Route::group(["namespace" => "App\Http\Controllers\API\Integration\ApiKey", "prefix" => "integration/api-key", "middleware" => []], function() {
+        Route::get("/", "IndexController");
+        Route::post("/", "StoreController");
+        Route::get('/generate', 'GenerateController');
+        Route::patch("/{id}", "UpdateController");
+        Route::delete("/{id}", "DeleteController");
     });
 });
 

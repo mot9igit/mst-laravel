@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\ContactPerson;
+namespace App\Http\Requests\API\ApiKey;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,12 +22,12 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:users',
-            'phone' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'key' => 'required|string|max:255',
+            'active' => 'required|boolean',
             'description' => 'nullable|string|max:1000',
             'properties' => 'nullable|json',
             'org_id' => 'nullable|exists:organizations,id',
+            'store_id' => 'nullable|exists:stores,id',
         ];
     }
 }

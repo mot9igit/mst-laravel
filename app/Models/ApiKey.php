@@ -7,21 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactPerson extends Model
+class ApiKey extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'contact_persons';
+    protected $table = 'api_keys';
     protected $fillable = [
-        "name",
-        "phone",
-        "email",
+        "key",
+        "active",
         "description",
         "properties",
-        "org_id"
+        "org_id",
+        "store_id",
     ];
 
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 }

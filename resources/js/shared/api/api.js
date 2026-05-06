@@ -15,6 +15,8 @@ import productCategoryModule from "@/shared/api/productCategory.js";
 import vendorModule from "@/shared/api/vendor.js";
 import remainCatalogModule from "@/shared/api/remainCatalog.js";
 import remainModule from "@/shared/api/remain.js";
+import contactPersonModule from "@/shared/api/contactPerson.js";
+import apiKeyModule from "@/shared/api/apiKey.js";
 
 export default {
     base: baseModule(instance),
@@ -31,5 +33,7 @@ export default {
     productCategory: productCategoryModule(instance),
     vendor: vendorModule(instance),
     remainCatalog: remainCatalogModule(instance),
-    remain: remainModule(instance)
+    remain: remainModule(instance),
+    contactPerson: contactPersonModule(instance),
+    apiKey: apiKeyModule(instance),
 }

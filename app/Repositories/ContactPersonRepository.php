@@ -18,7 +18,15 @@ class ContactPersonRepository
      * @return LengthAwarePaginator
      */
     public function get(array $data): LengthAwarePaginator{
-       return ContactPerson::with('organization')->paginate();
+        $filter = $data['filter'] ?? null;
+        $perpage = $data['perpage'] ?? 12;
+
+       return ContactPerson::whereAny([
+           'name',
+           'email',
+           'phone'
+       ], 'LIKE', '%' . $filter . '%')
+           ->paginate($perpage);
     }
 
     /**

@@ -420,4 +420,10 @@ export default {
             margin-bottom: 12px;
         }
     }
+    .icon-text {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        cursor: pointer;
+    }
 </style>

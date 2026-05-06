@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\ContactPerson;
+namespace App\Http\Controllers\API\Integration\ContactPerson;
 
 use App\Http\Requests\API\ContactPerson\UpdateRequest;
 
