@@ -161,7 +161,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
-            fint-size: 30px;
+            font-size: 30px;
             color: #fff;
         }
         & .avatar-dropzone{

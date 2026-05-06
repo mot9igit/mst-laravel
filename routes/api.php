@@ -105,6 +105,19 @@ Route::middleware(["web", "auth:sanctum"])->group(function (): void {
         Route::get('/{store}/remain/{remain}', 'Remain\ShowController' );
         Route::patch("/{store}/remain/{remain}", "Remain\UpdateController");
         Route::delete('/{store}/remain/{remain}', 'Remain\DeleteController' );
+
+        Route::get('/{store}/remain/{remain}/price', 'Remain\Price\IndexController' );
+        Route::post('/{store}/remain/{remain}/price', 'Remain\Price\StoreController' );
+        Route::get('/{store}/remain/{remain}/price/{price}', 'Remain\Price\ShowController' );
+        Route::patch("/{store}/remain/{remain}/price/{price}", "Remain\Price\UpdateController");
+        Route::delete('/{store}/remain/{remain}/price/{price}', 'Remain\Price\DeleteController' );
+
+        Route::get('/{store}/remain/{remain}/history', 'Remain\History\IndexController' );
+        Route::post('/{store}/remain/{remain}/history', 'Remain\History\StoreController' );
+        Route::get('/{store}/remain/{remain}/history/{history}', 'Remain\History\ShowController' );
+        Route::patch("/{store}/remain/{remain}/history/{history}", "Remain\History\UpdateController");
+        Route::delete('/{store}/remain/{remain}/history/{history}', 'Remain\History\DeleteController' );
+
         Route::get('/{store}/catalog', 'RemainCatalog\IndexController' );
         Route::post('/{store}/catalog', 'RemainCatalog\StoreController' );
         Route::get('/{store}/catalog/{catalog}', 'RemainCatalog\ShowController' );

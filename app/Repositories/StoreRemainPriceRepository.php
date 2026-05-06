@@ -90,7 +90,8 @@ class StoreRemainPriceRepository
             $createdata = [
                 'name' => $validated['name'],
                 'guid' => $validated['guid'],
-                'price' => $validated['price']
+                'price' => $validated['price'],
+                'remain_id' => $validated['remain_id'],
             ];
             if(isset($validated['description'])){
                 $createdata['description'] = $validated['description'];
@@ -120,7 +121,8 @@ class StoreRemainPriceRepository
             $updateData = [
                 'name' => $validated['name'],
                 'guid' => $validated['guid'],
-                'price' => $validated['price']
+                'price' => $validated['price'],
+                'remain_id' => $validated['remain_id'],
             ];
             if(isset($validated['description'])){
                 $updateData['description'] = $validated['description'];

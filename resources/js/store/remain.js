@@ -3,7 +3,9 @@ export default {
         remains: {},
         remain: {},
         remainPrices: {},
-        remainPrice: {}
+        remainPrice: {},
+        remainHistories: {},
+        remainHistory: {}
     },
     actions: {
         getRemains ({ commit }, {storeId, filter, filtersdata, page, sort, perpage}) {
@@ -39,6 +41,23 @@ export default {
             return this.$app.config.globalProperties.$api.remain.getRemainPrice(storeId, remainId, priceId).then((response) => {
                 commit('SET_REMAIN_PRICE', response.data)
             })
+        },
+        getRemainHistories ({ commit }, {storeId, remainId, filter, filtersdata, page, sort, perpage}) {
+            const payload = {
+                filter: filter,
+                filtersdata: filtersdata,
+                sort: sort,
+                page: page,
+                perpage: perpage
+            }
+            return this.$app.config.globalProperties.$api.remain.getRemainHistories(storeId, remainId, payload).then((response) => {
+                commit('SET_REMAIN_HISTORIES', response.data)
+            })
+        },
+        getRemainHistory ({ commit }, {storeId, remainId, historyId}) {
+            return this.$app.config.globalProperties.$api.remain.getRemainHistory(storeId, remainId, historyId).then((response) => {
+                commit('SET_REMAIN_HISTORY', response.data)
+            })
         }
     },
     mutations: {
@@ -53,6 +72,12 @@ export default {
         },
         SET_REMAIN_PRICE: (state, data) => {
             state.remainPrice = data
+        },
+        SET_REMAIN_HISTORIES: (state, data) => {
+            state.remainHistories = data
+        },
+        SET_REMAIN_HISTORY: (state, data) => {
+            state.remainHistory = data
         }
     },
     getters: {
@@ -67,6 +92,12 @@ export default {
         },
         remainPrice (state) {
             return state.remainPrice
+        },
+        remainHistories (state) {
+            return state.remainHistories
+        },
+        remainHistory (state) {
+            return state.remainHistory
         }
     }
 }

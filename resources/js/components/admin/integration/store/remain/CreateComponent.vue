@@ -64,7 +64,7 @@
                         <show-remain-price-component :store_id="this.store_id" :remain_id="this.remain_id"></show-remain-price-component>
                     </TabPanel>
                     <TabPanel value="2">
-                        История изменения
+                        <show-remain-history-component :store_id="this.store_id" :remain_id="this.remain_id"></show-remain-history-component>
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -75,6 +75,7 @@
 import vForm from "@/components/admin/main/form/v-form.vue";
 import {mapActions, mapGetters} from "vuex";
 import ShowRemainPriceComponent from '@/components/admin/integration/store/remain/price/ShowComponent.vue'
+import ShowRemainHistoryComponent from '@/components/admin/integration/store/remain/history/ShowComponent.vue'
 import TabList from "primevue/tablist";
 import Tabs from "primevue/tabs";
 import TabPanel from "primevue/tabpanel";
@@ -105,11 +106,13 @@ export default{
         Tabs,
         TabList,
         vForm,
-        ShowRemainPriceComponent
+        ShowRemainPriceComponent,
+        ShowRemainHistoryComponent
     },
     mounted(){
         if(this.remain_id > 0) {
             const reqData = {
+                storeId: this.store_id,
                 remainId: this.remain_id
             }
             this.getRemain(reqData).then(() => {

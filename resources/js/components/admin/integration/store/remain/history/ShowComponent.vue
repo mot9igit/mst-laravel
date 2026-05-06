@@ -4,14 +4,14 @@
             <div class="d-col-md-24">
                 <v-table
                     class=""
-                    :filters="this.remainPriceTable.filters"
-                    :items_data="remainPrices.data"
-                    :total="remainPrices.total"
+                    :filters="this.remainHistoryTable.filters"
+                    :items_data="remainHistories.data"
+                    :total="remainHistories.total"
                     :pagination_items_per_page="this.pagination_items_per_page"
                     :pagination_offset="this.pagination_offset"
-                    :page="this.remainPriceTable.page"
-                    :table_data="this.remainPriceTable.table_data"
-                    title="Цены"
+                    :page="this.remainHistoryTable.page"
+                    :table_data="this.remainHistoryTable.table_data"
+                    title="История изменения"
                     @filter="filter"
                     @sort="filter"
                     @paginate="paginate"
@@ -20,18 +20,18 @@
                 >
                     <template v-slot:button>
                         <div class="dart-mb-1">
-                            <button class="btn btn-primary" @click.prevent="() => { this.price_id = 0; this.createRemainPriceWindow = true, this.createWindow.title = this.createTitle}"> Создать цену </button>
+                            <button class="btn btn-primary" @click.prevent="() => { this.history_id = 0; this.createRemainHistoryWindow = true; this.createWindow.title = this.createTitle}"> Создать историю </button>
                         </div>
                     </template>
                 </v-table>
             </div>
         </div>
         <customModal
-            v-model="createRemainPriceWindow"
+            v-model="createRemainHistoryWindow"
             @cancel="cancel"
         >
             <template v-slot:title>{{ this.createWindow.title }}</template>
-            <create-remain-price-component @close="close()" :store_id="this.store_id" :remain_id="this.remain_id" :price_id="this.price_id"></create-remain-price-component>
+            <create-remain-history-component @close="close()" :store_id="this.store_id" :remain_id="this.remain_id" :history_id="this.history_id"></create-remain-history-component>
         </customModal>
     </div>
 </template>
@@ -42,10 +42,10 @@ import Toast from 'primevue/toast';
 import ConfirmDialog from "primevue/confirmdialog";
 import vTable from "@/components/admin/main/table/v-table.vue";
 import customModal from "@/shared/ui/Modal.vue";
-import CreateRemainPriceComponent from "@/components/admin/integration/store/remain/price/CreateComponent.vue";
+import CreateRemainHistoryComponent from "@/components/admin/integration/store/remain/history/CreateComponent.vue";
 
 export default {
-    name: "ShowRemainPriceComponent",
+    name: "ShowRemainHistoryComponent",
     props: {
         store_id: {
             type: Number,
@@ -66,16 +66,16 @@ export default {
     },
     data() {
         return {
-            price_id: 0,
-            createRemainPriceWindow: false,
+            history_id: 0,
+            createRemainHistoryWindow: false,
             createWindow: {
                 title: "",
             },
-            createTitle: "Создать цену",
-            updateTitle: "Редактировать цену",
+            createTitle: "Создать историю",
+            updateTitle: "Редактировать историю",
             confirm: null,
             toast: null,
-            remainPriceTable:{
+            remainHistoryTable:{
                 page: 1,
                 pagination_offset: 0,
                 pagination_items_per_page: 24,
@@ -86,12 +86,20 @@ export default {
                         label: "ID",
                         type: "text",
                     },
-                    name: {
-                        label: 'Наименование',
+                    date: {
+                        label: 'Дата',
                         type: 'text',
                     },
-                    guid: {
-                        label: 'GUID',
+                    remains: {
+                        label: 'Остаток',
+                        type: 'text',
+                    },
+                    available: {
+                        label: 'Доступно',
+                        type: 'text',
+                    },
+                    reserved: {
+                        label: 'Резерв',
                         type: 'text',
                     },
                     price: {
@@ -123,38 +131,38 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getRemainPrices'
+            'getRemainHistories'
         ]),
         close(){
-            this.createRemainPriceWindow = false
-            this.getRemainPrices({
+            this.createRemainHistoryWindow = false
+            this.getRemainHistories({
                 storeId: this.store_id,
                 remainId: this.remain_id,
-                page: this.remainPriceTable.page,
+                page: this.remainHistoryTable.page,
                 perpage: this.pagination_items_per_page
             })
         },
         filter (data) {
-            this.remainPriceTable.page = 1
+            this.remainHistoryTable.page = 1
             data.storeId = this.store_id
             data.remainId = this.remain_id
-            this.getRemainPrices(data)
+            this.getRemainHistories(data)
         },
         paginate (data) {
-            this.remainPriceTable.page = data.page
+            this.remainHistoryTable.page = data.page
             data.storeId = this.store_id
             data.remainId = this.remain_id
-            this.getRemainPrices(data)
+            this.getRemainHistories(data)
         },
         editElem(data){
-            this.price_id = data.id
+            this.history_id = data.id
             this.createWindow.title = this.updateTitle
-            this.createRemainPriceWindow = true
+            this.createRemainHistoryWindow = true
         },
         deleteElem (data) {
             // 1. Запрашиваем подтверждение
             this.$confirm.require({
-                message: `Вы уверены, что хотите удалить цену - ${data.name}?`,
+                message: `Вы уверены, что хотите удалить запись Истории - ${data.id}?`,
                 header: 'Подтверждение',
                 icon: 'bi bi-exclamation-triangle',
                 rejectProps: {
@@ -166,25 +174,25 @@ export default {
                     label: 'Да'
                 },
                 accept: () => {
-                    return this.$api.base.delete(`/api/integration/store/${this.store_id}/remain/${this.remain_id}/price/${data.id}`)
+                    return this.$api.base.delete(`/api/integration/store/${this.store_id}/remain/${this.remain_id}/history/${data.id}`)
                         .then((response) => {
-                            this.remainPriceTable.page = 1
-                            this.getRemainPrices({
+                            this.remainHistoryTable.page = 1
+                            this.getRemainHistories({
                                 storeId: this.store_id,
                                 remainId: this.remain_id,
-                                page: this.remainPriceTable.page,
+                                page: this.remainHistoryTable.page,
                                 perpage: this.pagination_items_per_page
                             })
                         })
                         .catch(error => {
                             // console.log(error)
                             if (error.response.status === 404) {
-                                this.remainPriceTable.page = 1
+                                this.remainHistoryTable.page = 1
                                 // this.$toast.add({ severity: 'error', summary: 'Не найден', detail: 'Объект не найден', life: 3000 });
-                                this.getRemainPrices({
+                                this.getRemainHistories({
                                     storeId: this.store_id,
                                     remainId: this.remain_id,
-                                    page: this.remainPriceTable.page,
+                                    page: this.remainHistoryTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
                             }
@@ -197,23 +205,23 @@ export default {
         }
     },
     mounted() {
-        this.getRemainPrices({
+        this.getRemainHistories({
             storeId: this.store_id,
             remainId: this.remain_id,
-            page: this.remainPriceTable.page,
+            page: this.remainHistoryTable.page,
             perpage: this.pagination_items_per_page
         })
     },
     components: {
         customModal,
-        CreateRemainPriceComponent,
+        CreateRemainHistoryComponent,
         vTable,
         Toast,
         ConfirmDialog
     },
     computed: {
         ...mapGetters([
-            "remainPrices"
+            "remainHistories"
         ])
     },
     watch: {
