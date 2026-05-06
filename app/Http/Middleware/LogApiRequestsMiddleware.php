@@ -50,13 +50,22 @@ class LogApiRequestsMiddleware
                 'duration' => $duration,
             ];
 
-            if($response->getStatusCode() == Response::HTTP_OK) {
-                $updateData['response_body'] = json_decode($response->getContent(), true);
-            } else {
-                $content = json_decode($response->getContent(), true);
-                $updateData['response_body'] = $content['message'] ?? 'Неизвестная ошибка';
-            }
+            $content = $response->getContent();
 
+            if (!empty($content)) {
+                $decoded = json_decode($content, true);
+
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $updateData['response_body'] = $decoded;
+                } else {
+                    $updateData['response_body'] = [
+                        'raw_response' => $content,
+                        'is_json' => false
+                    ];
+                }
+            } else {
+                $updateData['response_body'] = ['message' => 'Empty response'];
+            }
 
             $log->update($updateData);
 
