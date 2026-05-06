@@ -12,6 +12,8 @@ import productCategory from './productCategory'
 import vendor from './vendor'
 import remainCatalog from "./remainCatalog";
 import remain from "./remain";
+import contactPerson from "./contactPerson.js";
+import apiKey from "./apiKey.js";
 
 export default new Vuex.Store({
     modules: {
@@ -26,6 +28,8 @@ export default new Vuex.Store({
         productCategory,
         vendor,
         remainCatalog,
-        remain
+        remain,
+        contactPerson,
+        apiKey,
     }
 })

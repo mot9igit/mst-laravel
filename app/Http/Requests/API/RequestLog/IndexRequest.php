@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\ContactPerson;
+namespace App\Http\Requests\API\RequestLog;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -21,12 +21,6 @@ class IndexRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'perpage' => 'nullable|int',
-            'page' => 'nullable|int',
-            'sort' => 'nullable|array',
-            'filter' => 'nullable|string|max:255',
-            'org_id' => 'nullable|int',
-        ];
+        return [];
     }
 }

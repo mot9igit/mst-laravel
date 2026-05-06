@@ -2,6 +2,7 @@
 
 use App\Exceptions\UserException;
 use App\Http\Middleware\ApiExceptionHandler;
+use App\Http\Middleware\LogApiRequestsMiddleware;
 use App\Http\Middleware\RequestIdMiddleware;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -21,10 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'api/auth/login',
+        ]);
+
         $middleware->alias([
             'requestId' => RequestIdMiddleware::class,
-            'verifyCsrfTokenMiddleware' => VerifyCsrfTokenMiddleware::class,
             'apiExceptionHandler' => ApiExceptionHandler::class,
+            'logApi' => LogApiRequestsMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

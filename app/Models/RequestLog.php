@@ -7,21 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactPerson extends Model
+class RequestLog extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'contact_persons';
+    protected $table = 'request_logs';
     protected $fillable = [
-        "name",
-        "phone",
-        "email",
-        "description",
-        "properties",
-        "org_id"
+        "method",
+        "url",
+        "status_code",
+        "duration",
+        "ip_address",
+        "user_agent",
+        "request_body",
+        "response_body",
+        "error_message",
+        "user_id",
     ];
 
     public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 }

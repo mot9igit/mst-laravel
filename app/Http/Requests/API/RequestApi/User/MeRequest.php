@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API\ContactPerson;
+namespace App\Http\Requests\API\RequestApi\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexRequest extends FormRequest
+class MeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,6 @@ class IndexRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'perpage' => 'nullable|int',
-            'page' => 'nullable|int',
-            'sort' => 'nullable|array',
-            'filter' => 'nullable|string|max:255',
-            'org_id' => 'nullable|int',
-        ];
+        return [];
     }
 }

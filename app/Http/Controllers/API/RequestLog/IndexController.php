@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API\ContactPerson;
+namespace App\Http\Controllers\API\RequestLog;
 
 
-use App\Http\Requests\API\ContactPerson\IndexRequest;
+use App\Http\Requests\API\RequestLog\IndexRequest;
 
 class IndexController extends BaseController
 {

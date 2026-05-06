@@ -32,7 +32,7 @@
                     <show-requisite-component :org_id="this.orgid"></show-requisite-component>
                 </TabPanel>
                 <TabPanel value="2">
-                    <p class="m-0">Контактные лица</p>
+                    <show-organization-contact-person-component :org_id="this.orgid"></show-organization-contact-person-component>
                 </TabPanel>
                 <TabPanel value="3">
                     <show-organization-stores-component :org_id="this.orgid"></show-organization-stores-component>
@@ -44,7 +44,7 @@
                     <show-organization-vendors-component :org_id="this.orgid"></show-organization-vendors-component>
                 </TabPanel>
                 <TabPanel value="6">
-                    <p class="m-0">Ключи API</p>
+                    <show-api-key-component :org_id="this.orgid"></show-api-key-component>
                 </TabPanel>
             </TabPanels>
         </Tabs>
@@ -60,9 +60,13 @@ import TabPanel from 'primevue/tabpanel';
 import ShowOrganizationUsersComponent from "../user/ShowOrganizationUsersComponent.vue";
 import ShowOrganizationStoresComponent from "../store/ShowOrganizationStoresComponent.vue";
 import ShowOrganizationVendorsComponent from "../vendor/ShowOrganizationVendorsComponent.vue";
+import ShowOrganizationContactPersonComponent from "../contact-person/ShowComponent.vue";
+import ShowApiKeyComponent from "../api-key/ShowComponent.vue";
 export default{
     name: "UpdateOrganizationComponent",
     components: {
+        ShowApiKeyComponent,
+        ShowOrganizationContactPersonComponent,
         Tabs,
         TabList,
         Tab,

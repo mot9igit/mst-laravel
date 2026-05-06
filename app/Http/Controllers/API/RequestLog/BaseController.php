@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Http\Controllers\API\ContactPerson;
+namespace App\Http\Controllers\API\RequestLog;
 
 use App\Http\Controllers\Controller;
-use App\Services\User\Service;
+use App\Services\RequestLog\Service;
 
 class BaseController extends Controller
 {
