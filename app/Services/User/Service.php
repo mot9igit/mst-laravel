@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Mail\ResetPassword;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 
 class Service
@@ -79,5 +82,12 @@ class Service
     public function getByEmail(string $email): User | null
     {
         return $this->userRepository->getByEmail($email);
+    }
+
+    public function resetPassword(string $email): bool
+    {
+        $uuid = Str::uuid()->toString();
+        Mail::to($email)->send(new ResetPassword($uuid));
+        return true;
     }
 }
