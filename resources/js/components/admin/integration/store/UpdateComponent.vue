@@ -26,7 +26,7 @@
                     <show-remain :store_id="this.store_id"></show-remain>
                 </TabPanel>
                 <TabPanel value="3">
-                    <p>Документы</p>
+                    <show-doc :store_id="this.store_id"></show-doc>
                 </TabPanel>
             </TabPanels>
         </Tabs>
@@ -41,10 +41,12 @@ import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import ShowCatalog from '@/components/admin/integration/store/remain-catalog/ShowComponent.vue'
 import ShowRemain from '@/components/admin/integration/store/remain/ShowComponent.vue'
+import ShowDoc from "@/components/admin/integration/store/document/ShowComponent.vue";
 
 export default{
     name: "UpdateStoreComponent",
     components: {
+        ShowDoc,
         Tabs,
         TabList,
         Tab,

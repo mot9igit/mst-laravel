@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Http\Controllers\API\Integration\Store;
+namespace App\Http\Controllers\API\Integration\Store\Doc;
 
 use App\Http\Controllers\Controller;
 use App\Services\StoreDoc\Service;

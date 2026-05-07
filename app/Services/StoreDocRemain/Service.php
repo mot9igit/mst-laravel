@@ -3,6 +3,7 @@
 namespace App\Services\StoreDocRemain;
 
 
+use App\Models\StoreDocRemain;
 use App\Repositories\StoreDocRemainRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +14,11 @@ class Service
         private readonly StoreDocRemainRepository $repository
     )
     {}
+
+    public function findById(int $id): StoreDocRemain
+    {
+        return $this->repository->findById($id);
+    }
 
     public function get(array $data): LengthAwarePaginator
     {
@@ -34,15 +40,11 @@ class Service
      * Создание Номенклатуры Документа
      *
      * @param array $validated
-     * @return JsonResponse
+     * @return StoreDocRemain | null
      */
-    public function store(array $validated): JsonResponse
+    public function store(array $validated): StoreDocRemain | null
     {
-        $docRemain = $this->repository->create($validated);
-        return response()->json([
-            'message' => 'Номенклатура Документа успешно создан',
-            'docRemain' => $docRemain
-        ], 201);
+        return $this->repository->create($validated);
     }
 
     /**
@@ -51,14 +53,10 @@ class Service
      * @param int $store_id
      * @param int $doc_remain_id
      * @param array $validated
-     * @return JsonResponse
+     * @return StoreDocRemain | null
      */
-    public function update(int $store_id, int $doc_remain_id, array $validated): JsonResponse
+    public function update(int $store_id, int $doc_remain_id, array $validated): StoreDocRemain | null
     {
-        $docRemain = $this->repository->update($doc_remain_id, $validated);
-        return response()->json([
-            'message' => 'Номенклатура Документа успешно создан',
-            'docRemain' => $docRemain
-        ], 201);
+        return $this->repository->update($doc_remain_id, $validated);
     }
 }

@@ -50,6 +50,11 @@ class StoreDocRemainRepository
         return $docRemains;
     }
 
+    public function findById(int $id): StoreDocRemain
+    {
+        return StoreDocRemain::findOrFail($id);
+    }
+
     /**
      * Удаление Номенклатуры Документов
      *

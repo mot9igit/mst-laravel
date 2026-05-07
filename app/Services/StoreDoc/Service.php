@@ -3,7 +3,9 @@
 namespace App\Services\StoreDoc;
 
 
+use App\Models\StoreDoc;
 use App\Repositories\StoreDocRepository;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 
@@ -17,6 +19,11 @@ class Service
     public function get(array $data): LengthAwarePaginator
     {
         return $this->repository->get($data);
+    }
+
+    public function findOne(int $doc_id): StoreDoc | null
+    {
+        return $this->repository->findById($doc_id);
     }
 
     /**
@@ -38,6 +45,9 @@ class Service
      */
     public function store(array $validated): JsonResponse
     {
+        $validated['date'] = Carbon::parse($validated['date'])
+            ->setTimezone('UTC')
+            ->format('Y-m-d H:i:s');
         $doc = $this->repository->create($validated);
         return response()->json([
             'message' => 'Документ успешно создан',

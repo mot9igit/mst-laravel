@@ -17,6 +17,8 @@ import remainCatalogModule from "@/shared/api/remainCatalog.js";
 import remainModule from "@/shared/api/remain.js";
 import contactPersonModule from "@/shared/api/contactPerson.js";
 import apiKeyModule from "@/shared/api/apiKey.js";
+import docModule from "@/shared/api/doc.js";
+import docRemainModule from "@/shared/api/docRemain.js";
 
 export default {
     base: baseModule(instance),
@@ -36,4 +38,6 @@ export default {
     remain: remainModule(instance),
     contactPerson: contactPersonModule(instance),
     apiKey: apiKeyModule(instance),
+    doc: docModule(instance),
+    docRemain: docRemainModule(instance),
 }

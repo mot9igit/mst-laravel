@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('guid');
             $table->bigInteger('doc_id')->unsigned();
             $table->bigInteger('remain_id')->unsigned();
+            //1 or 2 (продажа, возврат)
             $table->unsignedInteger('type')->default(1);
             $table->string('article')->nullable();
             $table->bigInteger('count')->default(0);
@@ -27,8 +28,8 @@ return new class extends Migration
 
             $table->index(['doc_id', 'remain_id'], 'store_doc_remain_doc_id_guid_idx');
 
-            $table->foreign('doc_id')->references('id')->on('store_doc')->onDelete('cascade');
-            $table->foreign('remain_id')->references('id')->on('stores_remains')->nullOnDelete();
+            $table->foreign('doc_id')->references('id')->on('stores_doc')->onDelete('cascade');
+            $table->foreign('remain_id')->references('id')->on('stores_remains')->onDelete('cascade');
         });
     }
 
