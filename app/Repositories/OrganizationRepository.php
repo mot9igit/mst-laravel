@@ -2,17 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\UserException;
+use App\Exceptions\User\UserException;
 use App\Models\Organization;
-use App\Models\User;
 use App\Services\Tools\FileUploaderService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class OrganizationRepository

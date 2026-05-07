@@ -16,10 +16,14 @@ class LogApiRequestsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+
+        $user = $request->user();
+        if(!$user) return $next($request);
+
         $startTime = microtime(true);
 
         $log = RequestLog::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
             'method' => $request->method(),
             'url' => $request->fullUrl(),
             'ip_address' => $request->ip(),

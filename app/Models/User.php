@@ -44,6 +44,7 @@ class User extends Authenticatable implements HasMedia
         'active',
         'sudo',
         'avatar',
+        'reset_password_token',
     ];
 
     /**

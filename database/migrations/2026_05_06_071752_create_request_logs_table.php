@@ -22,7 +22,7 @@ return new class extends Migration
             $table->json('request_body')->nullable();
             $table->json('response_body')->nullable();
             $table->string('error_message')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

@@ -9,10 +9,6 @@ use App\Services\Tools\FileUploaderService;
 use App\Services\Tools\ThumbService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 
 class Service
@@ -80,7 +76,7 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @throws \App\Exceptions\User\UserException
      */
     public function update(int $id, array $validated)
     {
