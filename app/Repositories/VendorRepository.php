@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\UserException;
-use App\Models\Organization;
 use App\Models\Vendor;
 use App\Services\Tools\FileUploaderService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

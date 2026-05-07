@@ -2,7 +2,6 @@
 
 namespace App\Services\Requisite;
 
-use App\Models\Requisite;
 use App\Repositories\RequisiteRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -43,7 +42,7 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @throws \App\Exceptions\User\UserException
      */
     public function update(int $id, array $validated)
     {

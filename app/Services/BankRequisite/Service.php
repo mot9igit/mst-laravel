@@ -38,7 +38,7 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @throws \App\Exceptions\User\UserException
      */
     public function update(int $id, array $validated)
     {

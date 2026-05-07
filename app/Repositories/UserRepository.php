@@ -2,13 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\UserException;
+use App\Exceptions\User\UserException;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserRepository
@@ -49,6 +47,11 @@ class UserRepository
         }
 
         return $users;
+    }
+
+    public function getByResetPasswordToken(string $token): User | null
+    {
+        return User::where('reset_password_token', $token)->first();
     }
 
     public function getByEmail(string $email): User | null
@@ -135,14 +138,7 @@ class UserRepository
         $user = User::findOrFail($id);
         DB::beginTransaction();
         try {
-            $updatedUser = $user->update([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'fullname' => $validated['fullname'],
-                'active' => $validated['active'],
-                'sudo' => $validated['sudo']
-            ]);
+            $updatedUser = $user->update($validated);
             DB::commit();
             return $updatedUser;
         }catch (QueryException $e) {

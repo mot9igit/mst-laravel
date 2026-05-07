@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Files\UploadController;
 use App\Http\Controllers\API\RequestApi\User\MeController;
+use App\Http\Controllers\API\User\CompleteResetPasswordController;
 use App\Http\Controllers\API\User\ResetPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\API\Auth\ApiLoginController;
@@ -25,8 +26,13 @@ Route::prefix('auth')->group(function () {
 //TODO: Группа внешних запросов
 Route::middleware(["auth:sanctum", "logApi"])->group(function ():void {
     Route::get('/user/me', MeController::class);
-    Route::post('/user/reset-password', ResetPasswordController::class);
+    Route::post('/user/reset-password', ResetPasswordController::class)
+        ->withoutMiddleware(['auth:sanctum']);
+    Route::post('/user/reset-password/complete', CompleteResetPasswordController::class)
+        ->withoutMiddleware(['auth:sanctum']);
 });
+
+
 
 //TODO: В какую группу положить получение логов
 Route::group(["namespace" => "App\Http\Controllers\API\RequestLog", "prefix" => "request-log", "middleware" => []], function () {

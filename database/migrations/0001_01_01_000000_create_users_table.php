@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('avatar')->nullable();
+            $table->string('reset_password_token')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedSmallInteger("active")->default(0);

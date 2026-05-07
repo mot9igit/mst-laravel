@@ -2,14 +2,14 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\User\UserNotFoundByEmailException;
+use App\Exceptions\User\UserNotFoundByTokenException;
 use App\Mail\ResetPassword;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -46,7 +46,7 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @throws \App\Exceptions\User\UserException
      */
     public function store($validated){
         $user = $this->userRepository->create($validated);
@@ -61,7 +61,7 @@ class Service
      *
      * @param $validated
      * @return \Illuminate\Http\JsonResponse
-     * @throws \App\Exceptions\UserException
+     * @throws \App\Exceptions\User\UserException
      */
     public function update(int $id, array $validated){
         $user = $this->userRepository->update($id, $validated);
@@ -87,7 +87,32 @@ class Service
     public function resetPassword(string $email): bool
     {
         $uuid = Str::uuid()->toString();
+
+        $user = $this->userRepository->getByEmail($email);
+
+        if(!$user){
+            throw new UserNotFoundByEmailException();
+        }
+
+        $this->userRepository->update($user->id, ['reset_password_token' => $uuid]);
+
         Mail::to($email)->send(new ResetPassword($uuid));
+        return true;
+    }
+
+    public function completeResetPassword(string $token, string $password): bool
+    {
+        $user = $this->userRepository->getByResetPasswordToken($token);
+        if(!$user){
+            throw new UserNotFoundByTokenException();
+        }
+
+        $hashedPassword = Hash::make($password);
+        $this->userRepository->update($user->id, [
+            'reset_password_token' => null,
+            'password' => $hashedPassword
+        ]);
+
         return true;
     }
 }
