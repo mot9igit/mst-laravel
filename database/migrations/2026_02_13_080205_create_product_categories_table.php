@@ -29,7 +29,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            // Связь с категориями
             $table->foreign('parent_id')->references('id')->on('product_categories')->onDelete('cascade');
         });
     }
