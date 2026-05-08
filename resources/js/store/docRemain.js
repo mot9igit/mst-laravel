@@ -17,7 +17,7 @@ export default {
                 commit('SET_DOC_REMAINS', response.data)
             })
         },
-        getDocRemain ({ commit }, { id }) {
+        getDocRemain ({ commit }, id) {
             return this.$app.config.globalProperties.$api.docRemain.getDocRemain(id).then((response) => {
                 commit('SET_DOC_REMAIN', response.data)
             })

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 class DeleteController extends BaseController
 {
-    public function __invoke(int $store_id, $remain_id)
+    public function __invoke(int $id)
     {
         try {
-            $this->service->delete($store_id, $remain_id);
+            $this->service->delete($id);
 
             return response()->json([
                 'message' => 'Документ успешно удален',

@@ -20,7 +20,7 @@
                 >
                     <template v-slot:button>
                         <div class="dart-mb-1">
-                            <button class="btn btn-primary" @click.prevent="() => { this.price_id = 0; this.createRemainPriceWindow = true, this.createWindow.title = this.createTitle}"> Создать номенклатуру </button>
+                            <button class="btn btn-primary" @click.prevent="() => { this.createDocRemainWindow = true; this.createWindow.title = this.createTitle}"> Создать номенклатуру </button>
                         </div>
                     </template>
                 </v-table>
@@ -31,7 +31,7 @@
             @cancel="cancel"
         >
             <template v-slot:title>{{ this.createWindow.title }}</template>
-            <create-document-remain-component @close="close()" :document_id="this.document_id" :id="this.createWindow.id"></create-document-remain-component>
+            <create-document-remain-component @close="close()" :document_id="this.document_id" :id="this.createWindow.id" :remain_id="this.createWindow.remain_id" :store_id="this.store_id"></create-document-remain-component>
         </customModal>
     </div>
 </template>
@@ -52,6 +52,10 @@ export default {
             type: Number,
             default: 0,
         },
+        store_id: {
+            type: Number,
+            default: 0,
+        },
         pagination_items_per_page: {
             type: Number,
             default: 24,
@@ -67,6 +71,7 @@ export default {
             createWindow: {
                 title: "",
                 id: 0,
+                remain_id: 0
             },
             createTitle: "Создать номенклатуру",
             updateTitle: "Редактировать номенклатуру",
@@ -126,7 +131,6 @@ export default {
             this.createDocRemainWindow = false
             this.getDocRemains({
                 docId: this.document_id,
-                remainId: this.remain_id,
                 page: this.documentRemainTable.page,
                 perpage: this.pagination_items_per_page
             })
@@ -134,24 +138,22 @@ export default {
         filter (data) {
             this.documentRemainTable.page = 1
             data.docId = this.document_id
-            data.remainId = this.remain_id
             this.getDocRemains(data)
         },
         paginate (data) {
             this.documentRemainTable.page = data.page
             data.docId = this.document_id
-            data.remainId = this.remain_id
             this.getDocRemains(data)
         },
         editElem(data){
-            this.document_id = data.doc_id
             this.createWindow.title = this.updateTitle
             this.createWindow.id = data.id;
+            this.createWindow.remain_id = data.remain_id;
             this.createDocRemainWindow = true
         },
         deleteElem (data) {
             this.$confirm.require({
-                message: `Вы уверены, что хотите удалить цену - ${data.name}?`,
+                message: `Вы уверены, что хотите удалить номенклатуру - ${data.name}?`,
                 header: 'Подтверждение',
                 icon: 'bi bi-exclamation-triangle',
                 rejectProps: {
@@ -163,12 +165,11 @@ export default {
                     label: 'Да'
                 },
                 accept: () => {
-                    return this.$api.base.delete(`/api/integration/store/${this.store_id}/remain/${this.remain_id}/price/${data.id}`)
+                    return this.$api.docRemain.deleteDocRemain(data.id)
                         .then((response) => {
                             this.documentRemainTable.page = 1
-                            this.getRemainPrices({
+                            this.getDocRemains({
                                 docId: this.document_id,
-                                remainId: this.remain_id,
                                 page: this.documentRemainTable.page,
                                 perpage: this.pagination_items_per_page
                             })
@@ -176,9 +177,8 @@ export default {
                         .catch(error => {
                             if (error.response.status === 404) {
                                 this.documentRemainTable.page = 1
-                                this.getRemainPrices({
-                                    storeId: this.store_id,
-                                    remainId: this.remain_id,
+                                this.getDocRemains({
+                                    docId: this.document_id,
                                     page: this.documentRemainTable.page,
                                     perpage: this.pagination_items_per_page
                                 })
@@ -194,7 +194,6 @@ export default {
     mounted() {
         this.getDocRemains({
             docId: this.document_id,
-            remainId: this.remain_id,
             page: this.documentRemainTable.page,
             perpage: this.pagination_items_per_page
         })

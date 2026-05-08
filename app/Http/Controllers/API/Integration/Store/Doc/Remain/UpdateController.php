@@ -6,11 +6,11 @@ use App\Http\Requests\API\StoreDocRemain\UpdateRequest;
 
 class UpdateController extends BaseController
 {
-    public function __invoke(UpdateRequest $request, string $store_id, string $doc_id)
+    public function __invoke(UpdateRequest $request, int $id)
     {
         try {
             $validated = $request->validated();
-            return $this->service->update($store_id, $doc_id, $validated);
+            return $this->service->update($id, $validated);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ошибка при обновлении документа',

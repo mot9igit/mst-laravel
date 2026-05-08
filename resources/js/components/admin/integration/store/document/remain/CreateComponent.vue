@@ -40,6 +40,14 @@ export default{
         id: {
             type: Number,
             default: 0
+        },
+        remain_id: {
+            type: Number,
+            default: 0
+        },
+        store_id: {
+            type: Number,
+            default: 0
         }
     },
     data() {
@@ -52,14 +60,11 @@ export default{
     },
     mounted(){
         if(this.id > 0) {
-            const reqData = {
-                id: this.id,
-            }
-            this.getDocRemain(reqData).then(() => {
-                this.form.doc_id = this.id;
-                this.form.remain_id = this.docRemain.remain_id;
+            this.getDocRemain(this.id).then(() => {
+                this.form.doc_id = this.document_id;
+                // this.form.remain_id = this.docRemain.remain_id;
                 this.form.guid = this.docRemain.guid;
-                this.form.type = this.docRemain.type;
+                // this.form.type = this.docRemain.type;
                 this.form.article = this.docRemain.article;
                 this.form.count = this.docRemain.count;
                 this.form.price = this.docRemain.price;
@@ -67,8 +72,7 @@ export default{
                 this.form.properties = this.docRemain.properties;
             })
         }
-        this.form.doc_id = this.doc_id
-        this.form.remain_id = this.remain_id
+        this.form.doc_id = this.document_id
     },
     methods: {
         ...mapActions([
@@ -119,7 +123,7 @@ export default{
                             type: 'autocomplete',
                             value: '',
                             dropdown: true,
-                            optionLabel: 'type',
+                            optionLabel: 'name',
                             label: "Тип",
                             searchType: 'custom',
                             searchUrl: `/api/enums/StoreDocRemainType/`
@@ -128,10 +132,10 @@ export default{
                             type: 'autocomplete',
                             value: '',
                             dropdown: true,
-                            optionLabel: 'remain',
+                            optionLabel: 'name',
                             label: "Номенклатура",
                             searchType: 'custom',
-                            searchUrl: `/api/integration/store/${this.store_id}/remain`
+                            searchUrl: `/api/integration/store/${this.store_id}/remain/`
                         },
                         guid: {
                             type: 'text',

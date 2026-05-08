@@ -58,11 +58,11 @@ class StoreDocRemainRepository
     /**
      * Удаление Номенклатуры Документов
      *
-     * @param int $doc_remain_id
+     * @param int $id
      * @return string
      */
-    public function delete(int $doc_remain_id){
-        $docRemain = StoreDocRemain::findOrFail($doc_remain_id);
+    public function delete(int $id){
+        $docRemain = StoreDocRemain::findOrFail($id);
         DB::beginTransaction();
         try{
             if (App::environment(['local'])) {
@@ -84,7 +84,7 @@ class StoreDocRemainRepository
      * @param array $validated
      * @return StoreDocRemain|bool
      */
-    public function create(array $validated): StoreDocRemain | bool
+    public function create(array $validated): StoreDocRemain | null
     {
         DB::beginTransaction();
         try {
@@ -94,7 +94,7 @@ class StoreDocRemainRepository
         }catch (\Exception $e) {
             DB::rollBack();
             Log::error('Ошибка создания Документа: ' . $e->getMessage());
-            return false;
+            return null;
         }
     }
 
@@ -110,7 +110,7 @@ class StoreDocRemainRepository
         $docRemain = StoreDocRemain::findOrFail($id);
         DB::beginTransaction();
         try {
-            $updatedVendor = $docRemain->update($validated);
+            $docRemain->update($validated);
             DB::commit();
             return $docRemain;
         }catch (QueryException $e) {

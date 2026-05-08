@@ -28,12 +28,11 @@ class Service
     /**
      * Удаление Номенклатуры Документа
      *
-     * @param int $store_id
-     * @param int $doc_remain_id
+     * @param int $id
      * @return string
      */
-    public function delete(int $store_id, int $doc_remain_id){
-        return $this->repository->delete($doc_remain_id);
+    public function delete(int $id){
+        return $this->repository->delete($id);
     }
 
     /**
@@ -50,13 +49,12 @@ class Service
     /**
      * Обновление Номенклатуры Документа
      *
-     * @param int $store_id
-     * @param int $doc_remain_id
+     * @param int $id
      * @param array $validated
      * @return StoreDocRemain | null
      */
-    public function update(int $store_id, int $doc_remain_id, array $validated): StoreDocRemain | null
+    public function update(int $id, array $validated): StoreDocRemain | null
     {
-        return $this->repository->update($doc_remain_id, $validated);
+        return $this->repository->update($id, $validated);
     }
 }

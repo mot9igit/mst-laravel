@@ -102,9 +102,9 @@ Route::middleware(["web", "auth:sanctum"])->group(function (): void {
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
         Route::get('/document/remain', 'Doc\Remain\IndexController');
         Route::post('/document/remain', 'Doc\Remain\StoreController');
-        Route::get('/document/{doc}/remain/{remain}', 'Doc\Remain\ShowController');
-        Route::patch("/document/{doc}/remain/{remain}", "Doc\Remain\UpdateController");
-        Route::delete('/document/{doc}/remain/{remain}', 'Doc\Remain\DeleteController');
+        Route::get('/document/remain/{id}', 'Doc\Remain\ShowController');
+        Route::patch("/document/remain/{id}", "Doc\Remain\UpdateController");
+        Route::delete('/document/remain/{id}', 'Doc\Remain\DeleteController');
 
         Route::get("/document", "Doc\IndexController");
         Route::post("/document", "Doc\StoreController");

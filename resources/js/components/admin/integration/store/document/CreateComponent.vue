@@ -58,7 +58,7 @@
                         </vForm>
                     </TabPanel>
                     <TabPanel value="1">
-                        <show-document-remain-component  :document_id="this.doc_id"></show-document-remain-component>
+                        <show-document-remain-component  :document_id="this.doc_id" :store_id="this.store_id"></show-document-remain-component>
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -111,7 +111,7 @@ export default{
             }
             this.getDoc(reqData).then(() => {
                 this.form.number = this.doc.number;
-                this.form.date = this.doc.date;
+                this.form.date = new Date(this.doc.date);
                 this.form.guid = this.doc.guid;
                 this.form.base_guid = this.doc.base_guid;
                 this.form.description = this.doc.description;

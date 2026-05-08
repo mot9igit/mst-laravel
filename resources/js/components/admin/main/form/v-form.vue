@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="" v-if="field.type == 'autocomplete'">
                                     <FloatLabel variant="on">
-                                        <AutoComplete :name="key" :id="key" v-model="form[key]" :dropdown="field.dropdown || false" :optionLabel="field.optionLabel || 'value'" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" @dropdown-click="($event) => dropdownClick($event, field, key)" autocomplete="off"/>
+                                        <AutoComplete :name="key" :id="key" v-model="form[key]" :dropdown="field.dropdown || false" :optionLabel="field.optionLabel || 'name'" :suggestions="items[key]" @complete="($event) => search($event, field, key)" @option-select="($event) => autocompleteSelect($event, field, key)" @dropdown-click="($event) => dropdownClick($event, field, key)" autocomplete="off"/>
                                         <label :for="key">{{ field.label }}</label>
                                     </FloatLabel>
                                     <div v-if="field.description" class="form-text">
@@ -299,6 +299,7 @@ export default {
             }
         },
         dropdownClick(event, value, key){
+            console.log(event, value, key)
             if(value.searchType === 'custom'){
                 axios.get(value.searchUrl, { params: { filter: event.query}})
                     .then(res => {
