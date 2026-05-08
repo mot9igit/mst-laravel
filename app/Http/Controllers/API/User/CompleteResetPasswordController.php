@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\User;
 use App\Exceptions\User\UserNotFoundByTokenException;
 use App\Http\Requests\API\User\ResetPasswordByTokenRequest;
 use Exception;
+use function Laravel\Prompts\error;
+
 class CompleteResetPasswordController extends BaseController
 {
     public function __invoke(ResetPasswordByTokenRequest $request){
@@ -22,6 +24,10 @@ class CompleteResetPasswordController extends BaseController
                     'message' => $e->getMessage()
                 ], 404);
             }
+            return response()->json([
+                'success' => false,
+                'message' => 'Неизвестная ошибка'
+            ], 500);
         }
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-
-namespace App\Http\Controllers\API\Integration\Store;
+namespace App\Http\Controllers\API\Integration\Store\Doc\Remain;
 
 use App\Http\Controllers\Controller;
-use App\Services\StoreDoc\Service;
+use App\Services\StoreDocRemain\Service;
 
 class BaseController extends Controller
 {

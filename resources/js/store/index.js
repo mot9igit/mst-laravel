@@ -14,6 +14,8 @@ import remainCatalog from "./remainCatalog";
 import remain from "./remain";
 import contactPerson from "./contactPerson.js";
 import apiKey from "./apiKey.js";
+import doc from './doc.js'
+import docRemain from './docRemain.js'
 
 export default new Vuex.Store({
     modules: {
@@ -31,5 +33,7 @@ export default new Vuex.Store({
         remain,
         contactPerson,
         apiKey,
+        doc,
+        docRemain
     }
 })

@@ -33,16 +33,13 @@ Route::middleware(["auth:sanctum", "logApi"])->group(function ():void {
 });
 
 
-
-//TODO: В какую группу положить получение логов
-Route::group(["namespace" => "App\Http\Controllers\API\RequestLog", "prefix" => "request-log", "middleware" => []], function () {
-    Route::get("/", "IndexController");
-});
-
 Route::middleware(["web", "auth:sanctum"])->group(function (): void {
 
     Route::post('/upload', UploadController::class)->middleware([]);
 
+    Route::group(["namespace" => "App\Http\Controllers\API\RequestLog", "prefix" => "request-log", "middleware" => []], function () {
+        Route::get("/", "IndexController");
+    });
 
     Route::group(["namespace" => "App\Http\Controllers\API\Profile", "prefix" => "profile", "middleware" => []], function(){
         Route::post('/', 'UpdateController' );
@@ -103,6 +100,18 @@ Route::middleware(["web", "auth:sanctum"])->group(function (): void {
         Route::delete('/{organization}/vendor/{vendor}', 'Vendor\DeleteController' );
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Store", "prefix" => "integration/store", "middleware" => []], function(){
+        Route::get('/document/remain', 'Doc\Remain\IndexController');
+        Route::post('/document/remain', 'Doc\Remain\StoreController');
+        Route::get('/document/remain/{id}', 'Doc\Remain\ShowController');
+        Route::patch("/document/remain/{id}", "Doc\Remain\UpdateController");
+        Route::delete('/document/remain/{id}', 'Doc\Remain\DeleteController');
+
+        Route::get("/document", "Doc\IndexController");
+        Route::post("/document", "Doc\StoreController");
+        Route::get("/{store}/document/{doc}", "Doc\ShowController");
+        Route::patch("/{store}/document/{doc}", "Doc\UpdateController");
+        Route::delete("/{store}/document/{doc}", "Doc\DeleteController");
+
         Route::get("/", "IndexController");
         Route::post('/', 'StoreController' );
         Route::get('/{store}', 'ShowController' );
@@ -131,6 +140,8 @@ Route::middleware(["web", "auth:sanctum"])->group(function (): void {
         Route::get('/{store}/catalog/{catalog}', 'RemainCatalog\ShowController' );
         Route::patch("/{store}/catalog/{catalog}", "RemainCatalog\UpdateController");
         Route::delete('/{store}/catalog/{catalog}', 'RemainCatalog\DeleteController' );
+
+
     });
     Route::group(["namespace" => "App\Http\Controllers\API\Integration\Requisite", "prefix" => "integration/requisite", "middleware" => []], function(){
         Route::get("/", "IndexController");

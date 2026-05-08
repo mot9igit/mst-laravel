@@ -35,7 +35,7 @@ class UpdateRequest extends FormRequest
             'status' => 'sometimes|int',
             'address' => 'nullable',
             'coordinates' => 'nullable',
-            'catalog_guid' => 'nullable|sting',
+            'catalog_guid' => 'nullable|string',
             'barcode' => 'nullable|string',
             'remains' => 'nullable|integer',
             'reserved' => 'nullable|integer',

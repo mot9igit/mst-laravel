@@ -3,9 +3,7 @@
 namespace App\Http\Requests\API\Store;
 
 use App\Enums\StoreIntegrationType;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreRequest extends FormRequest
@@ -53,17 +51,5 @@ class StoreRequest extends FormRequest
             'city_id.id.required' => 'Укажите город',
             'city_id.id.exists' => 'Указанного города не существует',
         ];
-    }
-
-    // Кастомный ответ при ошибке (для API)
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-                'message' => 'Ошибка валидации данных'
-            ], 422)
-        );
     }
 }
